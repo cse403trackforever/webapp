@@ -1,4 +1,4 @@
-export interface Comment {
+export class Comment {
   commenterName: String;
   content: String;
 }

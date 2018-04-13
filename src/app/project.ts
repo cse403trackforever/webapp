@@ -1,6 +1,6 @@
 import {Issue} from './issue';
 
-export interface Project {
+export class Project {
   id: String;
   ownerName: String;
   name: String;

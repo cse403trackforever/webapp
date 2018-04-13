@@ -1,6 +1,6 @@
 import {Comment} from './comment';
 
-export interface Issue {
+export class Issue {
   id: String;
   projectId: String;
   status: String;
