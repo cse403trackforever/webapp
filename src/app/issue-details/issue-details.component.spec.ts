@@ -1,28 +1,46 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IssueDetailsComponent } from './issue-details.component';
-import { ImportService } from '../import.service';
-import { Project } from '../project';
+import { IssueService } from '../issue.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
-import * as mockProject from '../../assets/mockProject.json';
+import { Issue } from '../shared/models/issue';
 
 describe('IssueDetailsComponent', () => {
   let component: IssueDetailsComponent;
   let fixture: ComponentFixture<IssueDetailsComponent>;
-  let importServiceStub: Partial<ImportService>;
+  let issueServiceStub: Partial<IssueService>;
 
   beforeEach(async(() => {
-    // stub ImportService for testing
-    importServiceStub = {
-      importProject(): Observable<Project> {
-        return Observable.of<any>(mockProject);
+    // stub IssueService for testing
+    issueServiceStub = {
+      getIssue(): Observable<Issue> {
+        return Observable.of({
+          id: '123',
+          projectId: '456',
+          status: 'open',
+          summary: 'Everything is broken please fix',
+          labels: [
+            'bug'
+          ],
+          comments: [
+            {
+              commenterName: 'David Dupre',
+              content: 'Why is this app so broken?'
+            }
+          ],
+          submitterName: 'David Dupre',
+          assignees: [],
+          timeCreated: 1524001886,
+          timeUpdated: 1524001886,
+          timeClosed: -1,
+        });
       }
     };
 
     TestBed.configureTestingModule({
       declarations: [ IssueDetailsComponent ],
-      providers: [ {provide: ImportService, useValue: importServiceStub}]
+      providers: [ {provide: IssueService, useValue: issueServiceStub}]
     })
     .compileComponents();
   }));

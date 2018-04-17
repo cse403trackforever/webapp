@@ -1,9 +1,9 @@
-import {Issue} from './issue';
+import {IssueSummary} from './issue-summary';
 
 export interface Project {
   id: String;
   ownerName: String;
   name: String;
   description: String;
-  issues: Issue[];
+  issues: IssueSummary[];
 }

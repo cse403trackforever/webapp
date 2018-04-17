@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ImportService } from '../import.service';
-import { Issue } from '../issue';
+import {Component, Input, OnInit} from '@angular/core';
+import { IssueService } from '../issue.service';
+import { Issue } from '../shared/models/issue';
 
 @Component({
   selector: 'app-issue-details',
@@ -8,19 +8,20 @@ import { Issue } from '../issue';
   styleUrls: ['./issue-details.component.css']
 })
 export class IssueDetailsComponent implements OnInit {
+  @Input() projectId: String;
+  @Input() issueId: String;
+
   issue: Issue;
 
-  constructor(private importService: ImportService) { }
+  constructor(private issueService: IssueService) { }
 
   ngOnInit() {
     this.getIssue();
   }
 
   getIssue(): void {
-    // TODO remove temporary debug code
-    // this just loads the first issue for now
-    this.importService.importProject()
-      .subscribe(project => this.issue = project.issues[0]);
+    this.issueService.getIssue(this.projectId, this.issueId)
+      .subscribe(issue => this.issue = issue);
   }
 
 }

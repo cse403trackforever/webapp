@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  apiUrl: './assets/mockProject.json' // TODO replace with local API
+  apiUrl: 'localhost:8080/trackforever' // TODO replace with local API
 };
