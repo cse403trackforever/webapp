@@ -14,14 +14,17 @@ export class IssueService {
   constructor(private http: HttpClient) { }
 
   getProjects(): Observable<ProjectSummary[]> {
-    return this.http.get<ProjectSummary[]>(`${environment.apiUrl}/projects/all`);
+    return this.http.get<ProjectSummary[]>(`${environment.apiUrl}/projects`);
   }
 
   getProject(projectId: String): Observable<Project> {
-    return this.http.get<Project>(`${environment.apiUrl}/project/${projectId}`);
+    return this.http.get<Project>(`${environment.apiUrl}/projects/${projectId}`);
   }
 
   getIssue(projectId: String, issueId: String): Observable<Issue> {
-    return this.http.get<Issue>(`${environment.apiUrl}/project/${projectId}/${issueId}`);
+    return this.http.post<Issue>(`${environment.apiUrl}/issues`, {
+      projectId,
+      issueId
+    });
   }
 }
