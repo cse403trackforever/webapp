@@ -1,15 +1,15 @@
-import {Injectable} from '@angular/core';
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/materialize';
 import 'rxjs/add/operator/dematerialize';
-import {mockIssue} from './shared/models/mock/mock-issue';
-import {mockProjectSummary} from './shared/models/mock/mock-project-summary';
-import {mockProject} from './shared/models/mock/mock-project';
+import { mockIssue } from './shared/models/mock/mock-issue';
+import { mockProjectSummary } from './shared/models/mock/mock-project-summary';
+import { mockProject } from './shared/models/mock/mock-project';
 
 /**
  * This interceptor lets us mock the backend while it's still in development.
@@ -33,7 +33,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       if (request.url.endsWith('/projects')) {
         return Observable.of(new HttpResponse({
           status: 200,
-          body: [ mockProjectSummary ]
+          body: [mockProjectSummary]
         }));
       }
 
@@ -49,7 +49,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       return next.handle(request);
     })
 
-      // ensures delay
+    // ensures delay
       .materialize()
       .delay(500)
       .dematerialize();
