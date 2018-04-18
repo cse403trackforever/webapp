@@ -1,4 +1,4 @@
-import {IssueSummary} from './issue-summary';
+import { IssueSummary } from './issue-summary';
 
 export interface Project {
   id: String;
