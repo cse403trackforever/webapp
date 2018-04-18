@@ -1,0 +1,9 @@
+<div *ngIf="issue">
+  <p>#{{ issue.id }} - {{ issue.summary }}</p>
+  <div>
+    <div *ngFor='let comment of issue.comments'>
+      <p>{{ comment.commenterName }}</p>
+      <p>{{ comment.content }}</p>
+    </div>
+  </div>
+</div>
