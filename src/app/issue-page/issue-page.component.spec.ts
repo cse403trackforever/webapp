@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import { Issue } from '../shared/models/issue';
 import { mockIssue } from '../shared/models/mock/mock-issue';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('IssuePageComponent', () => {
   let component: IssuePageComponent;
@@ -21,6 +22,7 @@ describe('IssuePageComponent', () => {
     };
 
     TestBed.configureTestingModule({
+      imports: [ RouterTestingModule ],
       declarations: [ IssuePageComponent ],
       providers: [ {provide: IssueService, useValue: issueServiceStub}]
     })
