@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://example.com/api/' // TODO replace with deployed API
+  apiUrl: 'http://example.com/api/', // TODO replace with deployed API
+  mockBackend: false,
 };

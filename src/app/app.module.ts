@@ -1,13 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 
 import { AppComponent } from './app.component';
 import { IssueDetailsComponent } from './issue-details/issue-details.component';
 
 import { IssueService } from './issue.service';
+import { environment } from '../environments/environment';
+import { FakeBackendInterceptor } from './fake-backend-interceptor';
 
 
 @NgModule({
@@ -21,7 +23,12 @@ import { IssueService } from './issue.service';
     HttpClientModule,
   ],
   providers: [
-    IssueService
+    IssueService,
+    environment.mockBackend ? {
+      provide: HTTP_INTERCEPTORS,
+      useClass: FakeBackendInterceptor,
+      multi: true
+    } : []
   ],
   bootstrap: [AppComponent]
 })
