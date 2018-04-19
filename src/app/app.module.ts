@@ -2,25 +2,32 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AppRoutingModule } from './app-routing.module';
 
-
-import { AppComponent } from './app.component';
-import { IssueDetailsComponent } from './issue-details/issue-details.component';
+import { FakeBackendInterceptor } from './fake-backend-interceptor';
+import { environment } from '../environments/environment';
 
 import { IssueService } from './issue.service';
-import { environment } from '../environments/environment';
-import { FakeBackendInterceptor } from './fake-backend-interceptor';
+
+import { AppComponent } from './app.component';
+import { IssuePageComponent } from './issue-page/issue-page.component';
+import { ProjectPageComponent } from './project-page/project-page.component';
+import { HomePageComponent } from './home-page/home-page.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    IssueDetailsComponent
+    IssuePageComponent,
+    ProjectPageComponent,
+    HomePageComponent,
+    IssuePageComponent,
   ],
   imports: [
     BrowserModule,
     NgbModule.forRoot(),
     HttpClientModule,
+    AppRoutingModule,
   ],
   providers: [
     IssueService,

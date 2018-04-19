@@ -1,0 +1,11 @@
+<div *ngIf="project">
+  <h3>{{project.name}}</h3>
+  <p>{{project.description}}</p>
+  <ul>
+    <li *ngFor="let issue of project.issues">
+      <a routerLink="/project/{{project.id}}/issue/{{issue.id}}">
+        <span class="badge">{{issue.id}}</span> {{issue.summary}}
+      </a>
+    </li>
+  </ul>
+</div>
