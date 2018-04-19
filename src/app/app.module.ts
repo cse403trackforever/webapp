@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { IssuePageComponent } from './issue-page/issue-page.component';
 import { ProjectPageComponent } from './project-page/project-page.component';
 import { HomePageComponent } from './home-page/home-page.component';
+import { ImportModule } from './import/import.module';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { HomePageComponent } from './home-page/home-page.component';
     NgbModule.forRoot(),
     HttpClientModule,
     AppRoutingModule,
+    ImportModule,
   ],
   providers: [
     IssueService,
