@@ -1,0 +1,10 @@
+<h2>Projects</h2>
+<div *ngIf="projects">
+  <ul>
+    <li *ngFor="let project of projects">
+      <a routerLink="/project/{{project.id}}">{{project.name}} -- {{project.description.length > 50
+        ? (project.description | slice:0:47) + '...'
+        : project.description}}</a>
+    </li>
+  </ul>
+</div>

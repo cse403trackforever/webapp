@@ -5,5 +5,6 @@ export interface Project {
   ownerName: String;
   name: String;
   description: String;
+  source: String;
   issues: IssueSummary[];
 }

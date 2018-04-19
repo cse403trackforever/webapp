@@ -1,4 +1,6 @@
-export const mockProject = {
+import { Project } from '../project';
+
+export const mockProject: Project = {
   id: 'my-project',
   ownerName: 'John Smith',
   name: 'Boring Project',
@@ -15,7 +17,9 @@ export const mockProject = {
       status: 'closed',
       summary: 'Replace the project description with real content.',
       labels: [],
+      numComments: 1,
       submitterName: 'David Dupre',
+      assignees: [],
       timeCreated: 1523577466,
       timeUpdated: 1523578696,
       timeClosed: 1523578696
@@ -28,9 +32,14 @@ export const mockProject = {
       labels: [
         'bug'
       ],
+      numComments: 3,
       submitterName: 'denvercoder9',
+      assignees: [
+        'denvercoder9'
+      ],
       timeCreated: 1523574466,
-      timeUpdated: 1523574466
+      timeUpdated: 1523574466,
+      timeClosed: -1,
     }
   ]
 };

@@ -1,4 +1,6 @@
-export const mockProjectSummary = {
+import { ProjectSummary } from '../project-summary';
+
+export const mockProjectSummary: ProjectSummary = {
   id: 'my-project',
   ownerName: 'John Smith',
   name: 'Boring Project',

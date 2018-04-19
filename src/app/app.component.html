@@ -1,12 +1,5 @@
-<!-- A bootstrap example -->
-<!-- See https://ng-bootstrap.github.io/#/components/dropdown/examples -->
-<div ngbDropdown>
-  <button id="dropdownExample" class="btn btn-primary" ngbDropdownToggle>Import</button>
-  <div ngbDropdownMenu aria-labelledby="dropdownExample">
-    <button class="dropdown-item">Google Code</button>
-    <button class="dropdown-item">Github</button>
-    <button class="dropdown-item">Redmine</button>
-  </div>
-</div>
-
-<app-issue-details projectId="my-project" issueId="123"></app-issue-details>
+<h1>{{title}}</h1>
+<nav>
+  <a routerLink="/home">Home</a>
+</nav>
+<router-outlet></router-outlet>
