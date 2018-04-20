@@ -1,4 +1,4 @@
-import { GitHubOwner } from "./github-owner";
+import { GitHubOwner } from './github-owner';
 
 export interface GitHubProject {
     id: Number;

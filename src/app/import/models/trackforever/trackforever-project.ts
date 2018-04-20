@@ -1,4 +1,4 @@
-import { TrackForeverIssue } from "./trackforever-issue";
+import { TrackForeverIssue } from './trackforever-issue';
 
 export interface TrackForeverProject {
     id: String;

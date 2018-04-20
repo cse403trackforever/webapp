@@ -1,5 +1,5 @@
-import { GitHubOwner } from "./github-owner";
-import { GitHubLabel } from "./github-label";
+import { GitHubOwner } from './github-owner';
+import { GitHubLabel } from './github-label';
 
 export interface GitHubIssue {
     comments_url: String;
@@ -12,5 +12,5 @@ export interface GitHubIssue {
     updated_at?: String;
     closed_at?: String;
     assignees: Array<GitHubOwner>;
-    labels: Array<GitHubLabel>
+    labels: Array<GitHubLabel>;
 }

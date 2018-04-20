@@ -10,7 +10,7 @@ import { GitHubLabel } from './models/github/github-label';
 import { GitHubComment } from './models/github/github-comment';
 import { GitHubOwner } from './models/github/github-owner';
 import { TrackForeverProject } from './models/trackforever/trackforever-project';
-import { TrackForeverIssue } from './models/trackforever/trackforever-issue'
+import { TrackForeverIssue } from './models/trackforever/trackforever-issue';
 import { TrackForeverComment } from './models/trackforever/trackforever-comment';
 
 @Injectable()
@@ -23,12 +23,12 @@ export class ImportGithubService {
     return this.fetchService.fetchProject(ownerName, projectName)
       .map((project: GitHubProject) => {
         // Create project
-        let newProject: TrackForeverProject = {
+        const newProject: TrackForeverProject = {
           id: project.id.toString(),
           ownerName: project.owner.login,
           name: projectName,
-          description: project.description || "",
-          source: "GitHub",
+          description: project.description || '',
+          source: 'GitHub',
           issues: []
         };
 
@@ -36,7 +36,7 @@ export class ImportGithubService {
         this.fetchService.fetchIssues(ownerName, projectName).subscribe((issues) => {
           newProject.issues = issues.map((issue: GitHubIssue) => {
             // Create Issue
-            let newIssue: TrackForeverIssue = {
+            const newIssue: TrackForeverIssue = {
               id: issue.number.toString(),
               projectId: project.id.toString(),
               status: issue.state,
@@ -48,7 +48,7 @@ export class ImportGithubService {
               timeCreated: (issue.created_at) ? Date.parse(issue.created_at.toString()) : -1,
               timeUpdated: (issue.updated_at) ? Date.parse(issue.updated_at.toString()) : -1,
               timeClosed: (issue.closed_at) ? Date.parse(issue.closed_at.toString()) : -1
-            }
+            };
 
             // Fetch comments and add to new issue
             this.fetchService.fetchComments(issue.comments_url).subscribe((comments: GitHubComment[]) => {
@@ -57,13 +57,13 @@ export class ImportGithubService {
                 return {
                   commenterName: comment.user.login,
                   content: comment.body
-                }
+                };
               });
             });
 
             return newIssue;
-          }
-        )});
+          });
+        });
 
         return newProject;
       });

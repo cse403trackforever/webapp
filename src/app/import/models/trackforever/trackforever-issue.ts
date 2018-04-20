@@ -1,4 +1,4 @@
-import { TrackForeverComment } from "./trackforever-comment";
+import { TrackForeverComment } from './trackforever-comment';
 
 export interface TrackForeverIssue {
     id: String;
