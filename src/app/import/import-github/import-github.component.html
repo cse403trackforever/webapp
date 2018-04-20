@@ -1,3 +1,26 @@
-<p>
-  import-github works!
-</p>
+<form (ngSubmit)="onSubmit()" #importForm="ngForm">
+  <div class="form-group">
+    <label for="ownerName">Owner</label>
+    <input type="text" class="form-control" id="ownerName"
+           required
+           [(ngModel)]="ownerName" name="ownerName"
+           #ownerNameRef="ngModel">
+    <div [hidden]="ownerNameRef.valid || ownerNameRef.pristine"
+         class="alert alert-danger">
+      Owner is required
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="projectName">Project Name</label>
+    <input type="text" class="form-control" id="projectName" required
+           [(ngModel)]="projectName" name="projectName"
+           #projectNameRef="ngModel">
+    <div [hidden]="projectNameRef.valid || projectNameRef.pristine"
+         class="alert alert-danger">
+      Project name is required
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-success">Import</button>
+</form>
