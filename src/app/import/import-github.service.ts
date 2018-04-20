@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/observable/forkJoin';
 import { FetchGithubService } from './api/fetch-github.service';
-import { ProjectPageComponent } from '../project-page/project-page.component';
 import { GitHubProject } from './models/github/github-project';
 import { GitHubIssue } from './models/github/github-issue';
 import { GitHubLabel } from './models/github/github-label';
@@ -16,57 +17,80 @@ import { TrackForeverComment } from './models/trackforever/trackforever-comment'
 @Injectable()
 export class ImportGithubService {
 
-  constructor(private fetchService: FetchGithubService) { }
+  constructor(private fetchService: FetchGithubService) {
+  }
+
+  private static convertIssueToTrackForever(issue: GitHubIssue, projectId: Number): TrackForeverIssue {
+    return {
+      id: issue.number.toString(),
+      projectId: projectId.toString(),
+      status: issue.state,
+      summary: issue.body,
+      labels: issue.labels.map((label: GitHubLabel) => label.name),
+      comments: [],
+      submitterName: issue.user.login,
+      assignees: issue.assignees.map((owner: GitHubOwner) => owner.login),
+      timeCreated: (issue.created_at) ? Date.parse(issue.created_at.toString()) : -1,
+      timeUpdated: (issue.updated_at) ? Date.parse(issue.updated_at.toString()) : -1,
+      timeClosed: (issue.closed_at) ? Date.parse(issue.closed_at.toString()) : -1
+    };
+  }
+
+  private static convertCommentToTrackForever(comment: GitHubComment): TrackForeverComment {
+    return {
+      commenterName: comment.user.login,
+      content: comment.body
+    };
+  }
+
+  private static convertProjectToTrackForever(project: GitHubProject, projectName: String): TrackForeverProject {
+    return {
+      id: project.id.toString(),
+      ownerName: project.owner.login,
+      name: projectName,
+      description: project.description || '',
+      source: 'GitHub',
+      issues: []
+    };
+  }
 
   // Import GitHub Project into TrackForever format
   importProject(ownerName: String, projectName: String): Observable<TrackForeverProject> {
-    return this.fetchService.fetchProject(ownerName, projectName)
-      .map((project: GitHubProject) => {
-        // Create project
-        const newProject: TrackForeverProject = {
-          id: project.id.toString(),
-          ownerName: project.owner.login,
-          name: projectName,
-          description: project.description || '',
-          source: 'GitHub',
-          issues: []
-        };
+    // fetch project and issues in parallel
+    return Observable.forkJoin(
+      this.fetchService.fetchProject(ownerName, projectName),
+      this.fetchService.fetchIssues(ownerName, projectName)
+        .flatMap((issues: GitHubIssue[]): Observable<[GitHubIssue, GitHubComment[]][]> =>
+          // fetch the comments in parallel
+          Observable.forkJoin(
+            issues.map((issue: GitHubIssue): Observable<[GitHubIssue, GitHubComment[]]> =>
+              // fetch the comments and map them to an (issue, comments) pair
+              this.fetchService.fetchComments(issue.comments_url)
+                .map((comments: GitHubComment[]): [GitHubIssue, GitHubComment[]] => [issue, comments])
+            )
+          )
+        )
+    ).map((data: [GitHubProject, [GitHubIssue, GitHubComment[]][]]): TrackForeverProject => {
+      const githubProject: GitHubProject = data[0];
+      const githubIssuesAndComments: [GitHubIssue, GitHubComment[]][] = data[1];
 
-        // Fetch issues and add to new project
-        this.fetchService.fetchIssues(ownerName, projectName).subscribe((issues) => {
-          newProject.issues = issues.map((issue: GitHubIssue) => {
-            // Create Issue
-            const newIssue: TrackForeverIssue = {
-              id: issue.number.toString(),
-              projectId: project.id.toString(),
-              status: issue.state,
-              summary: issue.body,
-              labels: issue.labels.map((label: GitHubLabel) => label.name),
-              comments: [],
-              submitterName: issue.user.login,
-              assignees: issue.assignees.map((owner: GitHubOwner) => owner.login),
-              timeCreated: (issue.created_at) ? Date.parse(issue.created_at.toString()) : -1,
-              timeUpdated: (issue.updated_at) ? Date.parse(issue.updated_at.toString()) : -1,
-              timeClosed: (issue.closed_at) ? Date.parse(issue.closed_at.toString()) : -1
-            };
+      // convert project
+      const project: TrackForeverProject = ImportGithubService.convertProjectToTrackForever(data[0], projectName);
 
-            // Fetch comments and add to new issue
-            this.fetchService.fetchComments(issue.comments_url).subscribe((comments: GitHubComment[]) => {
-              newIssue.comments = comments.map((comment): TrackForeverComment => {
-                // Create comment
-                return {
-                  commenterName: comment.user.login,
-                  content: comment.body
-                };
-              });
-            });
+      // convert issues
+      project.issues = githubIssuesAndComments.map((githubIssueAndComment: [GitHubIssue, GitHubComment[]]): TrackForeverIssue => {
+        const githubIssue: GitHubIssue = githubIssueAndComment[0];
+        const githubComments: GitHubComment[] = githubIssueAndComment[1];
 
-            return newIssue;
-          });
-        });
+        // convert comments
+        const issue = ImportGithubService.convertIssueToTrackForever(githubIssue, githubProject.id);
+        issue.comments = githubComments.map(ImportGithubService.convertCommentToTrackForever);
 
-        return newProject;
+        return issue;
       });
+
+      return project;
+    });
   }
 
 }
