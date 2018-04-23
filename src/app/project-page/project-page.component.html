@@ -1,11 +1,53 @@
 <div *ngIf="project">
-  <h3>{{project.name}}</h3>
-  <p>{{project.description}}</p>
-  <ul>
-    <li *ngFor="let issue of project.issues">
-      <a routerLink="/project/{{project.id}}/issue/{{issue.id}}">
-        <span class="badge">{{issue.id}}</span> {{issue.summary}}
-      </a>
-    </li>
-  </ul>
+  <h1>{{project.name}}</h1>
+
+  <div class="container">
+    <h2>Description</h2>
+    <p>{{project.description}}</p>
+  </div>
+
+  <div>
+      <div class="container">
+          <h2>Issues</h2>
+          <form class="form-inline">
+              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+          
+          TODO - filters, column customization
+      </div>
+  
+      <div class="container table-responsive">
+          <table class="table table-hover">
+              <thead class="thead-light">
+                  <tr class="text-nowrap">
+                      <th scope="col">ID # <i class="fas fa-sort-up"></i></th>
+                      <th scope="col">Summary<i class="fas fa-sort"></i></th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr routerLink="/project/{{project.id}}/issue/{{issue.id}}" *ngFor="let issue of project.issues">
+                      <th scope="row">{{issue.id}}</th>
+                      <td>{{issue.summary}}</td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+  </div>
+
+<!--
+  Issue summary model:
+  
+  id: String;
+  projectId: String;
+  status: String;
+  summary: String;
+  labels: String[];
+  numComments: Number;
+  submitterName: String;
+  assignees: String[];
+  timeCreated: Number;
+  timeUpdated: Number;
+  timeClosed: Number;
+-->
 </div>
