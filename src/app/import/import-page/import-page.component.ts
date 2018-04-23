@@ -7,7 +7,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./import-page.component.css']
 })
 export class ImportPageComponent implements OnInit {
-
+  title = 'Import';
+  
   options: String[] = [
     'GitHub',
     'Google Code',
