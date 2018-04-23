@@ -1,5 +1,27 @@
-<h1>{{title}}</h1>
-<nav>
-  <a routerLink="/home">Home</a>
+<!-- navigation bar -->
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+  <a class="navbar-brand" href="#"><img src="/assets/navbar-icon.svg" width="30" height="30" alt=""></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+      </li>
+    </ul>
+    <form class="form-inline">
+      <button class="btn btn-outline-secondary">Sync</button>
+      <button class="btn btn-primary ml-3">Import Project</button>
+    </form>
+  </div>
+
 </nav>
-<router-outlet></router-outlet>
+
+<main role="main" class="container">
+  <router-outlet></router-outlet>
+</main>
