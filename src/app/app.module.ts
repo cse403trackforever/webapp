@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
+import { ImportModule } from './import/import.module';
 
 import { FakeBackendInterceptor } from './fake-backend-interceptor';
 import { environment } from '../environments/environment';
@@ -28,6 +29,7 @@ import { HomePageComponent } from './home-page/home-page.component';
     NgbModule.forRoot(),
     HttpClientModule,
     AppRoutingModule,
+    ImportModule,
   ],
   providers: [
     IssueService,
