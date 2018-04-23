@@ -8,7 +8,6 @@ import { ProjectSummary } from '../shared/models/project-summary';
   styleUrls: ['./home-page.component.css']
 })
 export class HomePageComponent implements OnInit {
-  title = "My Projects";
   projects: ProjectSummary[];
 
   constructor(private issueService: IssueService) { }
