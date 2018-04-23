@@ -17,4 +17,4 @@ script:
   - npm run lint
   - npm test -- --single-run
   - npm run build
-  - xvfb-run npm e2e
+  - xvfb-run npm run e2e
