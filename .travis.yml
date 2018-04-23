@@ -3,3 +3,18 @@
 language: node_js
 node_js:
   - 6.11.0
+dist: trusty
+sudo: false
+
+cache:
+  directories:
+    - node_modules
+
+addons:
+  chrome: stable
+
+script:
+  - npm lint
+  - npm test -- --single-run
+  - npm build
+  - xvfb-run npm e2e
