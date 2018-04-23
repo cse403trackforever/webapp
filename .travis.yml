@@ -13,13 +13,8 @@ cache:
 addons:
   chrome: stable
 
-jobs:
-  include:
-    - stage: lint
-      script: npm run lint
-    - stage: unit tests
-      script: npm test -- --single-run
-    - stage: build
-      script: npm run build
-    - stage: e2e tests
-      script: xvfb-run npm run e2e
+script:
+  - npm run lint
+  - npm test -- --single-run
+  - npm run build
+  - xvfb-run npm run e2e
