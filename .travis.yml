@@ -1,0 +1,20 @@
+# .travis.yml
+
+language: node_js
+node_js:
+  - 6.11.0
+dist: trusty
+sudo: required
+
+cache:
+  directories:
+    - node_modules
+
+addons:
+  chrome: stable
+
+script:
+  - npm run lint
+  - npm test -- --single-run
+  - npm run build
+  - xvfb-run npm run e2e
