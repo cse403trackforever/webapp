@@ -4,7 +4,7 @@ export const mockIssue: Issue = {
   id: '123',
   projectId: '456',
   status: 'open',
-  summary: 'Everything is broken please fix',
+  summary: 'Navigation bar isn\'t hidden when user isn\'t signed in',
   labels: [
     'bug'
   ],
@@ -12,6 +12,14 @@ export const mockIssue: Issue = {
     {
       commenterName: 'David Dupre',
       content: 'Why is this app so broken?'
+    },
+    {
+      commenterName: 'Christine Ta',
+      content: 'Idk man'
+    },
+    {
+      commenterName: 'David Dupre',
+      content: 'Plz fixxxxx'
     }
   ],
   submitterName: 'David Dupre',
