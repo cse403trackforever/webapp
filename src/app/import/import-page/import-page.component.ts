@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 export class ImportPageComponent implements OnInit {
   title = 'Import';
-  
+
   options: String[] = [
     'GitHub',
     'Google Code',

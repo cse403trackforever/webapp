@@ -5,6 +5,9 @@ import { CommonModule } from '@angular/common';
 import { ImportGithubService } from './import-github.service';
 import { FetchGithubService } from './api/fetch-github.service';
 import { FormsModule } from '@angular/forms';
+import { ImportGoogleCodeComponent } from './import-googlecode/import-googlecode.component';
+import { FetchGoogleCodeService } from './api/fetch-googlecode.service';
+import { ImportGoogleCodeService } from './import-googlecode.service';
 
 /**
  * The ImportModule is a *domain* module declares the import page.
@@ -18,6 +21,7 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     ImportPageComponent,
     ImportGithubComponent,
+    ImportGoogleCodeComponent
   ],
   exports: [
     ImportPageComponent
@@ -25,6 +29,8 @@ import { FormsModule } from '@angular/forms';
   providers: [
     ImportGithubService,
     FetchGithubService,
+    ImportGoogleCodeService,
+    FetchGoogleCodeService
   ]
 })
 export class ImportModule { }
