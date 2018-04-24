@@ -1,0 +1,14 @@
+<form (ngSubmit)="onSubmit()" #importForm="ngForm">
+  <div class="form-group">
+    <label for="projectName">Project Name</label>
+    <input type="text" class="form-control" id="projectName" required
+           [(ngModel)]="projectName" name="projectName"
+           #projectNameRef="ngModel">
+    <div [hidden]="projectNameRef.valid || projectNameRef.pristine"
+         class="alert alert-danger">
+      Project name is required
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-success">Import</button>
+</form>

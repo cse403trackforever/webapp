@@ -7,7 +7,7 @@ import { GoogleCodeIssuePage } from '../models/googlecode/googlecode-issuepage';
 
 @Injectable()
 export class FetchGoogleCodeService {
-  private baseUrl = 'https://storage.googleapis.com/google-code-archive/v2/code.google.com/';
+  private baseUrl = 'https://storage.googleapis.com/google-code-archive/v2/code.google.com';
 
   constructor(private http: HttpClient) { }
 
