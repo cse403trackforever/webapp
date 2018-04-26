@@ -1,14 +1,14 @@
-import { AppPage } from './app.po';
+import { HomePage } from './app.po';
 
-describe('trackforever-web App', () => {
-  let page: AppPage;
+describe('trackforever-web Home Page', () => {
+  let page: HomePage;
 
   beforeEach(() => {
-    page = new AppPage();
+    page = new HomePage();
   });
 
-  it('should display welcome message', () => {
+  it('should display a heading', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to app!');
+    expect(page.getHeading()).toEqual('My Projects');
   });
 });
