@@ -8,6 +8,9 @@ import { FormsModule } from '@angular/forms';
 import { ImportGoogleCodeComponent } from './import-googlecode/import-googlecode.component';
 import { FetchGoogleCodeService } from './api/fetch-googlecode.service';
 import { ImportGoogleCodeService } from './import-googlecode.service';
+import { ImportTrackForeverComponent } from './import-trackforever/import-trackforever.component';
+import { ImportTrackForeverService } from './import-trackforever.service';
+import { FetchTrackForeverService } from './api/fetch-trackforever.service';
 
 /**
  * The ImportModule is a *domain* module declares the import page.
@@ -21,7 +24,8 @@ import { ImportGoogleCodeService } from './import-googlecode.service';
   declarations: [
     ImportPageComponent,
     ImportGithubComponent,
-    ImportGoogleCodeComponent
+    ImportGoogleCodeComponent,
+    ImportTrackForeverComponent
   ],
   exports: [
     ImportPageComponent
@@ -30,7 +34,9 @@ import { ImportGoogleCodeService } from './import-googlecode.service';
     ImportGithubService,
     FetchGithubService,
     ImportGoogleCodeService,
-    FetchGoogleCodeService
+    FetchGoogleCodeService,
+    ImportTrackForeverService,
+    FetchTrackForeverService
   ]
 })
 export class ImportModule { }

@@ -1,22 +1,22 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { ImportGoogleCodeComponent } from './import-googlecode.component';
-import { ImportGoogleCodeService } from '../import-googlecode.service';
+import { ImportTrackForeverComponent } from './import-trackforever.component';
+import { ImportTrackForeverService } from '../import-trackforever.service';
 
-describe('ImportGoogleCodeComponent', () => {
-  let component: ImportGoogleCodeComponent;
-  let fixture: ComponentFixture<ImportGoogleCodeComponent>;
-  let importServiceStub: Partial<ImportGoogleCodeService>;
+describe('ImportTrackForeverComponent', () => {
+  let component: ImportTrackForeverComponent;
+  let fixture: ComponentFixture<ImportTrackForeverComponent>;
+  let importServiceStub: Partial<ImportTrackForeverService>;
 
   beforeEach(async(() => {
     importServiceStub = {};
 
     TestBed.configureTestingModule({
-      declarations: [ImportGoogleCodeComponent],
+      declarations: [ImportTrackForeverComponent],
       imports: [FormsModule],
       providers: [
         {
-          provide: ImportGoogleCodeService,
+          provide: ImportTrackForeverService,
           useValue: importServiceStub
         }
       ]
@@ -25,7 +25,7 @@ describe('ImportGoogleCodeComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ImportGoogleCodeComponent);
+    fixture = TestBed.createComponent(ImportTrackForeverComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

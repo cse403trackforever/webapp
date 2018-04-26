@@ -14,7 +14,7 @@
   <div [ngSwitch]="selectedItem" #switch>
     <app-import-github *ngSwitchCase="options[0]" (complete)="onComplete($event)"></app-import-github>
     <app-import-googlecode *ngSwitchCase="options[1]" (complete)="onComplete($event)"></app-import-googlecode>
-    <p *ngSwitchCase="options[2]">TODO implement JSON</p>
+    <app-import-trackforever *ngSwitchCase="options[2]" (complete)="onComplete($event)">JSON</app-import-trackforever>
     <p *ngSwitchDefault>Select a source</p>
   </div>
 </div>

@@ -2,13 +2,16 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ImportPageComponent } from './import-page.component';
 import { FormsModule } from '@angular/forms';
-import { ImportGithubComponent } from '../import-github/import-github.component';
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 
 
 @Component({selector: 'app-import-github', template: ''})
 class ImportGithubStubComponent {}
+@Component({selector: 'app-import-googlecode', template: ''})
+class ImportGoogleCodeStubComponent {}
+@Component({selector: 'app-import-trackforever', template: ''})
+class ImportTrackForeverStubComponent {}
 
 describe('ImportPageComponent', () => {
   let component: ImportPageComponent;
@@ -20,7 +23,9 @@ describe('ImportPageComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         ImportPageComponent,
-        ImportGithubStubComponent
+        ImportGithubStubComponent,
+        ImportGoogleCodeStubComponent,
+        ImportTrackForeverStubComponent
       ],
       imports: [ FormsModule ],
       providers: [

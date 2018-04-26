@@ -10,7 +10,6 @@ export class ImportGoogleCodeComponent {
   // emits the project ID after importing
   @Output() complete = new EventEmitter<String>();
 
-  ownerName: String;
   projectName: String;
 
   constructor(private importService: ImportGoogleCodeService) { }
