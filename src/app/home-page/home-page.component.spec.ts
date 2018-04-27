@@ -6,6 +6,7 @@ import { IssueService } from '../issue.service';
 import { ProjectSummary } from '../shared/models/project-summary';
 import { Observable } from 'rxjs/Observable';
 import { mockProjectSummary } from '../shared/models/mock/mock-project-summary';
+import { DbkeyPipe } from '../shared/pipes/dbkey.pipe';
 
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
@@ -28,7 +29,7 @@ describe('HomePageComponent', () => {
           useValue: issueServiceStub
         }
       ],
-      declarations: [ HomePageComponent ]
+      declarations: [ HomePageComponent, DbkeyPipe ]
     })
     .compileComponents();
   }));

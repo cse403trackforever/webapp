@@ -13,9 +13,15 @@ import { GitHubOwner } from './models/github/github-owner';
 import { TrackForeverProject } from './models/trackforever/trackforever-project';
 import { TrackForeverIssue } from './models/trackforever/trackforever-issue';
 import { TrackForeverComment } from './models/trackforever/trackforever-comment';
+import { ConvertService } from './convert.service';
+
+export interface ImportGithubArgs {
+  ownerName: String;
+  projectName: String;
+}
 
 @Injectable()
-export class ImportGithubService {
+export class ImportGithubService implements ConvertService {
 
   constructor(private fetchService: FetchGithubService) {
   }
@@ -55,7 +61,10 @@ export class ImportGithubService {
   }
 
   // Import GitHub Project into TrackForever format
-  importProject(ownerName: String, projectName: String): Observable<TrackForeverProject> {
+  importProject(args: ImportGithubArgs): Observable<TrackForeverProject> {
+    const ownerName = args.ownerName;
+    const projectName = args.projectName;
+
     // fetch project and issues in parallel
     return Observable.forkJoin(
       this.fetchService.fetchProject(ownerName, projectName),

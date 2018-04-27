@@ -2,34 +2,35 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ImportGithubComponent } from './import-github.component';
 import { FormsModule } from '@angular/forms';
-import { ImportGithubService } from '../import-github.service';
-import { TrackForeverProject } from '../models/trackforever/trackforever-project';
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
-import { mockTrackforeverProject } from '../models/trackforever/mock/mock-trackforever-project';
+import { ImportService } from '../import.service';
 
 describe('ImportGithubComponent', () => {
   let component: ImportGithubComponent;
   let fixture: ComponentFixture<ImportGithubComponent>;
-  let importServiceStub: Partial<ImportGithubService>;
+  let importServiceStub: Partial<ImportService>;
 
   beforeEach(async(() => {
     importServiceStub = {
-      importProject(ownerName: String, projectName: String): Observable<TrackForeverProject> {
-        return Observable.of(mockTrackforeverProject);
+      importProject(args: any): Promise<string> {
+        return new Promise(() => '123');
       }
     };
 
     TestBed.configureTestingModule({
       declarations: [ImportGithubComponent],
       imports: [FormsModule],
-      providers: [
-        {
-          provide: ImportGithubService,
-          useValue: importServiceStub
-        }
-      ]
     })
+      .overrideComponent(ImportGithubComponent, {
+        set: {
+          providers: [
+            {
+              provide: ImportService,
+              useValue: importServiceStub
+            },
+          ]
+        }
+      })
       .compileComponents();
   }));
 

@@ -6,7 +6,7 @@
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
-        
+
         TODO - filters, column customization
     </div>
 
@@ -21,7 +21,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr routerLink="/project/{{project.id}}" *ngFor="let project of projects">
+                <tr routerLink="/project/{{project | dbkey}}" *ngFor="let project of projects">
                     <th scope="row"><a href="">1</a></th>
                     <td>{{project.name}}</td>
                     <td>{{project.description.length > 50

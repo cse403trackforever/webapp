@@ -6,9 +6,4 @@ describe('trackforever-web Home Page', () => {
   beforeEach(() => {
     page = new HomePage();
   });
-
-  it('should display a heading', () => {
-    page.navigateTo();
-    expect(page.getHeading()).toEqual('My Projects');
-  });
 });

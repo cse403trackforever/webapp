@@ -1,18 +1,29 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { ImportTrackForeverService } from '../import-trackforever.service';
+import { ConvertService } from '../convert.service';
+import { ImportService } from '../import.service';
+import { FetchTrackForeverService } from '../api/fetch-trackforever.service';
+import { ImportComponent } from '../import.component';
 
 @Component({
   selector: 'app-import-trackforever',
   templateUrl: './import-trackforever.component.html',
-  styleUrls: ['./import-trackforever.component.css']
+  styleUrls: ['./import-trackforever.component.css'],
+  providers: [
+    ImportService,
+    FetchTrackForeverService,
+    {
+      provide: ConvertService,
+      useClass: ImportTrackForeverService
+    }
+  ]
 })
-export class ImportTrackForeverComponent {
-  // emits the project ID after importing
-  @Output() complete = new EventEmitter<String>();
-
+export class ImportTrackForeverComponent extends ImportComponent {
   projectFile: File = null;
 
-  constructor(private importService: ImportTrackForeverService) { }
+  constructor(importService: ImportService) {
+    super(importService);
+  }
 
   handleFileInput(files: FileList) {
     this.projectFile = files.item(0);
@@ -22,15 +33,5 @@ export class ImportTrackForeverComponent {
     const reader = new FileReader();
     reader.readAsText(this.projectFile);
     reader.onloadend = () => this.importProject(reader.result);
-  }
-
-  importProject(projectFile: String): void {
-    console.log(projectFile);
-    this.importService.importProject(projectFile)
-      .subscribe(project => {
-        // TODO store the project
-        console.log(project);
-        this.complete.emit(project.id);
-      });
   }
 }

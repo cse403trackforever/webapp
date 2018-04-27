@@ -6,6 +6,7 @@ import { IssueService } from '../issue.service';
 import { Project } from '../shared/models/project';
 import { Observable } from 'rxjs/Observable';
 import { mockProject } from '../shared/models/mock/mock-project';
+import { DbkeyPipe } from '../shared/pipes/dbkey.pipe';
 
 describe('ProjectPageComponent', () => {
   let component: ProjectPageComponent;
@@ -28,7 +29,7 @@ describe('ProjectPageComponent', () => {
           useValue: issueServiceStub
         }
       ],
-      declarations: [ ProjectPageComponent ],
+      declarations: [ ProjectPageComponent, DbkeyPipe ],
     })
     .compileComponents();
   }));

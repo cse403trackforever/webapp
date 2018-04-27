@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Project } from '../shared/models/project';
 import { IssueService } from '../issue.service';
 import { ActivatedRoute } from '@angular/router';
+import { ProjectSummary } from '../shared/models/project-summary';
 
 @Component({
   selector: 'app-project-page',
@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./project-page.component.css']
 })
 export class ProjectPageComponent implements OnInit {
-  project: Project;
+  project: ProjectSummary;
 
   constructor(
     private issueService: IssueService,

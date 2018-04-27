@@ -8,9 +8,10 @@ import { TrackForeverProject } from './models/trackforever/trackforever-project'
 import { TrackForeverIssue } from './models/trackforever/trackforever-issue';
 import { TrackForeverComment } from './models/trackforever/trackforever-comment';
 import { FetchTrackForeverService } from './api/fetch-trackforever.service';
+import { ConvertService } from './convert.service';
 
 @Injectable()
-export class ImportTrackForeverService {
+export class ImportTrackForeverService implements ConvertService {
 
   constructor(private fetchService: FetchTrackForeverService) {
   }

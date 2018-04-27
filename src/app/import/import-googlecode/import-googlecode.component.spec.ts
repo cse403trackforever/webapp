@@ -1,27 +1,35 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ImportGoogleCodeComponent } from './import-googlecode.component';
-import { ImportGoogleCodeService } from '../import-googlecode.service';
+import { ImportService } from '../import.service';
 
 describe('ImportGoogleCodeComponent', () => {
   let component: ImportGoogleCodeComponent;
   let fixture: ComponentFixture<ImportGoogleCodeComponent>;
-  let importServiceStub: Partial<ImportGoogleCodeService>;
+  let importServiceStub: Partial<ImportService>;
 
   beforeEach(async(() => {
-    importServiceStub = {};
+    importServiceStub = {
+      importProject(args: any): Promise<string> {
+        return new Promise(() => '123');
+      }
+    };
 
     TestBed.configureTestingModule({
       declarations: [ImportGoogleCodeComponent],
       imports: [FormsModule],
-      providers: [
-        {
-          provide: ImportGoogleCodeService,
-          useValue: importServiceStub
-        }
-      ]
     })
-    .compileComponents();
+      .overrideComponent(ImportGoogleCodeComponent, {
+        set: {
+          providers: [
+            {
+              provide: ImportService,
+              useValue: importServiceStub
+            },
+          ]
+        }
+      })
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,27 +1,36 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ImportTrackForeverComponent } from './import-trackforever.component';
-import { ImportTrackForeverService } from '../import-trackforever.service';
+import { ImportService } from '../import.service';
+import { ImportGoogleCodeComponent } from '../import-googlecode/import-googlecode.component';
 
 describe('ImportTrackForeverComponent', () => {
   let component: ImportTrackForeverComponent;
   let fixture: ComponentFixture<ImportTrackForeverComponent>;
-  let importServiceStub: Partial<ImportTrackForeverService>;
+  let importServiceStub: Partial<ImportService>;
 
   beforeEach(async(() => {
-    importServiceStub = {};
+    importServiceStub = {
+      importProject(args: any): Promise<string> {
+        return new Promise(() => '123');
+      }
+    };
 
     TestBed.configureTestingModule({
       declarations: [ImportTrackForeverComponent],
       imports: [FormsModule],
-      providers: [
-        {
-          provide: ImportTrackForeverService,
-          useValue: importServiceStub
-        }
-      ]
     })
-    .compileComponents();
+      .overrideComponent(ImportTrackForeverComponent, {
+        set: {
+          providers: [
+            {
+              provide: ImportService,
+              useValue: importServiceStub
+            },
+          ]
+        }
+      })
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -13,9 +13,10 @@ import { GoogleCodeComment } from './models/googlecode/googlecode-comment';
 import { GoogleCodeProject } from './models/googlecode/googlecode-project';
 import { GoogleCodeIssuePage } from './models/googlecode/googlecode-issuepage';
 import { GoogleCodeIssueSummary } from './models/googlecode/googlecode-issuesummary';
+import { ConvertService } from './convert.service';
 
 @Injectable()
-export class ImportGoogleCodeService {
+export class ImportGoogleCodeService implements ConvertService {
 
   constructor(private fetchService: FetchGoogleCodeService) {
   }

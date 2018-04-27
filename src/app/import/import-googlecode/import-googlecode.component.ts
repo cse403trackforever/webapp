@@ -1,29 +1,31 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { ImportGoogleCodeService } from '../import-googlecode.service';
+import { ConvertService } from '../convert.service';
+import { ImportService } from '../import.service';
+import { FetchGoogleCodeService } from '../api/fetch-googlecode.service';
+import { ImportComponent } from '../import.component';
 
 @Component({
   selector: 'app-import-googlecode',
   templateUrl: './import-googlecode.component.html',
-  styleUrls: ['./import-googlecode.component.css']
+  styleUrls: ['./import-googlecode.component.css'],
+  providers: [
+    ImportService,
+    FetchGoogleCodeService,
+    {
+      provide: ConvertService,
+      useClass: ImportGoogleCodeService
+    }
+  ]
 })
-export class ImportGoogleCodeComponent {
-  // emits the project ID after importing
-  @Output() complete = new EventEmitter<String>();
-
+export class ImportGoogleCodeComponent extends ImportComponent {
   projectName: String;
 
-  constructor(private importService: ImportGoogleCodeService) { }
+  constructor(importService: ImportService) {
+    super(importService);
+  }
 
   onSubmit(): void {
     this.importProject(this.projectName);
-  }
-
-  importProject(projectName: String): void {
-    this.importService.importProject(projectName)
-      .subscribe(project => {
-        // TODO store the project
-        console.log(project);
-        this.complete.emit(project.id);
-      });
   }
 }

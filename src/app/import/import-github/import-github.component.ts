@@ -1,30 +1,35 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
+import { ImportComponent } from '../import.component';
+import { ImportService } from '../import.service';
+import { ConvertService } from '../convert.service';
 import { ImportGithubService } from '../import-github.service';
+import { FetchGithubService } from '../api/fetch-github.service';
 
 @Component({
   selector: 'app-import-github',
   templateUrl: './import-github.component.html',
-  styleUrls: ['./import-github.component.css']
+  styleUrls: ['./import-github.component.css'],
+  providers: [
+    ImportService,
+    FetchGithubService,
+    {
+      provide: ConvertService,
+      useClass: ImportGithubService
+    }
+  ]
 })
-export class ImportGithubComponent {
-  // emits the project ID after importing
-  @Output() complete = new EventEmitter<String>();
-
+export class ImportGithubComponent extends ImportComponent {
   ownerName: String;
   projectName: String;
 
-  constructor(private importService: ImportGithubService) { }
-
-  onSubmit(): void {
-    this.importProject(this.ownerName, this.projectName);
+  constructor(importService: ImportService) {
+    super(importService);
   }
 
-  importProject(ownerName: String, projectName: String): void {
-    this.importService.importProject(ownerName, projectName)
-      .subscribe(project => {
-        // TODO store the project
-        console.log(project);
-        this.complete.emit(project.id);
-      });
+  onSubmit(): void {
+    this.importProject({
+      ownerName: this.ownerName,
+      projectName: this.projectName
+    });
   }
 }

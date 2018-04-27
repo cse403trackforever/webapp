@@ -27,7 +27,7 @@ describe('ImportGithubService', () => {
         {
           provide: FetchGithubService,
           useValue: fetchServiceStub
-        }
+        },
       ],
     });
   });
@@ -36,6 +36,9 @@ describe('ImportGithubService', () => {
     expect(service).toBeTruthy();
   }));
   it('should not crash', inject([ImportGithubService], (service: ImportGithubService) => {
-    service.importProject('', '');
+    service.importProject({
+      ownerName: '',
+      projectName: ''
+    });
   }));
 });
