@@ -2,12 +2,16 @@ import { EventEmitter, Output } from '@angular/core';
 import { ImportService } from './import.service';
 
 export abstract class ImportComponent {
-  // emits the project ID after importing
+  // Emits the project ID after importing
   @Output() complete = new EventEmitter<String>();
+  // Gives a user readable error message on failure
+  @Output() error = new EventEmitter<String>();
 
   protected constructor(private importService: ImportService) { }
 
   protected importProject(args: any): void {
-    this.importService.importProject(args).then(key => this.complete.emit(key));
+    this.importService.importProject(args)
+      .catch(error => this.error.emit(error))
+      .then(key => (key) ? this.complete.emit(key) : null);
   }
 }

@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 })
 export class ImportPageComponent implements OnInit {
   title = 'Import';
+  // Error message to be displayed. Message will display when this value is Truthy.
+  errorMessage = '';
 
   options: String[] = [
     'GitHub',
@@ -23,10 +25,22 @@ export class ImportPageComponent implements OnInit {
   }
 
   onSelect(selection) {
+    // Hide error message
+    this.errorMessage = '';
     this.selectedItem = selection;
   }
 
+  /**
+   * Handle error by displaying an error box
+   * @param message error message to display
+   */
+  onError(message: String) {
+    this.errorMessage = message.toString();
+  }
+
   onComplete(id: String) {
+    // Hide error message
+    this.errorMessage = '';
     this.router.navigateByUrl(`project/${id}`);
   }
 }
