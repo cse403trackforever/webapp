@@ -10,6 +10,7 @@ export class ImportPageComponent implements OnInit {
   title = 'Import';
   // Error message to be displayed. Message will display when this value is Truthy.
   errorMessage = '';
+  working = false;
 
   options: String[] = [
     'GitHub',
@@ -31,16 +32,27 @@ export class ImportPageComponent implements OnInit {
   }
 
   /**
+   * Signal to the user that the import is in progress
+   * @param working whether progress is being made
+   */
+  onWorking(working: Boolean) {
+    this.working = working.valueOf();
+  }
+
+  /**
    * Handle error by displaying an error box
    * @param message error message to display
    */
   onError(message: String) {
     this.errorMessage = message.toString();
+    this.working = false;
   }
 
+  /**
+   * Complete the import and show newly imported project
+   * @param id id of the newly imported project
+   */
   onComplete(id: String) {
-    // Hide error message
-    this.errorMessage = '';
     this.router.navigateByUrl(`project/${id}`);
   }
 }
