@@ -2,6 +2,9 @@
 
 <div class="container">
   <form #typeForm="ngForm">
+    <div class="alert alert-danger alert-dismissible fade show" *ngIf="errorMessage" role="alert">
+      <strong>Error:</strong> {{errorMessage}}
+    </div>
     <div class="form-group">
       <label for="sourceSelect">Source</label>
       <select class="form-control" id="sourceSelect" name="sourceSelect"
@@ -12,9 +15,9 @@
   </form>
 
   <div [ngSwitch]="selectedItem" #switch>
-    <app-import-github *ngSwitchCase="options[0]" (complete)="onComplete($event)"></app-import-github>
-    <app-import-googlecode *ngSwitchCase="options[1]" (complete)="onComplete($event)"></app-import-googlecode>
-    <app-import-trackforever *ngSwitchCase="options[2]" (complete)="onComplete($event)">JSON</app-import-trackforever>
+    <app-import-github *ngSwitchCase="options[0]" (complete)="onComplete($event)" (error)="onError($event)"></app-import-github>
+    <app-import-googlecode *ngSwitchCase="options[1]" (complete)="onComplete($event)" (error)="onError($event)"></app-import-googlecode>
+    <app-import-trackforever *ngSwitchCase="options[2]" (complete)="onComplete($event)" (error)="onError($event)">JSON</app-import-trackforever>
     <p *ngSwitchDefault>Select a source</p>
   </div>
 </div>

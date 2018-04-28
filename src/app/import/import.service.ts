@@ -11,9 +11,15 @@ export class ImportService {
   ) { }
 
   public importProject(args: any): Promise<string> {
-    return this.convertService.importProject(args)
-      .toPromise()
-      .then(project => this.dataService.addProject(project));
+    let result = null;
+    try {
+      result = this.convertService.importProject(args);
+    } catch (e) {
+      // Return a reject with the error message
+      return Promise.reject(e.message);
+    }
+    return result.toPromise()
+    .then(project => this.dataService.addProject(project));
   }
 
 }

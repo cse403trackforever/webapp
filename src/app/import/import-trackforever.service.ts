@@ -25,14 +25,12 @@ export class ImportTrackForeverService implements ConvertService {
     try {
       const project = JSON.parse(json.toString());
       if (!this.instanceOf(project)) {
-        throw Error('There are missing fields in the given opbject.');
+        throw new Error('There are missing fields in the given opbject.');
       }
-      console.log(project.ownerName);
       return Observable.of(project);
     } catch (e) {
       console.error(e);
-      console.error('Incorrect file format. The file must be a Track Forever project json file.');
-      return null;
+      throw new Error('Incorrect file format. The file must be a Track Forever project json file.');
     }
   }
 
