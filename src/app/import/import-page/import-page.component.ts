@@ -15,6 +15,7 @@ export class ImportPageComponent implements OnInit {
   options: String[] = [
     'GitHub',
     'Google Code',
+    'Redmine',
     'JSON',
   ];
 

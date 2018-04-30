@@ -20,7 +20,8 @@
   <div [ngSwitch]="selectedItem" [hidden]="working" #switch>
     <app-import-github *ngSwitchCase="options[0]" (working)="onWorking($event)" (complete)="onComplete($event)" (error)="onError($event)"></app-import-github>
     <app-import-googlecode *ngSwitchCase="options[1]" (working)="onWorking($event)" (complete)="onComplete($event)" (error)="onError($event)"></app-import-googlecode>
-    <app-import-trackforever *ngSwitchCase="options[2]" (working)="onWorking($event)" (complete)="onComplete($event)" (error)="onError($event)"></app-import-trackforever>
+    <app-import-redmine *ngSwitchCase="options[2]" (working)="onWorking($event)" (complete)="onComplete($event)" (error)="onError($event)"></app-import-redmine>
+    <app-import-trackforever *ngSwitchCase="options[3]" (working)="onWorking($event)" (complete)="onComplete($event)" (error)="onError($event)"></app-import-trackforever>
     <p *ngSwitchDefault>Select a source</p>
   </div>
 </div>

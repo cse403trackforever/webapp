@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ImportGoogleCodeComponent } from './import-googlecode/import-googlecode.component';
 import { ImportTrackForeverComponent } from './import-trackforever/import-trackforever.component';
+import { ImportRedmineComponent } from './import-redmine/import-redmine.component';
 
 /**
  * The ImportModule is a *domain* module declares the import page.
@@ -19,6 +20,7 @@ import { ImportTrackForeverComponent } from './import-trackforever/import-trackf
     ImportPageComponent,
     ImportGithubComponent,
     ImportGoogleCodeComponent,
+    ImportRedmineComponent,
     ImportTrackForeverComponent
   ],
   exports: [

@@ -10,8 +10,11 @@ import { Component } from '@angular/core';
 class ImportGithubStubComponent {}
 @Component({selector: 'app-import-googlecode', template: ''})
 class ImportGoogleCodeStubComponent {}
+@Component({selector: 'app-import-redmine', template: ''})
+class ImportRedmineStubComponent {}
 @Component({selector: 'app-import-trackforever', template: ''})
 class ImportTrackForeverStubComponent {}
+
 
 describe('ImportPageComponent', () => {
   let component: ImportPageComponent;
@@ -25,6 +28,7 @@ describe('ImportPageComponent', () => {
         ImportPageComponent,
         ImportGithubStubComponent,
         ImportGoogleCodeStubComponent,
+        ImportRedmineStubComponent,
         ImportTrackForeverStubComponent
       ],
       imports: [ FormsModule ],
