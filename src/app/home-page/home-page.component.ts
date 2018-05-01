@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IssueService } from '../issue.service';
+import { IssueService } from '../issue/issue.service';
 import { ProjectSummary } from '../shared/models/project-summary';
 
 @Component({

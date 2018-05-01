@@ -6,11 +6,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { ImportModule } from './import/import.module';
 import { DatabaseModule } from './database/database.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { IssueModule } from './issue/issue.module';
 
 import { FakeBackendInterceptor } from './fake-backend-interceptor';
 import { environment } from '../environments/environment';
-
-import { IssueService } from './issue.service';
 
 import { AppComponent } from './app.component';
 import { IssuePageComponent } from './issue-page/issue-page.component';
@@ -35,10 +34,10 @@ import { DbkeyPipe } from './shared/pipes/dbkey.pipe';
     AppRoutingModule,
     ImportModule,
     DatabaseModule,
-    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production || environment.offline }),
+    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
+    IssueModule,
   ],
   providers: [
-    IssueService,
     environment.mockBackend ? {
       provide: HTTP_INTERCEPTORS,
       useClass: FakeBackendInterceptor,
