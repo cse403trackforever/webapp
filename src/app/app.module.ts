@@ -5,6 +5,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { ImportModule } from './import/import.module';
 import { DatabaseModule } from './database/database.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { FakeBackendInterceptor } from './fake-backend-interceptor';
 import { environment } from '../environments/environment';
@@ -34,6 +35,7 @@ import { DbkeyPipe } from './shared/pipes/dbkey.pipe';
     AppRoutingModule,
     ImportModule,
     DatabaseModule,
+    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production || environment.offline }),
   ],
   providers: [
     IssueService,
