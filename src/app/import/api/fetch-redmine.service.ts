@@ -7,7 +7,7 @@ import { RedmineIssueArray } from '../models/redmine/redmine-issueArray';
 
 @Injectable()
 export class FetchRedmineService {
-  private baseUrl: String = 'https://www.redmine.org';
+  private baseUrl: String = 'https://cors-anywhere.herokuapp.com/https://www.redmine.org';
   constructor(private http: HttpClient) { }
 
   fetchProject(projectName: String): Observable<RedmineProject> {
