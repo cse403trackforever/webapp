@@ -28,6 +28,7 @@ export class ImportGithubService implements ConvertService {
 
   private static convertIssueToTrackForever(issue: GitHubIssue, projectId: Number): TrackForeverIssue {
     return {
+      hash: '',
       id: issue.number.toString(),
       projectId: projectId.toString(),
       status: issue.state,
@@ -51,6 +52,7 @@ export class ImportGithubService implements ConvertService {
 
   private static convertProjectToTrackForever(project: GitHubProject, projectName: String): TrackForeverProject {
     return {
+      hash: JSON.stringify(project),
       id: project.id.toString(),
       ownerName: project.owner.login,
       name: projectName,

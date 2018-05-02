@@ -24,6 +24,7 @@ export class ImportRedmineService {
 
   private static convertIssueToTrackForever(issue: RedmineIssue): TrackForeverIssue {
     return {
+      hash: JSON.stringify(issue),
       id: issue.id.toString(),
       projectId: issue.project_id.name,
       status: issue.status.name,
@@ -40,6 +41,7 @@ export class ImportRedmineService {
 
   private static convertProjectToTrackForever(project: RedmineProject): TrackForeverProject {
     return {
+      hash: '',
       id: project.id.toString(),
       ownerName: '',
       name: project.name,

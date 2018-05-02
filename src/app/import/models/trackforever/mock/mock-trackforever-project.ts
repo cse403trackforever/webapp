@@ -1,6 +1,7 @@
 import { TrackForeverProject } from '../trackforever-project';
 
 export const mockTrackforeverProject: TrackForeverProject = {
+  hash: 'test',
   id: 'my-project',
   ownerName: 'John Smith',
   name: 'Boring Project',
@@ -12,6 +13,7 @@ export const mockTrackforeverProject: TrackForeverProject = {
   source: 'Google Code',
   issues: [
     {
+      hash: 'test',
       id: '5',
       projectId: 'my-project',
       status: 'closed',
@@ -30,6 +32,7 @@ export const mockTrackforeverProject: TrackForeverProject = {
       timeClosed: 1523578696
     },
     {
+      hash: 'test',
       id: '123',
       projectId: 'my-project',
       status: 'open',

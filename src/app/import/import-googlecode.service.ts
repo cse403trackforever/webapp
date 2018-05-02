@@ -23,6 +23,7 @@ export class ImportGoogleCodeService implements ConvertService {
 
   private static convertIssueToTrackForever(issue: GoogleCodeIssue, projectId: String): TrackForeverIssue {
     return {
+      hash: '',
       id: issue.id.toString(),
       projectId: projectId,
       status: issue.status,
@@ -46,6 +47,7 @@ export class ImportGoogleCodeService implements ConvertService {
 
   private static convertProjectToTrackForever(project: GoogleCodeProject, projectName: String): TrackForeverProject {
     return {
+      hash: JSON.stringify(project),
       id: project.name.toString(),
       ownerName: '',
       name: project.name,
