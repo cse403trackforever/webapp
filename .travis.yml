@@ -19,9 +19,12 @@ addons:
 
 script:
   - npm run lint
-  - npm run test:headless -- --single-run
+  - npm run test:headless
   - xvfb-run npm run e2e
   - ng build --prod --base-href "https://cse403trackforever.github.io/webapp/"
+
+after_success:
+  - npm run coveralls
 
 deploy:
   provider: pages

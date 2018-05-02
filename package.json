@@ -9,7 +9,8 @@
     "test": "ng test --browsers Chrome",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "test:headless": "ng test --browsers ChromeHeadless"
+    "test:headless": "ng test --browsers ChromeHeadless --no-watch --code-coverage",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "private": true,
   "dependencies": {
@@ -42,6 +43,7 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "^6.0.107",
     "codelyzer": "^4.3.0",
+    "coveralls": "^3.0.1",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "^2.0.2",
