@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Track Forever';
+  collapsed = true;
+  toggleCollapsed(): void {
+    this.collapsed = !this.collapsed;
+  }
 }

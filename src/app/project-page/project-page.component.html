@@ -7,32 +7,34 @@
   </div>
 
   <div>
-      <div class="container">
-          <h2>Issues</h2>
-          <form class="form-inline">
-              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
-
-          TODO - filters, column customization
+    <div class="container">
+      <h2>Issues</h2>
+      <div class="row">
+        <form class="form-inline col-md-6 col-xl-4">
+          <input class="form-control col-12 col-sm mb-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success col-12 col-sm-auto ml-sm-2 mb-2" type="submit">Search</button>
+        </form>
       </div>
 
-      <div class="container table-responsive">
-          <table class="table table-hover">
-              <thead class="thead-light">
-                  <tr class="text-nowrap">
-                      <th scope="col">ID # <i class="fas fa-sort-up"></i></th>
-                      <th scope="col">Summary<i class="fas fa-sort"></i></th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr routerLink="/project/{{project | dbkey}}/issue/{{issue.id}}" *ngFor="let issue of project.issues">
-                      <th scope="row">{{issue.id}}</th>
-                      <td>{{issue.summary}}</td>
-                  </tr>
-              </tbody>
-          </table>
-      </div>
+      TODO - filters, column customization
+    </div>
+
+    <div class="container table-responsive">
+      <table class="table table-hover">
+        <thead class="thead-light">
+          <tr class="text-nowrap">
+            <th scope="col">ID # <i class="fas fa-sort-up"></i></th>
+            <th scope="col">Summary<i class="fas fa-sort"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr routerLink="/project/{{project | dbkey}}/issue/{{issue.id}}" *ngFor="let issue of project.issues">
+            <th scope="row">{{issue.id}}</th>
+            <td>{{issue.summary}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
 <!--

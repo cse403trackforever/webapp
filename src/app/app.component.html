@@ -3,12 +3,14 @@
   <a class="navbar-brand" routerLink="/home">
     <img src="/assets/navbar-icon.svg" width="30" height="30" alt="">
   </a>
-  
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse"
+    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+    aria-expanded="false" aria-label="Toggle navigation"
+    (click)="toggleCollapsed()">
     <span class="navbar-toggler-icon"></span>
   </button>
-  
-  <div class="collapse navbar-collapse" id="main-navbar">
+  <div id="navbarSupportedContent" [ngClass]="{'collapse': collapsed, 'navbar-collapse': true}">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
         <a class="nav-link" routerLink="/home">Home</a>
