@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { ImportTrackForeverService } from '../import-trackforever.service';
 import { ConvertService } from '../convert.service';
 import { ImportService } from '../import.service';
-import { FetchTrackForeverService } from '../api/fetch-trackforever.service';
 import { ImportComponent } from '../import.component';
 
 @Component({
@@ -11,7 +10,6 @@ import { ImportComponent } from '../import.component';
   styleUrls: ['./import-trackforever.component.css'],
   providers: [
     ImportService,
-    FetchTrackForeverService,
     {
       provide: ConvertService,
       useClass: ImportTrackForeverService

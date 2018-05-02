@@ -55,16 +55,6 @@ export class ImportGoogleCodeService implements ConvertService {
     };
   }
 
-
-  private fetchPages(projectName: String, numPages: Number): Observable<GoogleCodeIssuePage> {
-    let i = 1;
-    let pages: Observable<GoogleCodeIssuePage> = Observable.of();
-    while (++i < numPages) {
-      pages = Observable.merge(pages, this.fetchService.fetchIssuePage(projectName, i));
-    }
-    return pages;
-  }
-
   // Import GitHub Project into TrackForever format
   importProject(projectName: String): Observable<TrackForeverProject> {
     return Observable.forkJoin(

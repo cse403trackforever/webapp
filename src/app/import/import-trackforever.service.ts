@@ -5,16 +5,10 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/merge';
 import { TrackForeverProject } from './models/trackforever/trackforever-project';
-import { TrackForeverIssue } from './models/trackforever/trackforever-issue';
-import { TrackForeverComment } from './models/trackforever/trackforever-comment';
-import { FetchTrackForeverService } from './api/fetch-trackforever.service';
 import { ConvertService } from './convert.service';
 
 @Injectable()
 export class ImportTrackForeverService implements ConvertService {
-
-  constructor(private fetchService: FetchTrackForeverService) {
-  }
 
   instanceOf(object: any): object is TrackForeverProject {
     return 'id' in object && 'ownerName' in object && 'name' in object

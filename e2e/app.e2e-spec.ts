@@ -5,5 +5,6 @@ describe('trackforever-web Home Page', () => {
 
   beforeEach(() => {
     page = new HomePage();
+    console.log(page.getHeading());
   });
 });

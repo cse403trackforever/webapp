@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ImportTrackForeverComponent } from './import-trackforever.component';
 import { ImportService } from '../import.service';
-import { ImportGoogleCodeComponent } from '../import-googlecode/import-googlecode.component';
 
 describe('ImportTrackForeverComponent', () => {
   let component: ImportTrackForeverComponent;
