@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { User } from '../shared/models/user';
 import { mockUser } from '../shared/models/mock/mock-user';
 import { Router } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 describe('SigninPageComponent', () => {
   let component: SigninPageComponent;
@@ -23,7 +24,8 @@ describe('SigninPageComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      declarations: [SigninPageComponent],
+      imports: [ FontAwesomeModule ],
+      declarations: [ SigninPageComponent ],
       providers: [
         {
           provide: AuthenticationService,

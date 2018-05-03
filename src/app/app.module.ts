@@ -23,11 +23,11 @@ import { AuthenticationService } from './authentication.service';
 
 import { DbkeyPipe } from './shared/pipes/dbkey.pipe';
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 // Firebase Authentication
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 
-import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { MyProjectsPageComponent } from './my-projects-page/my-projects-page.component';
 
 export const firebaseConfig = {
@@ -60,9 +60,9 @@ export const firebaseConfig = {
     DatabaseModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
-    AngularFontAwesomeModule,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
-    IssueModule
+    IssueModule,
+    FontAwesomeModule
   ],
   providers: [
     AuthenticationService,

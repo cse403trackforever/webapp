@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IssueService } from '../issue/issue.service';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectSummary } from '../shared/models/project-summary';
+import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-project-page',
@@ -10,6 +11,9 @@ import { ProjectSummary } from '../shared/models/project-summary';
 })
 export class ProjectPageComponent implements OnInit {
   project: ProjectSummary;
+  faSortUp = faSortUp;
+  faSortDown = faSortDown;
+  faSort = faSort;
 
   constructor(
     private issueService: IssueService,

@@ -7,6 +7,7 @@ import { Project } from '../shared/models/project';
 import { Observable } from 'rxjs/Observable';
 import { mockProject } from '../shared/models/mock/mock-project';
 import { DbkeyPipe } from '../shared/pipes/dbkey.pipe';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 describe('ProjectPageComponent', () => {
   let component: ProjectPageComponent;
@@ -22,7 +23,7 @@ describe('ProjectPageComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [ RouterTestingModule ],
+      imports: [ RouterTestingModule, FontAwesomeModule ],
       providers: [
         {
           provide: IssueService,

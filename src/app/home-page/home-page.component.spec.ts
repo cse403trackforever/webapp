@@ -4,6 +4,7 @@ import { HomePageComponent } from './home-page.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
 import { DbkeyPipe } from '../shared/pipes/dbkey.pipe';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthenticationService } from '../authentication.service';
 import { User } from '../shared/models/user';
 import { mockUser } from '../shared/models/mock/mock-user';
@@ -22,7 +23,7 @@ describe('HomePageComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [ RouterTestingModule ],
+      imports: [ RouterTestingModule, FontAwesomeModule ],
       providers: [
         {
           provide: AuthenticationService,

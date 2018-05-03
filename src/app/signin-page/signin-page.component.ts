@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
+import { faFacebook, faGithub } from '@fortawesome/free-brands-svg-icons';
 
 @Component({
   selector: 'app-signin-page',
@@ -8,6 +9,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./signin-page.component.css']
 })
 export class SigninPageComponent implements OnInit {
+  faFacebook = faFacebook;
+  faGithub = faGithub;
 
   constructor(public authService: AuthenticationService, private router: Router) { }
 

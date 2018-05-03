@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectSummary } from '../shared/models/project-summary';
+import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
 
@@ -10,6 +11,9 @@ import { Router } from '@angular/router';
 })
 export class HomePageComponent implements OnInit {
   projects: ProjectSummary[];
+  faSortUp = faSortUp;
+  faSortDown = faSortDown;
+  faSort = faSort;
 
   constructor(public authService: AuthenticationService, private router: Router) { }
 
