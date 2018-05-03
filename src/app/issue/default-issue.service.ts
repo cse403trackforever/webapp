@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { ProjectSummary } from '../shared/models/project-summary';
 import { Project } from '../shared/models/project';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -8,6 +8,7 @@ import { IssueService } from './issue.service';
 import { OnlineIssueService } from './online-issue.service';
 import { OfflineIssueService } from './offline-issue.service';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
 
 /**
  * Determines online/offline state and fetches projects from the appropriate source
@@ -18,7 +19,8 @@ export class DefaultIssueService implements IssueService {
 
   constructor(
     private online: OnlineIssueService,
-    private offline: OfflineIssueService
+    private offline: OfflineIssueService,
+    @Inject('Navigator') private navigator: Navigator
   ) { }
 
   /**
@@ -30,13 +32,13 @@ export class DefaultIssueService implements IssueService {
    * @returns {Observable<T>} the observable returned by whichever input was used
    */
   private choose<T>(onlineObs: () => Observable<T>, offlineObs: () => Observable<T>): Observable<T> {
-    if (navigator.onLine && !this.serverDown) {
+    if (this.navigator.onLine && !this.serverDown) {
       return onlineObs().catch((e) => {
         if (e instanceof HttpErrorResponse) {
           console.log('api request failed -- defaulting to offline database');
           console.log(e);
 
-          // remember if the server is down (or doesn't exist) to avoid making more HTTP calls to it
+          // remember if the server is down (or doesn't exist), avoid making more HTTP calls to it
           if (e.status === 0) {
             this.serverDown = true;
           }

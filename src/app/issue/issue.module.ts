@@ -15,6 +15,10 @@ import { OfflineIssueService } from './offline-issue.service';
     },
     OnlineIssueService,
     OfflineIssueService,
+    {
+      provide: 'Navigator',
+      useValue: navigator
+    },
   ]
 })
 export class IssueModule { }
