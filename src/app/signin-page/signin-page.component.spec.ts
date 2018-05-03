@@ -1,19 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HomePageComponent } from './home-page.component';
-import { RouterTestingModule } from '@angular/router/testing';
-import { Observable } from 'rxjs/Observable';
-import { DbkeyPipe } from '../shared/pipes/dbkey.pipe';
+import { SigninPageComponent } from './signin-page.component';
 import { AuthenticationService } from '../authentication.service';
+import { Observable } from 'rxjs/Observable';
 import { User } from '../shared/models/user';
 import { mockUser } from '../shared/models/mock/mock-user';
+import { Router } from '@angular/router';
 
-describe('HomePageComponent', () => {
-  let component: HomePageComponent;
-  let fixture: ComponentFixture<HomePageComponent>;
+describe('SigninPageComponent', () => {
+  let component: SigninPageComponent;
+  let fixture: ComponentFixture<SigninPageComponent>;
   let authServiceStub: Partial<AuthenticationService>;
 
   beforeEach(async(() => {
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+
     // stub auth service
     authServiceStub = {
       getUser(): Observable<User> {
@@ -22,20 +23,22 @@ describe('HomePageComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [ RouterTestingModule ],
+      declarations: [SigninPageComponent],
       providers: [
         {
           provide: AuthenticationService,
           useValue: authServiceStub
-        }
-      ],
-      declarations: [ HomePageComponent, DbkeyPipe ]
+        },
+        {
+          provide: Router,
+          useValue: routerSpy
+        }]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HomePageComponent);
+    fixture = TestBed.createComponent(SigninPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

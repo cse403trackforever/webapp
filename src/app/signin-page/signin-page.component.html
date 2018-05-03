@@ -1,0 +1,42 @@
+<div class="container">
+
+  <h1>Welcome to Track Forever</h1>
+
+  <div class="container auth">
+    <div class="email">
+      <form class="form-register">
+        <p>Sign in with a registered account</p>
+        <div class="form-group">
+          <label for="inputEmail" class="sr-only">Email address</label>
+          <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+        </div>
+
+        <div class="form-group">
+          <label for="inputPassword" class="sr-only">Password</label>
+          <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        </div>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+    </div>
+
+    <div class="container signin social">
+      <p>Or sign in using social media</p>
+      <button type="button" class="btn btn-social-icon btn-facebook" (click)="tryFacebookLogin()">
+        <span class="fa fa-facebook"></span>
+      </button>
+      <button type="button" class="btn btn-social-icon btn-github" (click)="tryFacebookLogin()">
+        <span class="fa fa-github"></span>
+      </button>
+    </div>
+
+    <div class="container">
+      <p>Don't have an account?
+        <a href="">Sign Up</a>
+      </p>
+      <p>
+        <a href="">Forgot password?</a>
+      </p>
+    </div>
+  </div>
+</div>

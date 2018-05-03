@@ -1,0 +1,26 @@
+header h1 {
+    font-weight: bold;
+    font-size: 60pt;
+}
+
+header>div {
+    max-width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.container-fluid {
+    padding: 75px 200px 75px 200px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 36pt;
+}
+
+.col-sm {
+    background-color: lightblue;
+    padding: 15px;
+    height: 300px;
+    margin: 50px;
+}

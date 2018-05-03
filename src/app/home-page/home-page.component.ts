@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { IssueService } from '../issue/issue.service';
 import { ProjectSummary } from '../shared/models/project-summary';
+import { AuthenticationService } from '../authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
@@ -10,14 +11,15 @@ import { ProjectSummary } from '../shared/models/project-summary';
 export class HomePageComponent implements OnInit {
   projects: ProjectSummary[];
 
-  constructor(private issueService: IssueService) { }
+  constructor(public authService: AuthenticationService, private router: Router) { }
 
   ngOnInit() {
-    this.getProjects();
-  }
-
-  getProjects(): void {
-    this.issueService.getProjects()
-      .subscribe(projects => this.projects = projects);
+    // Redirects the user to the signin page if not signed in
+    this.authService.getUser()
+      .subscribe(user => {
+        if (user) {
+          this.router.navigate(['/myprojects']);
+        }
+      });
   }
 }
