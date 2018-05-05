@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IssueService } from '../issue/issue.service';
-import { Issue } from '../shared/models/issue';
 import { ActivatedRoute } from '@angular/router';
+import { TrackForeverIssue } from '../import/models/trackforever/trackforever-issue';
 
 @Component({
   selector: 'app-issue-details',
@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./issue-page.component.css']
 })
 export class IssuePageComponent implements OnInit {
-  issue: Issue;
+  issue: TrackForeverIssue;
 
   constructor(
     private issueService: IssueService,

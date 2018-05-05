@@ -2,13 +2,8 @@ import { TestBed } from '@angular/core/testing';
 
 import { OnlineIssueService } from './online-issue.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { Issue } from '../shared/models/issue';
-import { mockIssue } from '../shared/models/mock/mock-issue';
 import { environment } from '../../environments/environment';
-import { Project } from '../shared/models/project';
-import { mockProject } from '../shared/models/mock/mock-project';
-import { ProjectSummary } from '../shared/models/project-summary';
-import { mockProjectSummary } from '../shared/models/mock/mock-project-summary';
+import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock-trackforever-project';
 
 describe('OnlineIssueService', () => {
   let service: OnlineIssueService;
@@ -30,7 +25,7 @@ describe('OnlineIssueService', () => {
 
   // see https://angular.io/guide/http#expecting-and-answering-requests
   it('should get an issue', () => {
-    const testIssue: Issue = mockIssue;
+    const testIssue = mockTrackforeverProject.issues[0];
     const projectKey = 'my-project';
     const issueId = '123';
 
@@ -49,7 +44,7 @@ describe('OnlineIssueService', () => {
   });
 
   it('should get a project', () => {
-    const testProject: Project = mockProject;
+    const testProject = mockTrackforeverProject;
     const projectKey = 'my-project';
 
     service.getProject(projectKey)
@@ -64,7 +59,7 @@ describe('OnlineIssueService', () => {
   });
 
   it('should get project summaries', () => {
-    const testProjects: ProjectSummary[] = [mockProjectSummary];
+    const testProjects = [ mockTrackforeverProject ];
 
     service.getProjects()
       .subscribe(projects => expect(projects).toEqual(testProjects));

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectSummary } from '../shared/models/project-summary';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
+import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
 
 @Component({
   selector: 'app-home-page',
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./home-page.component.css']
 })
 export class HomePageComponent implements OnInit {
-  projects: ProjectSummary[];
+  projects: TrackForeverProject[];
   faSortUp = faSortUp;
   faSortDown = faSortDown;
   faSort = faSort;

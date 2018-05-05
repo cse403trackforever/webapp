@@ -1,14 +1,13 @@
 import { Inject, Injectable } from '@angular/core';
-import { ProjectSummary } from '../shared/models/project-summary';
-import { Project } from '../shared/models/project';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Issue } from '../shared/models/issue';
 import { Observable } from 'rxjs/Observable';
 import { IssueService } from './issue.service';
 import { OnlineIssueService } from './online-issue.service';
 import { OfflineIssueService } from './offline-issue.service';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
+import { TrackForeverIssue } from '../import/models/trackforever/trackforever-issue';
 
 /**
  * Determines online/offline state and fetches projects from the appropriate source
@@ -52,21 +51,21 @@ export class DefaultIssueService implements IssueService {
     return offlineObs();
   }
 
-  getProjects(): Observable<ProjectSummary[]> {
+  getProjects(): Observable<TrackForeverProject[]> {
     return this.choose(
       () => this.online.getProjects(),
       () => this.offline.getProjects()
     );
   }
 
-  getProject(projectKey: string): Observable<Project> {
+  getProject(projectKey: string): Observable<TrackForeverProject> {
     return this.choose(
       () => this.online.getProject(projectKey),
       () => this.offline.getProject(projectKey)
     );
   }
 
-  getIssue(projectKey: string, issueId: String): Observable<Issue> {
+  getIssue(projectKey: string, issueId: String): Observable<TrackForeverIssue> {
     return this.choose(
       () => this.online.getIssue(projectKey, issueId),
       () => this.offline.getIssue(projectKey, issueId),

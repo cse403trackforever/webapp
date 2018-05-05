@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { IssueService } from '../issue/issue.service';
 import { ActivatedRoute } from '@angular/router';
-import { ProjectSummary } from '../shared/models/project-summary';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
+import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
 
 @Component({
   selector: 'app-project-page',
@@ -10,7 +10,7 @@ import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons'
   styleUrls: ['./project-page.component.css']
 })
 export class ProjectPageComponent implements OnInit {
-  project: ProjectSummary;
+  project: TrackForeverProject;
   faSortUp = faSortUp;
   faSortDown = faSortDown;
   faSort = faSort;

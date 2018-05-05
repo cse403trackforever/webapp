@@ -4,12 +4,10 @@ import { DefaultIssueService } from './default-issue.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
-import { mockIssue } from '../shared/models/mock/mock-issue';
 import { OnlineIssueService } from './online-issue.service';
 import { OfflineIssueService } from './offline-issue.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { mockProject } from '../shared/models/mock/mock-project';
-import { mockProjectSummary } from '../shared/models/mock/mock-project-summary';
+import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock-trackforever-project';
 
 describe('DefaultIssueService', () => {
   let service: DefaultIssueService;
@@ -62,7 +60,7 @@ describe('DefaultIssueService', () => {
 
     const projectKey = 'my-project';
     const issueId = '123';
-    const testIssue = mockIssue;
+    const testIssue = mockTrackforeverProject.issues[0];
 
     onlineSpy.getIssue.and.returnValue(Observable.of(testIssue));
 
@@ -79,7 +77,7 @@ describe('DefaultIssueService', () => {
 
     const projectKey = 'my-project';
     const issueId = '123';
-    const testIssue = mockIssue;
+    const testIssue = mockTrackforeverProject.issues[0];
 
     onlineSpy.getIssue.and.returnValue(Observable.throw(new HttpErrorResponse({status: 0})));
     offlineSpy.getIssue.and.returnValue(Observable.of(testIssue));
@@ -105,7 +103,7 @@ describe('DefaultIssueService', () => {
 
     const projectKey = 'my-project';
     const issueId = '123';
-    const testIssue = mockIssue;
+    const testIssue = mockTrackforeverProject.issues[0];
 
     onlineSpy.getIssue.and.returnValue(Observable.throw(new HttpErrorResponse({status: 500})));
     offlineSpy.getIssue.and.returnValue(Observable.of(testIssue));
@@ -149,7 +147,7 @@ describe('DefaultIssueService', () => {
 
     const projectKey = 'my-project';
     const issueId = '123';
-    const testIssue = mockIssue;
+    const testIssue = mockTrackforeverProject.issues[0];
 
     offlineSpy.getIssue.and.returnValue(Observable.of(testIssue));
 
@@ -165,9 +163,9 @@ describe('DefaultIssueService', () => {
     setupTest(true);
 
     const projectKey = 'my-project';
-    const testProject = mockProject;
+    const testProject = mockTrackforeverProject;
 
-    onlineSpy.getProject.and.returnValue(Observable.of(mockProject));
+    onlineSpy.getProject.and.returnValue(Observable.of(testProject));
 
     service.getProject(projectKey)
       .subscribe(project => {
@@ -181,9 +179,9 @@ describe('DefaultIssueService', () => {
     setupTest(false);
 
     const projectKey = 'my-project';
-    const testProject = mockProject;
+    const testProject = mockTrackforeverProject;
 
-    offlineSpy.getProject.and.returnValue(Observable.of(mockProject));
+    offlineSpy.getProject.and.returnValue(Observable.of(testProject));
 
     service.getProject(projectKey)
       .subscribe(project => {
@@ -196,7 +194,7 @@ describe('DefaultIssueService', () => {
   it('should get projects online', async(() => {
     setupTest(true);
 
-    const testProjects = [ mockProjectSummary ];
+    const testProjects = [ mockTrackforeverProject ];
 
     onlineSpy.getProjects.and.returnValue(Observable.of(testProjects));
 
@@ -211,7 +209,7 @@ describe('DefaultIssueService', () => {
   it('should get projects offline', async(() => {
     setupTest(false);
 
-    const testProjects = [ mockProjectSummary ];
+    const testProjects = [ mockTrackforeverProject ];
 
     offlineSpy.getProjects.and.returnValue(Observable.of(testProjects));
 

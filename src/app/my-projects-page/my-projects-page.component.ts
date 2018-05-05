@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectSummary } from '../shared/models/project-summary';
 import { IssueService } from '../issue/issue.service';
+import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
 
 @Component({
   selector: 'app-my-projects-page',
@@ -8,7 +8,7 @@ import { IssueService } from '../issue/issue.service';
   styleUrls: ['./my-projects-page.component.css']
 })
 export class MyProjectsPageComponent implements OnInit {
-  projects: ProjectSummary[];
+  projects: TrackForeverProject[];
 
   constructor(private issueService: IssueService) { }
 

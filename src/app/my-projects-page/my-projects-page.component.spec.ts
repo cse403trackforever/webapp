@@ -5,9 +5,9 @@ import { DbkeyPipe } from '../shared/pipes/dbkey.pipe';
 import { RouterLink } from '@angular/router';
 import { IssueService } from '../issue/issue.service';
 import { Observable } from 'rxjs/Observable';
-import { ProjectSummary } from '../shared/models/project-summary';
-import { mockProjectSummary } from '../shared/models/mock/mock-project-summary';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
+import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock-trackforever-project';
 
 describe('MyProjectsPageComponent', () => {
   let component: MyProjectsPageComponent;
@@ -19,8 +19,8 @@ describe('MyProjectsPageComponent', () => {
   beforeEach(async(() => {
     // stub IssueService for testing
     issueServiceStub = {
-      getProjects(): Observable<ProjectSummary[]> {
-        return Observable.of([mockProjectSummary]);
+      getProjects(): Observable<TrackForeverProject[]> {
+        return Observable.of([mockTrackforeverProject]);
       }
     };
 

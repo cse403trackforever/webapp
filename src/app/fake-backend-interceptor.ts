@@ -7,10 +7,8 @@ import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/materialize';
 import 'rxjs/add/operator/dematerialize';
-import { mockIssue } from './shared/models/mock/mock-issue';
-import { mockProjectSummary } from './shared/models/mock/mock-project-summary';
-import { mockProject } from './shared/models/mock/mock-project';
 import { environment } from '../environments/environment';
+import { mockTrackforeverProject } from './import/models/trackforever/mock/mock-trackforever-project';
 
 /**
  * This interceptor lets us mock the backend while it's still in development.
@@ -27,7 +25,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         if (request.url.endsWith('/issues')) {
           return Observable.of(new HttpResponse({
             status: 200,
-            body: mockIssue
+            body: mockTrackforeverProject.issues[0]
           }));
         }
 
@@ -35,7 +33,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         if (request.url.endsWith('/projects')) {
           return Observable.of(new HttpResponse({
             status: 200,
-            body: [mockProjectSummary]
+            body: [mockTrackforeverProject]
           }));
         }
 
@@ -43,7 +41,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         if (request.url.match(/\/projects\/[^\/]*$/)) {
           return Observable.of(new HttpResponse({
             status: 200,
-            body: mockProject
+            body: mockTrackforeverProject
           }));
         }
       }

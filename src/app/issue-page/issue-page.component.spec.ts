@@ -4,9 +4,9 @@ import { IssuePageComponent } from './issue-page.component';
 import { IssueService } from '../issue/issue.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
-import { Issue } from '../shared/models/issue';
-import { mockIssue } from '../shared/models/mock/mock-issue';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TrackForeverIssue } from '../import/models/trackforever/trackforever-issue';
+import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock-trackforever-project';
 
 describe('IssuePageComponent', () => {
   let component: IssuePageComponent;
@@ -16,8 +16,8 @@ describe('IssuePageComponent', () => {
   beforeEach(async(() => {
     // stub IssueService for testing
     issueServiceStub = {
-      getIssue(): Observable<Issue> {
-        return Observable.of(mockIssue);
+      getIssue(): Observable<TrackForeverIssue> {
+        return Observable.of(mockTrackforeverProject.issues[0]);
       }
     };
 
