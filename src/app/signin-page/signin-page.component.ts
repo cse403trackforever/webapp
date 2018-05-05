@@ -34,4 +34,12 @@ export class SigninPageComponent implements OnInit {
     }, err => console.log(err)
     );
   }
+
+  tryGithubLogin() {
+    this.authService.doGithubLogin()
+    .then(res => {
+      this.router.navigate(['/myprojects']);
+    }, err => console.log(err)
+    );
+  }
 }

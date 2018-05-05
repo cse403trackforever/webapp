@@ -5,7 +5,7 @@
   <div class="container auth">
     <div class="email">
       <form class="form-register">
-        <p>Sign in with a registered account</p>
+        <p>Sign in or sign up with a registered account</p>
         <div class="form-group">
           <label for="inputEmail" class="sr-only">Email address</label>
           <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
@@ -25,7 +25,7 @@
       <button type="button" class="btn btn-social-icon btn-facebook" (click)="tryFacebookLogin()">
         <fa-icon [icon]="faFacebook"></fa-icon>
       </button>
-      <button type="button" class="btn btn-social-icon btn-github" (click)="tryFacebookLogin()">
+      <button type="button" class="btn btn-social-icon btn-github" (click)="tryGithubLogin()">
         <fa-icon [icon]="faGithub"></fa-icon>
       </button>
     </div>
