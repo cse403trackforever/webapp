@@ -1,45 +1,65 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed, async } from '@angular/core/testing';
 
 import { ImportService } from './import.service';
 import { ConvertService } from './convert.service';
-import { Observable } from 'rxjs/Observable';
-import { TrackForeverProject } from './models/trackforever/trackforever-project';
-import { mockTrackforeverProject } from './models/trackforever/mock/mock-trackforever-project';
 import { DataService } from '../database/data.service';
+import { mockTrackforeverProject } from './models/trackforever/mock/mock-trackforever-project';
+import { Observable } from 'rxjs/Observable';
 
 describe('ImportService', () => {
-  let convertServiceStub: Partial<ConvertService>;
-  let dataServiceStub: Partial<DataService>;
+  let service: ImportService;
+  let convertServiceSpy: jasmine.SpyObj<ConvertService>;
+  let dataServiceSpy: jasmine.SpyObj<DataService>;
 
   beforeEach(() => {
-    convertServiceStub = {
-      importProject(args: any): Observable<TrackForeverProject> {
-        return Observable.of(mockTrackforeverProject);
-      }
-    };
-
-    dataServiceStub = {
-      addProject(project: TrackForeverProject): Promise<string> {
-        return new Promise(() => '123');
-      }
-    };
+    const convertSpy = jasmine.createSpyObj('ConvertService', ['importProject']);
+    const dataSpy = jasmine.createSpyObj('DataService', ['addProject']);
 
     TestBed.configureTestingModule({
       providers: [
         ImportService,
         {
           provide: ConvertService,
-          useValue: convertServiceStub
+          useValue: convertSpy
         },
         {
           provide: DataService,
-          useValue: dataServiceStub
+          useValue: dataSpy
         },
       ]
     });
+
+    service = TestBed.get(ImportService);
+    convertServiceSpy = TestBed.get(ConvertService);
+    dataServiceSpy = TestBed.get(DataService);
   });
 
-  it('should be created', inject([ImportService], (service: ImportService) => {
+  it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('should import', async(() => {
+    const args = 'my-project';
+    const testKey = 'key!';
+    const testProject = mockTrackforeverProject;
+
+    convertServiceSpy.importProject.and.returnValue(Observable.of(testProject));
+    dataServiceSpy.addProject.and.returnValue(new Promise((resolve) => resolve(testKey)));
+
+    service.importProject(args)
+      .then((key) => {
+        expect(key).toEqual(testKey);
+      });
+  }));
+
+  it('should bubble up error message', async(() => {
+    const args = 'my-project';
+    const errorMsg = 'error!';
+
+    convertServiceSpy.importProject.and.throwError(errorMsg);
+
+    service.importProject(args)
+      .then(() => expect(true).toBeFalsy('should error'))
+      .catch((error) => expect(error).toEqual(errorMsg));
   }));
 });
