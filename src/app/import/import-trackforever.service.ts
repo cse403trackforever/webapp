@@ -10,22 +10,60 @@ import { ConvertService } from './convert.service';
 @Injectable()
 export class ImportTrackForeverService implements ConvertService {
 
-  instanceOf(object: any): object is TrackForeverProject {
-    return 'id' in object && 'ownerName' in object && 'name' in object
-    && 'description' in object && 'source' in object && 'issues' in object;
+  static instanceOfComment(object: any): boolean {
+    return 'commenterName' in object
+      && 'content' in object;
+  }
+
+  static instanceOfIssue(object: any): boolean {
+    const hasFields = 'hash' in object
+      && 'id' in object
+      && 'projectId' in object
+      && 'status' in object
+      && 'summary' in object
+      && 'labels' in object
+      && 'submitterName' in object
+      && 'assignees' in object
+      && 'timeCreated' in object
+      && 'timeUpdated' in object
+      && 'timeClosed' in object;
+
+    if (!hasFields) {
+      return false;
+    }
+
+    // check that all comments are correct (i.e. not the case that some comment is not a comment)
+    return !object.comments.some(comment => !this.instanceOfComment(comment));
+  }
+
+  static instanceOfProject(object: any): boolean {
+    const hasFields = 'hash' in object
+      && 'id' in object
+      && 'ownerName' in object
+      && 'name' in object
+      && 'description' in object
+      && 'source' in object
+      && 'issues' in object;
+
+    if (!hasFields) {
+      return false;
+    }
+
+    // check that all issues are correct (i.e. not the case that some issue is not an issue)
+    return !object.issues.some(issue => !this.instanceOfIssue(issue));
   }
 
   importProject(json: String): Observable<TrackForeverProject> {
+    let project;
     try {
-      const project = JSON.parse(json.toString());
-      if (!this.instanceOf(project)) {
-        throw new Error('There are missing fields in the given opbject.');
-      }
-      return Observable.of(project);
+      project = JSON.parse(json.toString());
     } catch (e) {
-      console.error(e);
       throw new Error('Incorrect file format. The file must be a Track Forever project json file.');
     }
+    if (!ImportTrackForeverService.instanceOfProject(project)) {
+      throw new Error('There are missing fields in the given object.');
+    }
+    return Observable.of(project);
   }
 
 }
