@@ -8,11 +8,13 @@ import { DbkeyPipe } from '../shared/pipes/dbkey.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
 import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock-trackforever-project';
+import { ExportService } from '../export/export.service';
 
 describe('ProjectPageComponent', () => {
   let component: ProjectPageComponent;
   let fixture: ComponentFixture<ProjectPageComponent>;
   let issueServiceStub: Partial<IssueService>;
+  let exportServiceStub: Partial<ExportService>;
 
   beforeEach(async(() => {
     // stub IssueService for testing
@@ -22,13 +24,21 @@ describe('ProjectPageComponent', () => {
       }
     };
 
+    exportServiceStub = {
+      download(): void { }
+    };
+
     TestBed.configureTestingModule({
       imports: [ RouterTestingModule, FontAwesomeModule ],
       providers: [
         {
           provide: IssueService,
           useValue: issueServiceStub
-        }
+        },
+        {
+          provide: ExportService,
+          useValue: exportServiceStub
+        },
       ],
       declarations: [ ProjectPageComponent, DbkeyPipe ],
     })

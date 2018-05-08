@@ -3,6 +3,7 @@ import { IssueService } from '../issue/issue.service';
 import { ActivatedRoute } from '@angular/router';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
+import { ExportService } from '../export/export.service';
 
 @Component({
   selector: 'app-project-page',
@@ -18,6 +19,7 @@ export class ProjectPageComponent implements OnInit {
   constructor(
     private issueService: IssueService,
     private route: ActivatedRoute,
+    private exportService: ExportService,
   ) { }
 
   ngOnInit() {
@@ -28,5 +30,9 @@ export class ProjectPageComponent implements OnInit {
     const projectId = this.route.snapshot.paramMap.get('id');
     this.issueService.getProject(projectId)
       .subscribe(project => this.project = project);
+  }
+
+  export(): void {
+    this.exportService.download(this.project);
   }
 }

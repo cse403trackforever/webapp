@@ -29,6 +29,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 
 import { MyProjectsPageComponent } from './my-projects-page/my-projects-page.component';
+import { ExportModule } from './export/export.module';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyBA71GS_jZvo9N2Qk3deEw89i1XxYLRZHs',
@@ -62,7 +63,8 @@ export const firebaseConfig = {
     AngularFireAuthModule,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     IssueModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ExportModule,
   ],
   providers: [
     AuthenticationService,
