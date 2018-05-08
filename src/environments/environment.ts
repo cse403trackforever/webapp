@@ -6,5 +6,5 @@
 export const environment = {
   production: false,
   apiUrl: 'https://localhost:8080/trackforever', // TODO replace with local API
-  mockBackend: true,
+  mockBackend: false,
 };

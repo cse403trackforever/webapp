@@ -3,7 +3,7 @@
 
   <div class="container">
     <h2>Description</h2>
-    <p>{{project.description}}</p>
+    <p [innerHTML]="project.description | markdown"></p>
   </div>
 
   <div>

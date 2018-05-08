@@ -30,6 +30,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 
 import { MyProjectsPageComponent } from './my-projects-page/my-projects-page.component';
 import { ExportModule } from './export/export.module';
+import { MarkdownPipe } from './shared/pipes/markdown.pipe';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyBA71GS_jZvo9N2Qk3deEw89i1XxYLRZHs',
@@ -49,6 +50,7 @@ export const firebaseConfig = {
     IssuePageComponent,
     SigninPageComponent,
     DbkeyPipe,
+    MarkdownPipe,
     SignoutPageComponent,
     MyProjectsPageComponent,
   ],

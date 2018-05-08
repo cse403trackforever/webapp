@@ -7,6 +7,7 @@ import 'rxjs/add/observable/of';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TrackForeverIssue } from '../import/models/trackforever/trackforever-issue';
 import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock-trackforever-project';
+import { MarkdownPipe } from '../shared/pipes/markdown.pipe';
 
 describe('IssuePageComponent', () => {
   let component: IssuePageComponent;
@@ -23,7 +24,7 @@ describe('IssuePageComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [ RouterTestingModule ],
-      declarations: [ IssuePageComponent ],
+      declarations: [ IssuePageComponent, MarkdownPipe ],
       providers: [ {provide: IssueService, useValue: issueServiceStub}]
     })
     .compileComponents();

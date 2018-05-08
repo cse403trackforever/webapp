@@ -9,6 +9,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
 import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock-trackforever-project';
 import { ExportService } from '../export/export.service';
+import { MarkdownPipe } from '../shared/pipes/markdown.pipe';
 
 describe('ProjectPageComponent', () => {
   let component: ProjectPageComponent;
@@ -40,7 +41,7 @@ describe('ProjectPageComponent', () => {
           useValue: exportServiceStub
         },
       ],
-      declarations: [ ProjectPageComponent, DbkeyPipe ],
+      declarations: [ ProjectPageComponent, DbkeyPipe, MarkdownPipe ],
     })
     .compileComponents();
   }));
