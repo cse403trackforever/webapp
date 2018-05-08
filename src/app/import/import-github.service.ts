@@ -27,14 +27,22 @@ export class ImportGithubService implements ConvertService {
   }
 
   private static convertIssueToTrackForever(issue: GitHubIssue, projectId: Number): TrackForeverIssue {
+    const comments: TrackForeverComment[] = [];
+    if (issue.body) {
+      comments.push({
+        content: issue.body,
+        commenterName: issue.user.login
+      });
+    }
+
     return {
       hash: '',
       id: issue.number.toString(),
       projectId: projectId.toString(),
       status: issue.state,
-      summary: issue.body,
+      summary: issue.title,
       labels: issue.labels.map((label: GitHubLabel) => label.name),
-      comments: [],
+      comments,
       submitterName: issue.user.login,
       assignees: issue.assignees.map((owner: GitHubOwner) => owner.login),
       timeCreated: (issue.created_at) ? Date.parse(issue.created_at.toString()) : -1,
@@ -95,7 +103,7 @@ export class ImportGithubService implements ConvertService {
 
         // convert comments
         const issue = ImportGithubService.convertIssueToTrackForever(githubIssue, githubProject.id);
-        issue.comments = githubComments.map(ImportGithubService.convertCommentToTrackForever);
+        issue.comments.concat(githubComments.map(ImportGithubService.convertCommentToTrackForever));
 
         return issue;
       });

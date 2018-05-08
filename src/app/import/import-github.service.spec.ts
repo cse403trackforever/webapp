@@ -72,9 +72,15 @@ describe('ImportGithubService', () => {
       expect(issue.id).toEqual(gh.number.toString());
       expect(issue.projectId).toEqual(projectId);
       expect(issue.status).toEqual(gh.state);
-      expect(issue.summary).toEqual(gh.body);
+      expect(issue.summary).toEqual(gh.title);
       expect(issue.labels).toEqual(gh.labels.map(label => label.name));
-      matchComments(issue.comments, comments);
+      if (gh.body) {
+        expect(issue.comments[0].commenterName).toEqual(gh.user.login, 'wrong login for body comment');
+        expect(issue.comments[0].content).toEqual(gh.body);
+        matchComments(issue.comments.splice(1), comments);
+      } else {
+        matchComments(issue.comments, comments);
+      }
       expect(issue.submitterName).toEqual(gh.user.login);
       expect(issue.assignees).toEqual(gh.assignees.map(owner => owner.login));
       expect(issue.timeCreated).toEqual(gh.created_at ? Date.parse(gh.created_at.toString()) : -1);
