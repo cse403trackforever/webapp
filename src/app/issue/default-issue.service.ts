@@ -65,7 +65,7 @@ export class DefaultIssueService implements IssueService {
     );
   }
 
-  getIssue(projectKey: string, issueId: String): Observable<TrackForeverIssue> {
+  getIssue(projectKey: string, issueId: string): Observable<TrackForeverIssue> {
     return this.choose(
       () => this.online.getIssue(projectKey, issueId),
       () => this.offline.getIssue(projectKey, issueId),

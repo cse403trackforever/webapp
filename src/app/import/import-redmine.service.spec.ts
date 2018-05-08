@@ -16,10 +16,10 @@ describe('ImportRedmineService', () => {
 
   beforeEach(() => {
     fetchServiceStub = {
-      fetchProject(projectName: String): Observable<RedmineProject> {
+      fetchProject(projectName: string): Observable<RedmineProject> {
         return Observable.of(mockRedmineProject);
       },
-      fetchIssues(projectName: String, projectID: Number, limit: Number, offset: Number): Observable<RedmineIssueArray> {
+      fetchIssues(projectName: string, projectID: Number, limit: Number, offset: Number): Observable<RedmineIssueArray> {
         return Observable.of(mockRedmineIssueArray);
       },
       fetchIssue(projectID: Number, issueID: Number): Observable<RedmineIssue> {

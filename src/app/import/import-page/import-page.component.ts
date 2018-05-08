@@ -12,7 +12,7 @@ export class ImportPageComponent implements OnInit {
   errorMessage = '';
   working = false;
 
-  options: String[] = [
+  options: string[] = [
     'GitHub',
     'Google Code',
     'Redmine',
@@ -44,8 +44,8 @@ export class ImportPageComponent implements OnInit {
    * Handle error by displaying an error box
    * @param message error message to display
    */
-  onError(message: String) {
-    this.errorMessage = message.toString();
+  onError(message: string) {
+    this.errorMessage = message;
     this.working = false;
   }
 
@@ -53,7 +53,7 @@ export class ImportPageComponent implements OnInit {
    * Complete the import and show newly imported project
    * @param id id of the newly imported project
    */
-  onComplete(id: String) {
+  onComplete(id: string) {
     this.router.navigateByUrl(`project/${id}`);
   }
 }

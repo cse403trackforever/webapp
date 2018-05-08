@@ -7,14 +7,14 @@ import { RedmineIssueArray } from '../models/redmine/redmine-issueArray';
 
 @Injectable()
 export class FetchRedmineService {
-  private baseUrl: String = 'https://cors-anywhere.herokuapp.com/https://www.redmine.org';
+  private baseUrl = 'https://cors-anywhere.herokuapp.com/https://www.redmine.org';
   constructor(private http: HttpClient) { }
 
-  fetchProject(projectName: String): Observable<RedmineProject> {
+  fetchProject(projectName: string): Observable<RedmineProject> {
     return this.http.get<RedmineProject>(`${this.baseUrl}/projects/${projectName}.json`);
   }
 
-  fetchIssues(projectName: String, projectID: Number, limit: Number, offset: Number): Observable<RedmineIssueArray> {
+  fetchIssues(projectName: string, projectID: Number, limit: Number, offset: Number): Observable<RedmineIssueArray> {
     const url = `${this.baseUrl}/issues.json?projectID=${projectID}&limit=${limit}&offset=${offset}`;
     return this.http.get<RedmineIssueArray>(url);
   }
@@ -23,7 +23,7 @@ export class FetchRedmineService {
     return this.http.get<RedmineIssue>(`${this.baseUrl}/issues/${issueID}.json?project_id=${projectID}`);
   }
 
-  setBaseUrl(newUrl: String) { // Projects are probably not hosted on www.redmine.org
+  setBaseUrl(newUrl: string) { // Projects are probably not hosted on www.redmine.org
     this.baseUrl = newUrl;
   }
 }

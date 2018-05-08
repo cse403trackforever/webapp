@@ -3,7 +3,7 @@ import { GoogleCodeAttachment } from './googlecode-attachment';
 export interface GoogleCodeComment {
     id: Number;
     commenterId: Number;
-    content: String;
+    content: string;
     timestamp: Number;
     attachments: Array<GoogleCodeAttachment>;
 }

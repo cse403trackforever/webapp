@@ -53,10 +53,10 @@ export class ImportTrackForeverService implements ConvertService {
     return !object.issues.some(issue => !this.instanceOfIssue(issue));
   }
 
-  importProject(json: String): Observable<TrackForeverProject> {
+  importProject(json: string): Observable<TrackForeverProject> {
     let project;
     try {
-      project = JSON.parse(json.toString());
+      project = JSON.parse(json);
     } catch (e) {
       throw new Error('Incorrect file format. The file must be a Track Forever project json file.');
     }

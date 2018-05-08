@@ -1,8 +1,8 @@
 export interface GoogleCodeIssueSummary {
     id: Number;
-    status: String;
-    summary: String;
-    labels: Array<String>;
+    status: string;
+    summary: string;
+    labels: Array<string>;
     stars: Number;
     commentCount: Number;
 }

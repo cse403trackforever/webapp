@@ -11,15 +11,15 @@ export class FetchGoogleCodeService {
 
   constructor(private http: HttpClient) { }
 
-  fetchProject(projectName: String): Observable<GoogleCodeProject> {
+  fetchProject(projectName: string): Observable<GoogleCodeProject> {
     return this.http.get<GoogleCodeProject>(`${this.baseUrl}/${projectName}/project.json`);
   }
 
-  fetchIssue(projectName: String, issueNumber: Number): Observable<GoogleCodeIssue> {
+  fetchIssue(projectName: string, issueNumber: Number): Observable<GoogleCodeIssue> {
     return this.http.get<GoogleCodeIssue>(`${this.baseUrl}/${projectName}/issues/issue-${issueNumber}.json`);
   }
 
-  fetchIssuePage(projectName: String, pageNumber: Number): Observable<GoogleCodeIssuePage> {
+  fetchIssuePage(projectName: string, pageNumber: Number): Observable<GoogleCodeIssuePage> {
     return this.http.get<GoogleCodeIssuePage>(`${this.baseUrl}/${projectName}/issues-page-${pageNumber}.json`);
   }
 

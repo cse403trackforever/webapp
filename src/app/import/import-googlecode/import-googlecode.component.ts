@@ -19,7 +19,7 @@ import { ImportComponent } from '../import.component';
   ]
 })
 export class ImportGoogleCodeComponent extends ImportComponent {
-  projectName: String;
+  projectName: string;
 
   constructor(importService: ImportService) {
     super(importService);

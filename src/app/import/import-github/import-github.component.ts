@@ -19,8 +19,8 @@ import { FetchGithubService } from '../api/fetch-github.service';
   ]
 })
 export class ImportGithubComponent extends ImportComponent {
-  ownerName: String;
-  projectName: String;
+  ownerName: string;
+  projectName: string;
 
   constructor(importService: ImportService) {
     super(importService);

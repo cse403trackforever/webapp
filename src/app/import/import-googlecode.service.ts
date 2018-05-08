@@ -21,7 +21,7 @@ export class ImportGoogleCodeService implements ConvertService {
   constructor(private fetchService: FetchGoogleCodeService) {
   }
 
-  private static convertIssueToTrackForever(issue: GoogleCodeIssue, projectId: String): TrackForeverIssue {
+  private static convertIssueToTrackForever(issue: GoogleCodeIssue, projectId: string): TrackForeverIssue {
     return {
       hash: '',
       id: issue.id.toString(),
@@ -45,10 +45,10 @@ export class ImportGoogleCodeService implements ConvertService {
     };
   }
 
-  private static convertProjectToTrackForever(project: GoogleCodeProject, projectName: String): TrackForeverProject {
+  private static convertProjectToTrackForever(project: GoogleCodeProject, projectName: string): TrackForeverProject {
     return {
       hash: JSON.stringify(project),
-      id: project.name.toString(),
+      id: project.name,
       ownerName: '',
       name: project.name,
       description: project.description,
@@ -58,7 +58,7 @@ export class ImportGoogleCodeService implements ConvertService {
   }
 
   // Import GitHub Project into TrackForever format
-  importProject(projectName: String): Observable<TrackForeverProject> {
+  importProject(projectName: string): Observable<TrackForeverProject> {
     return Observable.forkJoin(
       this.fetchService.fetchProject(projectName),
       this.fetchService.fetchIssuePage(projectName, 1).flatMap((issuePage: GoogleCodeIssuePage) => {

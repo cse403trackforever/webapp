@@ -11,16 +11,16 @@ export class FetchGithubService {
 
   constructor(private http: HttpClient) { }
 
-  fetchProject(ownerName: String, projectName: String): Observable<GitHubProject> {
+  fetchProject(ownerName: string, projectName: string): Observable<GitHubProject> {
     return this.http.get<GitHubProject>(`${this.baseUrl}/${ownerName}/${projectName}`);
   }
 
-  fetchIssues(ownerName: String, projectName: String): Observable<Array<GitHubIssue>> {
+  fetchIssues(ownerName: string, projectName: string): Observable<Array<GitHubIssue>> {
     return this.http.get<Array<GitHubIssue>>(`${this.baseUrl}/${ownerName}/${projectName}/issues`);
   }
 
-  fetchComments(commentsUrl: String): Observable<Array<GitHubComment>> {
-    return this.http.get<Array<GitHubComment>>(commentsUrl.toString());
+  fetchComments(commentsUrl: string): Observable<Array<GitHubComment>> {
+    return this.http.get<Array<GitHubComment>>(commentsUrl);
   }
 
 }

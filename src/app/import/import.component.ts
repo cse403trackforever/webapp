@@ -3,9 +3,9 @@ import { ImportService } from './import.service';
 
 export abstract class ImportComponent {
   // Emits the project ID after importing
-  @Output() complete = new EventEmitter<String>();
+  @Output() complete = new EventEmitter<string>();
   // Gives a user readable error message on failure
-  @Output() error = new EventEmitter<String>();
+  @Output() error = new EventEmitter<string>();
   // Signals that the import has begun
   @Output() working = new EventEmitter<Boolean>();
 

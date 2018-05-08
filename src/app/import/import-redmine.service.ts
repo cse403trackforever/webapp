@@ -12,7 +12,7 @@ import { RedmineProject } from './models/redmine/redmine-project';
 import { RedmineIssueArray } from './models/redmine/redmine-issueArray';
 
 export interface ImportRedmineArgs {
-  projectName: String;
+  projectName: string;
   projectID: Number;
 }
 
@@ -33,9 +33,9 @@ export class ImportRedmineService {
       comments: [],
       submitterName: issue.author.name,
       assignees: (issue.assigned_to) ? [issue.assigned_to.name] : [],
-      timeCreated: Date.parse(issue.created_on.toString()),
-      timeUpdated: Date.parse(issue.updated_on.toString()),
-      timeClosed: (issue.closed_on) ? Date.parse(issue.closed_on.toString()) : -1
+      timeCreated: Date.parse(issue.created_on),
+      timeUpdated: Date.parse(issue.updated_on),
+      timeClosed: (issue.closed_on) ? Date.parse(issue.closed_on) : -1
     };
   }
 

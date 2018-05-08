@@ -10,11 +10,11 @@ export interface RedmineIssue {
   author: RedmineIssueSubstructure;
   assigned_to?: RedmineIssueSubstructure;
   category: RedmineIssueSubstructure;
-  subject: String;
-  description: String;
+  subject: string;
+  description: string;
   done_ratio: Number;
   estimated_hours?: Number;
-  created_on: String;
-  updated_on: String;
-  closed_on?: String;
+  created_on: string;
+  updated_on: string;
+  closed_on?: string;
 }

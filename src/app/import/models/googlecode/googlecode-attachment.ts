@@ -1,5 +1,5 @@
 export interface GoogleCodeAttachment {
     id: Number;
-    fileName: String;
+    fileName: string;
     fileSize: Number;
 }

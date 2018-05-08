@@ -16,8 +16,8 @@ import { TrackForeverComment } from './models/trackforever/trackforever-comment'
 import { ConvertService } from './convert.service';
 
 export interface ImportGithubArgs {
-  ownerName: String;
-  projectName: String;
+  ownerName: string;
+  projectName: string;
 }
 
 @Injectable()
@@ -45,9 +45,9 @@ export class ImportGithubService implements ConvertService {
       comments,
       submitterName: issue.user.login,
       assignees: issue.assignees.map((owner: GitHubOwner) => owner.login),
-      timeCreated: (issue.created_at) ? Date.parse(issue.created_at.toString()) : -1,
-      timeUpdated: (issue.updated_at) ? Date.parse(issue.updated_at.toString()) : -1,
-      timeClosed: (issue.closed_at) ? Date.parse(issue.closed_at.toString()) : -1
+      timeCreated: (issue.created_at) ? Date.parse(issue.created_at) : -1,
+      timeUpdated: (issue.updated_at) ? Date.parse(issue.updated_at) : -1,
+      timeClosed: (issue.closed_at) ? Date.parse(issue.closed_at) : -1
     };
   }
 
@@ -58,7 +58,7 @@ export class ImportGithubService implements ConvertService {
     };
   }
 
-  private static convertProjectToTrackForever(project: GitHubProject, projectName: String): TrackForeverProject {
+  private static convertProjectToTrackForever(project: GitHubProject, projectName: string): TrackForeverProject {
     return {
       hash: JSON.stringify(project),
       id: project.id.toString(),

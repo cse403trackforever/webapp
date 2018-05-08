@@ -2,6 +2,6 @@ import { GitHubOwner } from './github-owner';
 
 export interface GitHubComment {
     id: Number;
-    body: String;
+    body: string;
     user: GitHubOwner;
 }

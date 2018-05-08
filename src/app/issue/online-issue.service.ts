@@ -14,7 +14,7 @@ export class OnlineIssueService implements IssueService {
 
   constructor(private http: HttpClient) { }
 
-  getIssue(projectKey: string, issueId: String): Observable<TrackForeverIssue> {
+  getIssue(projectKey: string, issueId: string): Observable<TrackForeverIssue> {
     return this.http.post<TrackForeverIssue>(`${environment.apiUrl}/issues`, {
       projectKey,
       issueId

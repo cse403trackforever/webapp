@@ -1,11 +1,11 @@
 import { TrackForeverIssue } from './trackforever-issue';
 
 export interface TrackForeverProject {
-  hash: String;
-  id: String;
-  ownerName: String;
-  name: String;
-  description: String;
-  source: String;
+  hash: string;
+  id: string;
+  ownerName: string;
+  name: string;
+  description: string;
+  source: string;
   issues: Array<TrackForeverIssue>;
 }

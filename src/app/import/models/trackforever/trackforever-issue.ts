@@ -1,15 +1,15 @@
 import { TrackForeverComment } from './trackforever-comment';
 
 export interface TrackForeverIssue {
-  hash: String;
-  id: String;
-  projectId: String;
-  status: String;
-  summary: String;
-  labels: Array<String>;
+  hash: string;
+  id: string;
+  projectId: string;
+  status: string;
+  summary: string;
+  labels: Array<string>;
   comments: Array<TrackForeverComment>;
-  submitterName: String;
-  assignees: Array<String>;
+  submitterName: string;
+  assignees: Array<string>;
   timeCreated: Number;
   timeUpdated: Number;
   timeClosed: Number;

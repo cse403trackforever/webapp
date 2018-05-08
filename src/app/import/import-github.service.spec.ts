@@ -63,7 +63,7 @@ describe('ImportGithubService', () => {
       });
   }));
 
-  function matchIssues(converted: TrackForeverIssue[], source: GitHubIssue[], projectId: String,
+  function matchIssues(converted: TrackForeverIssue[], source: GitHubIssue[], projectId: string,
                        comments: GitHubComment[]) {
     converted.forEach(issue => {
       const gh = source.find(it => it.number.toString() === issue.id);
@@ -83,9 +83,9 @@ describe('ImportGithubService', () => {
       }
       expect(issue.submitterName).toEqual(gh.user.login);
       expect(issue.assignees).toEqual(gh.assignees.map(owner => owner.login));
-      expect(issue.timeCreated).toEqual(gh.created_at ? Date.parse(gh.created_at.toString()) : -1);
-      expect(issue.timeUpdated).toEqual(gh.updated_at ? Date.parse(gh.updated_at.toString()) : -1);
-      expect(issue.timeClosed).toEqual(gh.closed_at ? Date.parse(gh.closed_at.toString()) : -1);
+      expect(issue.timeCreated).toEqual(gh.created_at ? Date.parse(gh.created_at) : -1);
+      expect(issue.timeUpdated).toEqual(gh.updated_at ? Date.parse(gh.updated_at) : -1);
+      expect(issue.timeClosed).toEqual(gh.closed_at ? Date.parse(gh.closed_at) : -1);
     });
   }
 

@@ -58,12 +58,12 @@ describe('ImportGoogleCodeService', () => {
         // TODO add hash test
         // expect(project.hash).toEqual('something');
 
-        expect(project.id).toEqual(mockProject.name.toString());
+        expect(project.id).toEqual(mockProject.name);
         expect(project.ownerName).toEqual('');
         expect(project.name).toEqual(mockProject.name);
         expect(project.description).toEqual(mockProject.description);
         expect(project.source).toEqual('Google Code');
-        matchIssues(project.issues, mockIssues, mockProject.name.toString());
+        matchIssues(project.issues, mockIssues, mockProject.name);
       });
   }));
 

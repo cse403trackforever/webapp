@@ -1,4 +1,4 @@
 export interface TrackForeverComment {
-  commenterName: String;
-  content: String;
+  commenterName: string;
+  content: string;
 }

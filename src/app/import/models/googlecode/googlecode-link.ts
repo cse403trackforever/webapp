@@ -1,4 +1,4 @@
 export interface GoogleCodeLink {
-    name: String;
-    url: String;
+    name: string;
+    url: string;
 }

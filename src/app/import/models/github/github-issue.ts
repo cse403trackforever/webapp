@@ -2,15 +2,15 @@ import { GitHubOwner } from './github-owner';
 import { GitHubLabel } from './github-label';
 
 export interface GitHubIssue {
-    comments_url: String;
+    comments_url: string;
     number: Number;
-    state: String;
-    title: String;
-    body: String;
+    state: string;
+    title: string;
+    body: string;
     user: GitHubOwner;
-    created_at?: String;
-    updated_at?: String;
-    closed_at?: String;
+    created_at?: string;
+    updated_at?: string;
+    closed_at?: string;
     assignees: Array<GitHubOwner>;
     labels: Array<GitHubLabel>;
 }

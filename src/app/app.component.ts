@@ -11,7 +11,7 @@ import { User } from './shared/models/user';
 
 export class AppComponent implements OnInit {
   user: User;
-  url: String;
+  url: string;
   title = 'Track Forever';
   collapsed = true;
 
