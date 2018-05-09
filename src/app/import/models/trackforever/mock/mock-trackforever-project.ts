@@ -2,6 +2,7 @@ import { TrackForeverProject } from '../trackforever-project';
 
 export const mockTrackforeverProject: TrackForeverProject = {
   hash: 'test',
+  prevHash: '',
   id: 'my-project',
   ownerName: 'John Smith',
   name: 'Boring Project',
@@ -14,6 +15,7 @@ export const mockTrackforeverProject: TrackForeverProject = {
   issues: [
     {
       hash: 'test',
+      prevHash: '',
       id: '5',
       projectId: 'my-project',
       status: 'closed',
@@ -33,6 +35,7 @@ export const mockTrackforeverProject: TrackForeverProject = {
     },
     {
       hash: 'test',
+      prevHash: '',
       id: '123',
       projectId: 'my-project',
       status: 'open',

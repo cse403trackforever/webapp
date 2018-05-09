@@ -55,9 +55,9 @@ describe('ImportGoogleCodeService', () => {
       .subscribe(project => {
         expect(fetchServiceSpy.fetchIssue.calls.count()).toEqual(mockIssuePage.issues.length);
 
-        // TODO add hash test
-        // expect(project.hash).toEqual('something');
-
+        expect(project.hash).toEqual('3443d34492d44df1d017a4ef10b350a2e367bb6b0fe59de032031eb07c1aef8b7' +
+        '5c58781dd2659a658d4aff36090c0f71fe86d53c91c40bf5381f10f5deea3bd');
+        expect(project.prevHash).toEqual('');
         expect(project.id).toEqual(mockProject.name);
         expect(project.ownerName).toEqual('');
         expect(project.name).toEqual(mockProject.name);
@@ -72,8 +72,9 @@ describe('ImportGoogleCodeService', () => {
       const gc: GoogleCodeIssue = gcIssues.find(i => i.id.toString() === issue.id);
       expect(gc).toBeTruthy();
 
-      // TODO add hash test
-      // expect(issue.hash).toEqual('something');
+      expect(issue.hash).toEqual('4ec5f9a84e8044dbb59623b2d1738b6626458e5b639a878f8af64db6c7c21e35f9cd0810658faa' +
+      '030177df30f658cf2bf5469d4e9066dc997805bb1c440eb652');
+      expect(issue.prevHash).toEqual('');
       expect(issue.id).toEqual(gc.id.toString());
       expect(issue.projectId).toEqual(projectId, 'project id should match');
       expect(issue.status).toEqual(gc.status);

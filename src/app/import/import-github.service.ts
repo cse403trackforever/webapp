@@ -14,6 +14,7 @@ import { TrackForeverProject } from './models/trackforever/trackforever-project'
 import { TrackForeverIssue } from './models/trackforever/trackforever-issue';
 import { TrackForeverComment } from './models/trackforever/trackforever-comment';
 import { ConvertService } from './convert.service';
+import { SyncService } from '../sync/sync.service';
 
 export interface ImportGithubArgs {
   ownerName: string;
@@ -35,8 +36,9 @@ export class ImportGithubService implements ConvertService {
       });
     }
 
-    return {
+    const newIssue = {
       hash: '',
+      prevHash: '',
       id: issue.number.toString(),
       projectId: projectId.toString(),
       status: issue.state,
@@ -49,6 +51,8 @@ export class ImportGithubService implements ConvertService {
       timeUpdated: (issue.updated_at) ? Date.parse(issue.updated_at) : -1,
       timeClosed: (issue.closed_at) ? Date.parse(issue.closed_at) : -1
     };
+    newIssue.hash = SyncService.getHash(newIssue, false);
+    return newIssue;
   }
 
   private static convertCommentToTrackForever(comment: GitHubComment): TrackForeverComment {
@@ -59,8 +63,9 @@ export class ImportGithubService implements ConvertService {
   }
 
   private static convertProjectToTrackForever(project: GitHubProject, projectName: string): TrackForeverProject {
-    return {
-      hash: JSON.stringify(project),
+    const newProject = {
+      hash: '',
+      prevHash: '',
       id: project.id.toString(),
       ownerName: project.owner.login,
       name: projectName,
@@ -68,6 +73,8 @@ export class ImportGithubService implements ConvertService {
       source: 'GitHub',
       issues: []
     };
+    newProject.hash = SyncService.getHash(newProject, false);
+    return newProject;
   }
 
   // Import GitHub Project into TrackForever format

@@ -17,6 +17,7 @@ export class ImportTrackForeverService implements ConvertService {
 
   static instanceOfIssue(object: any): boolean {
     const hasFields = 'hash' in object
+      && 'prevHash' in object
       && 'id' in object
       && 'projectId' in object
       && 'status' in object
@@ -38,6 +39,7 @@ export class ImportTrackForeverService implements ConvertService {
 
   static instanceOfProject(object: any): boolean {
     const hasFields = 'hash' in object
+      && 'prevHash' in object
       && 'id' in object
       && 'ownerName' in object
       && 'name' in object

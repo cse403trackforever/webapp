@@ -10,6 +10,7 @@ import { FetchRedmineService } from './api/fetch-redmine.service';
 import { RedmineIssue } from './models/redmine/redmine-issue';
 import { RedmineProject } from './models/redmine/redmine-project';
 import { RedmineIssueArray } from './models/redmine/redmine-issueArray';
+import { SyncService } from '../sync/sync.service';
 
 export interface ImportRedmineArgs {
   projectName: string;
@@ -23,8 +24,9 @@ export class ImportRedmineService {
   }
 
   private static convertIssueToTrackForever(issue: RedmineIssue): TrackForeverIssue {
-    return {
-      hash: JSON.stringify(issue),
+    const newIssue = {
+      hash: '',
+      prevHash: '',
       id: issue.id.toString(),
       projectId: issue.project_id.name,
       status: issue.status.name,
@@ -37,11 +39,14 @@ export class ImportRedmineService {
       timeUpdated: Date.parse(issue.updated_on),
       timeClosed: (issue.closed_on) ? Date.parse(issue.closed_on) : -1
     };
+    newIssue.hash = SyncService.getHash(newIssue, false);
+    return newIssue;
   }
 
   private static convertProjectToTrackForever(project: RedmineProject): TrackForeverProject {
-    return {
+    const newProject = {
       hash: '',
+      prevHash: '',
       id: project.id.toString(),
       ownerName: '',
       name: project.name,
@@ -49,6 +54,8 @@ export class ImportRedmineService {
       source: 'Redmine',
       issues: []
     };
+    newProject.hash = SyncService.getHash(newProject, false);
+    return newProject;
   }
 
   importProject(args: ImportRedmineArgs): Observable<TrackForeverProject> {

@@ -2,6 +2,7 @@ import { TrackForeverComment } from './trackforever-comment';
 
 export interface TrackForeverIssue {
   hash: string;
+  prevHash: string;
   id: string;
   projectId: string;
   status: string;

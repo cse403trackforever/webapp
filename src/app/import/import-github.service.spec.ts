@@ -53,7 +53,10 @@ describe('ImportGithubService', () => {
 
     service.importProject({ownerName, projectName})
       .subscribe((p: TrackForeverProject) => {
-        expect(p.hash).toEqual(JSON.stringify(testProject));
+        console.log(JSON.stringify(p));
+        expect(p.hash).toEqual('e87e5de20b6ec391c76028f946cbc97ae0fa1d7f8f64ac433223711386d2c3a3c787d46c64' +
+        '314d51fffa408380309caf5bf0abe6180c8a7cd9c576de0c861c0b');
+        expect(p.prevHash).toEqual('');
         expect(p.id).toEqual(testProject.id.toString());
         expect(p.ownerName).toEqual(testProject.owner.login);
         expect(p.name).toEqual(projectName);
@@ -63,12 +66,19 @@ describe('ImportGithubService', () => {
       });
   }));
 
+  const hashes = [
+    '80b4bb0cf8122833547db68fbf7c490914e4304272a10511e3d2406001501887a2a3f876224245ac9100ac3f0f4db08f18a8d35d9d80b9aa8827687ceef65de8',
+    '52f1d2ea9a6234d5ef568c2ec13fe525e9f176013895364e29c49e1c6ecf56c1b78db778a5b2981167e2468454489c0722afa8e9baf7f4ba76ab906bf38b574c',
+    '3fe0babcf46085f3518cc99bca03932a9762ec0cc2da3ee7acebe7653e63bd90055c7524a6b5a0726595f413fe45a0a9fb6d033a842617c11688cf11832f737f'
+  ];
+
   function matchIssues(converted: TrackForeverIssue[], source: GitHubIssue[], projectId: string,
                        comments: GitHubComment[]) {
-    converted.forEach(issue => {
+    converted.forEach((issue, i) => {
       const gh = source.find(it => it.number.toString() === issue.id);
       expect(gh).toBeTruthy('should match an issue');
-      expect(issue.hash).toEqual('');
+      expect(issue.hash).toEqual(hashes[i]);
+      expect(issue.prevHash).toEqual('');
       expect(issue.id).toEqual(gh.number.toString());
       expect(issue.projectId).toEqual(projectId);
       expect(issue.status).toEqual(gh.state);

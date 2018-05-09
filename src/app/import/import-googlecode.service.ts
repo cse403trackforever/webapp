@@ -14,6 +14,7 @@ import { GoogleCodeProject } from './models/googlecode/googlecode-project';
 import { GoogleCodeIssuePage } from './models/googlecode/googlecode-issuepage';
 import { GoogleCodeIssueSummary } from './models/googlecode/googlecode-issuesummary';
 import { ConvertService } from './convert.service';
+import { SyncService } from '../sync/sync.service';
 
 @Injectable()
 export class ImportGoogleCodeService implements ConvertService {
@@ -22,8 +23,9 @@ export class ImportGoogleCodeService implements ConvertService {
   }
 
   private static convertIssueToTrackForever(issue: GoogleCodeIssue, projectId: string): TrackForeverIssue {
-    return {
+    const newIssue = {
       hash: '',
+      prevHash: '',
       id: issue.id.toString(),
       projectId: projectId,
       status: issue.status,
@@ -36,6 +38,8 @@ export class ImportGoogleCodeService implements ConvertService {
       timeUpdated: -1,
       timeClosed: -1
     };
+    newIssue.hash = SyncService.getHash(newIssue, false);
+    return newIssue;
   }
 
   private static convertCommentToTrackForever(comment: GoogleCodeComment): TrackForeverComment {
@@ -46,8 +50,9 @@ export class ImportGoogleCodeService implements ConvertService {
   }
 
   private static convertProjectToTrackForever(project: GoogleCodeProject, projectName: string): TrackForeverProject {
-    return {
-      hash: JSON.stringify(project),
+    const newProject = {
+      hash: '',
+      prevHash: '',
       id: project.name,
       ownerName: '',
       name: project.name,
@@ -55,6 +60,8 @@ export class ImportGoogleCodeService implements ConvertService {
       source: 'Google Code',
       issues: []
     };
+    newProject.hash = SyncService.getHash(newProject, false);
+    return newProject;
   }
 
   // Import GitHub Project into TrackForever format

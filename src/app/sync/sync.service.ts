@@ -9,6 +9,22 @@ import { TrackForeverIssue } from '../import/models/trackforever/trackforever-is
 @Injectable()
 export class SyncService {
 
+  /**
+   * Calculates the hash for a given project or issue ignoring the previous hash and the associated issues
+   * @param object project or issue to get the hash for
+   * @param prev whether to generate the current hash or the new one
+   * false is for current, true is for next
+   */
+  static getHash(object: TrackForeverProject|TrackForeverIssue, prev: Boolean = true): string {
+    return CryptoJS.SHA3(JSON.stringify(object), (key: string, value) => {
+      if ((key === 'prevHash' && prev) || (key === 'hash' && !prev) || key === 'issues') {
+        return undefined;
+      } else {
+        return value;
+      }
+    }).toString();
+  }
+
   // TODO: receive hashes from server and then request new projects/issues
 
   // TODO: auto merge issues/projects that don't need intervention
