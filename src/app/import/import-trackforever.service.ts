@@ -6,6 +6,7 @@ import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/merge';
 import { TrackForeverProject } from './models/trackforever/trackforever-project';
 import { ConvertService } from './convert.service';
+import { TrackForeverIssue } from './models/trackforever/trackforever-issue';
 
 @Injectable()
 export class ImportTrackForeverService implements ConvertService {
@@ -52,13 +53,19 @@ export class ImportTrackForeverService implements ConvertService {
     }
 
     // check that all issues are correct (i.e. not the case that some issue is not an issue)
-    return !object.issues.some(issue => !this.instanceOfIssue(issue));
+    return !Array.from(object.issues).some(issue => !this.instanceOfIssue(issue[1]));
   }
 
   importProject(json: string): Observable<TrackForeverProject> {
-    let project;
+    let project: TrackForeverProject;
     try {
-      project = JSON.parse(json);
+      project = JSON.parse(json, (key, val) => {
+        if (key === 'issues') {
+          return new Map<string, TrackForeverIssue>(val);
+        } else {
+          return val;
+        }
+      });
     } catch (e) {
       throw new Error('Incorrect file format. The file must be a Track Forever project json file.');
     }

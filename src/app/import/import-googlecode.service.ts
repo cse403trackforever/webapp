@@ -58,7 +58,7 @@ export class ImportGoogleCodeService implements ConvertService {
       name: project.name,
       description: project.description,
       source: 'Google Code',
-      issues: []
+      issues: new Map()
     };
     newProject.hash = SyncService.getHash(newProject, false);
     return newProject;
@@ -89,9 +89,9 @@ export class ImportGoogleCodeService implements ConvertService {
       })
     ).map((data: [GoogleCodeProject, GoogleCodeIssue[][]]) => {
       const project = ImportGoogleCodeService.convertProjectToTrackForever(data[0], projectName);
-      const issues = data[1].reduce((a, b) => a.concat(b), [])
-        .map((issue: GoogleCodeIssue) => ImportGoogleCodeService.convertIssueToTrackForever(issue, data[0].name));
-      project.issues = issues;
+      data[1].reduce((a, b) => a.concat(b), [])
+        .map((issue: GoogleCodeIssue) => ImportGoogleCodeService.convertIssueToTrackForever(issue, data[0].name))
+        .forEach(issue => project.issues.set(issue.id, issue));
 
       return project;
     });

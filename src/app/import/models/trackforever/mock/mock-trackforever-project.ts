@@ -12,54 +12,60 @@ export const mockTrackforeverProject: TrackForeverProject = {
   'in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software ' +
   'like Aldus PageMaker including versions of Lorem Ipsum.',
   source: 'Google Code',
-  issues: [
-    {
-      hash: 'test',
-      prevHash: '',
-      id: '5',
-      projectId: 'my-project',
-      status: 'closed',
-      summary: 'Replace the project description with real content.',
-      labels: [],
-      comments: [
-        {
-          commenterName: 'David Dupre',
-          content: 'Why is this app so broken?'
-        }
-      ],
-      submitterName: 'David Dupre',
-      assignees: [],
-      timeCreated: 1523577466,
-      timeUpdated: 1523578696,
-      timeClosed: 1523578696
-    },
-    {
-      hash: 'test',
-      prevHash: '',
-      id: '123',
-      projectId: 'my-project',
-      status: 'open',
-      summary: 'Fix the thing',
-      labels: [
-        'bug'
-      ],
-      comments: [
-        {
-          commenterName: 'Christopher Addison',
-          content: 'This is not a bug.'
-        },
-        {
-          commenterName: 'denvercoder9',
-          content: 'Yes it is.'
-        },
-      ],
-      submitterName: 'denvercoder9',
-      assignees: [
-        'denvercoder9'
-      ],
-      timeCreated: 1523574466,
-      timeUpdated: 1523574466,
-      timeClosed: -1,
-    }
-  ]
+  issues: new Map([
+    [
+      '5',
+      {
+        hash: 'test',
+        prevHash: '',
+        id: '5',
+        projectId: 'my-project',
+        status: 'closed',
+        summary: 'Replace the project description with real content.',
+        labels: [],
+        comments: [
+          {
+            commenterName: 'David Dupre',
+            content: 'Why is this app so broken?'
+          }
+        ],
+        submitterName: 'David Dupre',
+        assignees: [],
+        timeCreated: 1523577466,
+        timeUpdated: 1523578696,
+        timeClosed: 1523578696
+      }
+    ],
+    [
+      '123',
+      {
+        hash: 'test',
+        prevHash: '',
+        id: '123',
+        projectId: 'my-project',
+        status: 'open',
+        summary: 'Fix the thing',
+        labels: [
+          'bug'
+        ],
+        comments: [
+          {
+            commenterName: 'Christopher Addison',
+            content: 'This is not a bug.'
+          },
+          {
+            commenterName: 'denvercoder9',
+            content: 'Yes it is.'
+          },
+        ],
+        submitterName: 'denvercoder9',
+        assignees: [
+          'denvercoder9'
+        ],
+        timeCreated: 1523574466,
+        timeUpdated: 1523574466,
+        timeClosed: -1,
+      }
+    ]
+  ])
 };

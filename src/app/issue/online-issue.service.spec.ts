@@ -25,7 +25,7 @@ describe('OnlineIssueService', () => {
 
   // see https://angular.io/guide/http#expecting-and-answering-requests
   it('should get an issue', () => {
-    const testIssue = mockTrackforeverProject.issues[0];
+    const testIssue = mockTrackforeverProject.issues.entries().next().value[1];
     const projectKey = 'my-project';
     const issueId = '123';
 

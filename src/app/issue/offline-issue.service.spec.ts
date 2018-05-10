@@ -35,7 +35,7 @@ describe('OfflineIssueService', () => {
     const projectKey = 'my-project';
     const issueId = '123';
     const p: TrackForeverProject = mockTrackforeverProject;
-    const i: TrackForeverIssue = p.issues.find(issue => issue.id === issueId);
+    const i: TrackForeverIssue = p.issues.get(issueId);
 
     dataServiceSpy.getProject.and.returnValue(new Promise((resolve) => resolve(p)));
 

@@ -16,13 +16,13 @@ export class SyncService {
    * false is for current, true is for next
    */
   static getHash(object: TrackForeverProject|TrackForeverIssue, prev: Boolean = true): string {
-    return CryptoJS.SHA3(JSON.stringify(object), (key: string, value) => {
+    return CryptoJS.SHA3(JSON.stringify(object, (key: string, value) => {
       if ((key === 'prevHash' && prev) || (key === 'hash' && !prev) || key === 'issues') {
         return undefined;
       } else {
         return value;
       }
-    }).toString();
+    })).toString();
   }
 
   // TODO: receive hashes from server and then request new projects/issues

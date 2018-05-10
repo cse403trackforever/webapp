@@ -17,7 +17,7 @@ export class OfflineIssueService implements IssueService {
   getIssue(projectKey: string, issueId: string): Observable<TrackForeverIssue> {
     return Observable.fromPromise(this.dataService.getProject(projectKey)
       .then((project: TrackForeverProject) => {
-        return project.issues.find((issue: TrackForeverIssue) => issue.id === issueId);
+        return project.issues.get(issueId);
       })
     );
   }

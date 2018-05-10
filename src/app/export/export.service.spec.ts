@@ -26,7 +26,13 @@ describe('ExportService', () => {
   it('should export', () => {
     const p: TrackForeverProject = mockTrackforeverProject;
     const s = service.exportProject(p);
-    expect(s).toEqual(JSON.stringify(p));
+    expect(s).toEqual(JSON.stringify(p, (key, val) => {
+      if (key === 'issues') {
+        return Array.from(val);
+      } else {
+        return val;
+      }
+    }));
   });
 
   it('should download', () => {

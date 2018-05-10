@@ -1,7 +1,7 @@
 import { TrackForeverProject } from '../../trackforever/trackforever-project';
 
 export const mockRedmineTrackForeverProject: TrackForeverProject = {
-  hash: 'c25e05291ce5fb7b4323e03c1f3b896888e6ecf20ab6be15bb17f8a2bbc0c575d392aed1c285dea13452ace71011bbd41843049e1689674af65f225a6b064251',
+  hash: '971c7c0974cdd0241c0f7c7ab48db543f0cea53acc26a6b68548f306b1deaf6c93b922d76208c4cd5e5789f110bd709aabdcefec31cf0eb6cf17b8b8ba7995fa',
   prevHash: '',
   id: '1',
   ownerName: '',
@@ -15,37 +15,44 @@ export const mockRedmineTrackForeverProject: TrackForeverProject = {
    'containing Lorem Ipsum passages, and more recently with desktop ' +
    'publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
   source: 'Redmine',
-  issues: [
+  issues: new Map([
+    [
+      '5',
       {
-      hash: '1363f9e0ce04bb77dcc46c04bca1d8dd2c6f5c8fd6dbcb2b02d977152' +
-      'bfc7cf08f1d38e323883399c39c8894bf395056d453eb94f35096a41ce18ddf3e9a7457',
-      prevHash: '',
-      id: '5',
-      projectId: 'my-project',
-      status: 'closed',
-      summary: 'Replace the project description with real content.',
-      labels: [],
-      comments: [],
-      submitterName: 'David Dupre',
-      assignees: [],
-      timeCreated: 1525542698000,
-      timeUpdated: 1525542749000,
-      timeClosed: 1525542749000
-    }, {
-      hash: '977636e00fe4ad5f119ce7072856a9ab182b4d4962526c86fc' +
-      '493df6e8a5e75e3a37483582a05708b6acecea0c47980a743381fd830030bb04584212f73f24ee',
-      prevHash: '',
-      id: '123',
-      projectId: 'my-project',
-      status: 'open',
-      summary: 'Fix the thing',
-      labels: [],
-      comments: [],
-      submitterName: 'denvercoder9',
-      assignees: ['denvercoder9'],
-      timeCreated: 1525542997000,
-      timeUpdated: 1525542997000,
-      timeClosed: -1
-    }
-  ]
+        hash: 'a789de4cde90f514c9374b7603622022ac877b7ee9a2d1bbeb68e0a563bd' +
+        '7179ba718b5e55e34be0b5dcc3236202eb89b7f9124d898811d7b752a5db2ed5c932',
+        prevHash: '',
+        id: '5',
+        projectId: 'my-project',
+        status: 'closed',
+        summary: 'Replace the project description with real content.',
+        labels: [],
+        comments: [],
+        submitterName: 'David Dupre',
+        assignees: [],
+        timeCreated: 1525542698000,
+        timeUpdated: 1525542749000,
+        timeClosed: 1525542749000
+      }
+    ],
+    [
+      '123',
+      {
+        hash: '5077771b88ffd0b7c50f1d9e0e1968ff30118e71888f238f40c812aeacf0c22' +
+        'b1a1aa0631878659c90298e798d04f184bbcd619682532441ff2e05543d002a74',
+        prevHash: '',
+        id: '123',
+        projectId: 'my-project',
+        status: 'open',
+        summary: 'Fix the thing',
+        labels: [],
+        comments: [],
+        submitterName: 'denvercoder9',
+        assignees: ['denvercoder9'],
+        timeCreated: 1525542997000,
+        timeUpdated: 1525542997000,
+        timeClosed: -1
+      }
+    ]
+  ])
 };

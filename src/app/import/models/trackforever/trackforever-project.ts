@@ -8,5 +8,5 @@ export interface TrackForeverProject {
   name: string;
   description: string;
   source: string;
-  issues: Array<TrackForeverIssue>;
+  issues: Map<string, TrackForeverIssue>;
 }

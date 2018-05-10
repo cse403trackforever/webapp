@@ -52,7 +52,7 @@ export class ImportRedmineService {
       name: project.name,
       description: project.description,
       source: 'Redmine',
-      issues: []
+      issues: new Map()
     };
     newProject.hash = SyncService.getHash(newProject, false);
     return newProject;
@@ -83,9 +83,9 @@ export class ImportRedmineService {
       })
     ).map((data: [RedmineProject, RedmineIssue[][]]) => {
       const project = ImportRedmineService.convertProjectToTrackForever(data[0]);
-      const issues = data[1].reduce((a, b) => a.concat(b), [])
-        .map((issue: RedmineIssue) => ImportRedmineService.convertIssueToTrackForever(issue));
-      project.issues = issues;
+      data[1].reduce((a, b) => a.concat(b), [])
+        .map((issue: RedmineIssue) => ImportRedmineService.convertIssueToTrackForever(issue))
+        .forEach(issue => project.issues.set(issue.id, issue));
 
       return project;
     });

@@ -8,7 +8,13 @@ export class ExportService {
   constructor() { }
 
   exportProject(project: TrackForeverProject): string {
-    return JSON.stringify(project);
+    return JSON.stringify(project, (key, val) => {
+      if (key === 'issues') {
+        return Array.from(val);
+      } else {
+        return val;
+      }
+    });
   }
 
   download(project: TrackForeverProject): void {

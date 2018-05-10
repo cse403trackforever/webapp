@@ -27,14 +27,15 @@ export class ImportGithubService implements ConvertService {
   constructor(private fetchService: FetchGithubService) {
   }
 
-  private static convertIssueToTrackForever(issue: GitHubIssue, projectId: Number): TrackForeverIssue {
-    const comments: TrackForeverComment[] = [];
+  private static convertIssueToTrackForever(issue: GitHubIssue, projectId: Number, ghComments: Array<GitHubComment>): TrackForeverIssue {
+    let comments: TrackForeverComment[] = [];
     if (issue.body) {
       comments.push({
         content: issue.body,
         commenterName: issue.user.login
       });
     }
+    comments = comments.concat(ghComments.map(ImportGithubService.convertCommentToTrackForever));
 
     const newIssue = {
       hash: '',
@@ -44,7 +45,7 @@ export class ImportGithubService implements ConvertService {
       status: issue.state,
       summary: issue.title,
       labels: issue.labels.map((label: GitHubLabel) => label.name),
-      comments,
+      comments: comments,
       submitterName: issue.user.login,
       assignees: issue.assignees.map((owner: GitHubOwner) => owner.login),
       timeCreated: (issue.created_at) ? Date.parse(issue.created_at) : -1,
@@ -71,7 +72,7 @@ export class ImportGithubService implements ConvertService {
       name: projectName,
       description: project.description || '',
       source: 'GitHub',
-      issues: []
+      issues: new Map()
     };
     newProject.hash = SyncService.getHash(newProject, false);
     return newProject;
@@ -104,16 +105,12 @@ export class ImportGithubService implements ConvertService {
       const project: TrackForeverProject = ImportGithubService.convertProjectToTrackForever(data[0], projectName);
 
       // convert issues
-      project.issues = githubIssuesAndComments.map((githubIssueAndComment: [GitHubIssue, GitHubComment[]]): TrackForeverIssue => {
+      githubIssuesAndComments.map((githubIssueAndComment: [GitHubIssue, GitHubComment[]]): TrackForeverIssue => {
         const githubIssue: GitHubIssue = githubIssueAndComment[0];
         const githubComments: GitHubComment[] = githubIssueAndComment[1];
 
-        // convert comments
-        const issue = ImportGithubService.convertIssueToTrackForever(githubIssue, githubProject.id);
-        issue.comments.concat(githubComments.map(ImportGithubService.convertCommentToTrackForever));
-
-        return issue;
-      });
+        return ImportGithubService.convertIssueToTrackForever(githubIssue, githubProject.id, githubComments);
+      }).forEach(issue => project.issues.set(issue.id, issue));
 
       return project;
     });

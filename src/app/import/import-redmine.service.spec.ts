@@ -52,10 +52,6 @@ describe('ImportRedmineService', () => {
       projectName: '',
       projectID: 5
     }).subscribe(r => {
-      // TODO remove these two lines when the hash branch is merged in
-      r.hash = mockRedmineTrackForeverProject.hash;
-      r.issues.forEach(i => i.hash = mockRedmineTrackForeverProject.issues.find(ir => ir.id === i.id).hash);
-
       expect(r).toEqual(mockRedmineTrackForeverProject);
     });
   }));

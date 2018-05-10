@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
 import { ExportService } from '../export/export.service';
+import { TrackForeverIssue } from '../import/models/trackforever/trackforever-issue';
 
 @Component({
   selector: 'app-project-page',
@@ -12,6 +13,7 @@ import { ExportService } from '../export/export.service';
 })
 export class ProjectPageComponent implements OnInit {
   project: TrackForeverProject;
+  issues: Array<TrackForeverIssue>;
   faSortUp = faSortUp;
   faSortDown = faSortDown;
   faSort = faSort;
@@ -29,7 +31,12 @@ export class ProjectPageComponent implements OnInit {
   getProject(): void {
     const projectId = this.route.snapshot.paramMap.get('id');
     this.issueService.getProject(projectId)
-      .subscribe(project => this.project = project);
+      .subscribe(project => {
+        this.project = project;
+        this.issues = Array.from(project.issues, (v, k) => {
+          return v[1];
+        });
+      });
   }
 
   export(): void {
