@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { GitHubProject } from '../models/github/github-project';
 import { GitHubIssue } from '../models/github/github-issue';
 import { GitHubComment } from '../models/github/github-comment';
@@ -15,8 +15,11 @@ export class FetchGithubService {
     return this.http.get<GitHubProject>(`${this.baseUrl}/${ownerName}/${projectName}`);
   }
 
-  fetchIssues(ownerName: string, projectName: string): Observable<Array<GitHubIssue>> {
-    return this.http.get<Array<GitHubIssue>>(`${this.baseUrl}/${ownerName}/${projectName}/issues`);
+  fetchIssues(ownerName: string, projectName: string, page: number): Observable<HttpResponse<Array<GitHubIssue>>> {
+    return this.http.get<Array<GitHubIssue>>(
+      `${this.baseUrl}/${ownerName}/${projectName}/issues?per_page=100&page=${page}`,
+      {observe: 'response'}
+   );
   }
 
   fetchComments(commentsUrl: string): Observable<Array<GitHubComment>> {

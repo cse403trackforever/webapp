@@ -15,6 +15,7 @@ import { TrackForeverIssue } from './models/trackforever/trackforever-issue';
 import { TrackForeverComment } from './models/trackforever/trackforever-comment';
 import { ConvertService } from './convert.service';
 import { SyncService } from '../sync/sync.service';
+import { HttpResponse } from '@angular/common/http';
 
 export interface ImportGithubArgs {
   ownerName: string;
@@ -82,21 +83,30 @@ export class ImportGithubService implements ConvertService {
   importProject(args: ImportGithubArgs): Observable<TrackForeverProject> {
     const ownerName = args.ownerName;
     const projectName = args.projectName;
-
+    const regex = /\<\S*page=(\d+)\>; rel="last"/gm;
     // fetch project and issues in parallel
     return Observable.forkJoin(
       this.fetchService.fetchProject(ownerName, projectName),
-      this.fetchService.fetchIssues(ownerName, projectName)
-        .flatMap((issues: GitHubIssue[]): Observable<[GitHubIssue, GitHubComment[]][]> =>
+      this.fetchService.fetchIssues(ownerName, projectName, 1)
+        .flatMap((response: HttpResponse<GitHubIssue[]>): Observable<[GitHubIssue, GitHubComment[]][]> => {
+          const link = response.headers.get('link');
+          const matches = regex.exec(link);
+          const lastIndex = Number.parseInt(matches[1]);
+          let pages = Observable.of(response);
+
+          let i = 1;
+          while (++i <= lastIndex) {
+            pages = Observable.merge(pages, this.fetchService.fetchIssues(ownerName, projectName, i));
+          }
+
           // fetch the comments in parallel
-          Observable.forkJoin(
-            issues.map((issue: GitHubIssue): Observable<[GitHubIssue, GitHubComment[]]> =>
-              // fetch the comments and map them to an (issue, comments) pair
-              this.fetchService.fetchComments(issue.comments_url)
-                .map((comments: GitHubComment[]): [GitHubIssue, GitHubComment[]] => [issue, comments])
+          return pages.flatMap(resp =>
+            Observable.forkJoin(
+                resp.body.map(issue => this.fetchService.fetchComments(issue.comments_url)
+              .map((comments: GitHubComment[]): [GitHubIssue, GitHubComment[]] => [issue, comments]))
             )
-          )
-        )
+          );
+        })
     ).map((data: [GitHubProject, [GitHubIssue, GitHubComment[]][]]): TrackForeverProject => {
       const githubProject: GitHubProject = data[0];
       const githubIssuesAndComments: [GitHubIssue, GitHubComment[]][] = data[1];

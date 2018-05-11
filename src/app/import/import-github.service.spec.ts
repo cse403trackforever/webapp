@@ -14,6 +14,7 @@ import { TrackForeverProject } from './models/trackforever/trackforever-project'
 import { TrackForeverIssue } from './models/trackforever/trackforever-issue';
 import { TrackForeverComment } from './models/trackforever/trackforever-comment';
 import { SyncService } from '../sync/sync.service';
+import { HttpResponse, HttpHeaders } from '@angular/common/http';
 
 describe('ImportGithubService', () => {
   let service: ImportGithubService;
@@ -45,11 +46,14 @@ describe('ImportGithubService', () => {
     const testIssues = <Array<GitHubIssue>> <any> mockGithubIssues;
     const testComments = <Array<GitHubComment>> <any> mockGithubComments;
 
+    const headers = new HttpHeaders().set('link', '<https://api.github.com/user/repos?per_page=100&page=1>; rel="last"');
+    const response = new HttpResponse<Array<GitHubIssue>>({body: testIssues, headers: headers});
+
     const ownerName = testProject.owner.login;
     const projectName = testProject.name;
 
     fetchServiceSpy.fetchProject.and.returnValue(Observable.of(testProject));
-    fetchServiceSpy.fetchIssues.and.returnValue(Observable.of(testIssues));
+    fetchServiceSpy.fetchIssues.and.returnValue(Observable.of(response));
     fetchServiceSpy.fetchComments.and.returnValue(Observable.of(testComments));
 
     service.importProject({ownerName, projectName})

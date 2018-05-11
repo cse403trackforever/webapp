@@ -50,10 +50,10 @@ describe('FetchGithubService', () => {
     const projectName = 'webapp';
     const testIssues = <Array<GitHubIssue>> <any> mockGithubIssues;
 
-    service.fetchIssues(ownerName, projectName)
-      .subscribe(issues => expect(issues).toEqual(testIssues));
+    service.fetchIssues(ownerName, projectName, 1)
+      .subscribe(issues => expect(issues.body).toEqual(testIssues));
 
-    const req = httpTestingController.expectOne(r => r.url.endsWith(`/${ownerName}/${projectName}/issues`));
+    const req = httpTestingController.expectOne(r => r.url.endsWith(`/${ownerName}/${projectName}/issues?per_page=100&page=1`));
     expect(req.request.method).toEqual('GET');
 
     req.flush(testIssues);

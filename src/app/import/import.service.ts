@@ -15,6 +15,7 @@ export class ImportService {
     try {
       result = this.convertService.importProject(args);
     } catch (e) {
+      console.error(e);
       // Return a reject with the error message
       return Promise.reject(e.message);
     }
