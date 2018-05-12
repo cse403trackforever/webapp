@@ -17,6 +17,8 @@ export class ProjectPageComponent implements OnInit {
   faSortUp = faSortUp;
   faSortDown = faSortDown;
   faSort = faSort;
+  page = 1;
+  pageSize = 10; // number of items per page
 
   constructor(
     private issueService: IssueService,
@@ -26,6 +28,11 @@ export class ProjectPageComponent implements OnInit {
 
   ngOnInit() {
     this.getProject();
+  }
+
+  getIssuesForCurrentPage(): TrackForeverIssue[] {
+    const start = (this.page - 1) * this.pageSize;
+    return this.issues.slice(start, start + this.pageSize);
   }
 
   getProject(): void {

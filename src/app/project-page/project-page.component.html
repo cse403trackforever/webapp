@@ -32,7 +32,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr routerLink="/project/{{project | dbkey}}/issue/{{issue.id}}" *ngFor="let issue of issues">
+          <tr routerLink="/project/{{project | dbkey}}/issue/{{issue.id}}"
+              *ngFor="let issue of getIssuesForCurrentPage()">
             <th scope="row">{{issue.id}}</th>
             <td>{{issue.summary}}</td>
           </tr>
@@ -40,6 +41,15 @@
       </table>
     </div>
   </div>
+
+  <ngb-pagination *ngIf="project.issues.size > pageSize"
+                  [pageSize]="pageSize"
+                  [collectionSize]="project.issues.size"
+                  [(page)]="page"
+                  [boundaryLinks]="true"
+                  [maxSize]="10"
+                  [rotate]="true"
+                  [ellipses]="false"></ngb-pagination>
 
 <!--
   Issue summary model:

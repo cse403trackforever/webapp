@@ -9,6 +9,8 @@ import { TrackForeverProject } from '../import/models/trackforever/trackforever-
 })
 export class MyProjectsPageComponent implements OnInit {
   projects: TrackForeverProject[];
+  page = 1;
+  pageSize = 10; // number of items per page
 
   constructor(private issueService: IssueService) { }
 
@@ -19,6 +21,11 @@ export class MyProjectsPageComponent implements OnInit {
   getProjects(): void {
     this.issueService.getProjects()
       .subscribe(projects => this.projects = projects);
+  }
+
+  getProjectsForCurrentPage(): TrackForeverProject[] {
+    const start = (this.page - 1) * this.pageSize;
+    return this.projects.slice(start, start + this.pageSize);
   }
 
 }

@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
 import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock-trackforever-project';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 describe('MyProjectsPageComponent', () => {
   let component: MyProjectsPageComponent;
@@ -25,7 +26,10 @@ describe('MyProjectsPageComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [
+        RouterTestingModule,
+        NgbModule.forRoot(),
+      ],
       declarations: [MyProjectsPageComponent, DbkeyPipe],
       providers: [
         {

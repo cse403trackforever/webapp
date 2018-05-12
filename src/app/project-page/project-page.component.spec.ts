@@ -10,6 +10,7 @@ import { TrackForeverProject } from '../import/models/trackforever/trackforever-
 import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock-trackforever-project';
 import { ExportService } from '../export/export.service';
 import { MarkdownPipe } from '../shared/pipes/markdown.pipe';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 describe('ProjectPageComponent', () => {
   let component: ProjectPageComponent;
@@ -30,7 +31,11 @@ describe('ProjectPageComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [ RouterTestingModule, FontAwesomeModule ],
+      imports: [
+        RouterTestingModule,
+        FontAwesomeModule,
+        NgbModule.forRoot(),
+      ],
       providers: [
         {
           provide: IssueService,
