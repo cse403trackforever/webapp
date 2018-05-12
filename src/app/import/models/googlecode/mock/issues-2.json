@@ -1,0 +1,89 @@
+[
+  {
+    "id": 117,
+    "status": "Fixed",
+    "summary": "AppLoadBalancer needs to validate cookie",
+    "labels": [
+      "Type-Defect",
+      "Priority-Critical",
+      "Security",
+      "Component-Logic"
+    ],
+    "stars": 1,
+    "commentCount": 3,
+    "comments": [
+      {
+        "id": 0,
+        "commenterId": 7534346584898749507,
+        "content": "If a user logs in to AppScale, then runs a new AppScale instance, the\r\nAppLoadBalancer does not correctly invalidate the old cookies.\r\n\r\nDoes not impact AppScale 1.2 or before since this only affects the new\r\nimplementation of the AppLoadBalancer.",
+        "timestamp": 1258736012,
+        "attachments": []
+      },
+      {
+        "id": 1,
+        "commenterId": 7534346584898749507,
+        "content": "Done, will be in next release. Currently working on storing / retrieving session from\r\ndatabase in order to prevent scenarios where users can log in on one box and again as\r\na different user on another box in the same AppScale deployment.",
+        "timestamp": 1258933053,
+        "attachments": []
+      },
+      {
+        "id": 2,
+        "commenterId": 7534346584898749507,
+        "content": "Done, will be in next release.",
+        "timestamp": 1259605631,
+        "attachments": []
+      }
+    ]
+  },
+  {
+    "id": 116,
+    "status": "Fixed",
+    "summary": "remove-app doesn\u0027t work on single node deployment",
+    "labels": [
+      "Type-Defect",
+      "Priority-Medium",
+      "Performance",
+      "Component-Logic"
+    ],
+    "stars": 1,
+    "commentCount": 1,
+    "comments": [
+      {
+        "id": 0,
+        "commenterId": 7534346584898749507,
+        "content": "Logic internal to the AppController causes it to not correctly process a\r\nremove-app command from the tools. Need to change and test against both\r\nsingle and multi-node deployments.\r\n\r\nFixed, will be in next release.",
+        "timestamp": 1258671098,
+        "attachments": []
+      }
+    ]
+  },
+  {
+    "id": 115,
+    "status": "Fixed",
+    "summary": "Change helper functions to output more detailed data on known failures",
+    "labels": [
+      "Type-Enhancement",
+      "Priority-Medium",
+      "Component-UI",
+      "Usability"
+    ],
+    "stars": 1,
+    "commentCount": 2,
+    "comments": [
+      {
+        "id": 0,
+        "commenterId": 7534346584898749507,
+        "content": "Need to take output like this:\r\n\r\n[unexpected] Commit new user returned: [false]\r\nUploading guestbook...\r\n[unexpected] Commit new app says: [Error: User not found]\r\n[unexpected] Commit new tar says: [Error: app does not exist]\r\n\r\nAnd clean it up, make it more human understandable.",
+        "timestamp": 1258584008,
+        "attachments": []
+      },
+      {
+        "id": 1,
+        "commenterId": 7534346584898749507,
+        "content": "Done, will be in next release.",
+        "timestamp": 1258585817,
+        "attachments": []
+      }
+    ]
+  }
+]

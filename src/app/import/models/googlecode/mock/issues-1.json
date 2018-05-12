@@ -1,0 +1,83 @@
+[
+  {
+    "id": 217,
+    "status": "Fixed",
+    "summary": "AppScale Does Not Support Chunk Encoded HTTP Requests",
+    "labels": [
+      "Type-Review",
+      "Priority-Medium"
+    ],
+    "stars": 0,
+    "commentCount": 2,
+    "comments": [
+      {
+        "id": 0,
+        "commenterId": 4517378632160862,
+        "content": "Deploy a simple webapp that accepts HTTP POST requests and send a chunk encoded message:\r\n\r\nPOST http://localhost:8888/order HTTP/1.1\r\nContent-Type: application/json\r\nAccept: */*\r\nTransfer-Encoding: chunked\r\nHost: ec2-107-22-45-17.compute-1.amazonaws.com\r\nConnection: Keep-Alive\r\nUser-Agent: Synapse-HttpComponents-NIO\r\n\r\n37\r\n{\u0026quot;drink\u0026quot;:\u0026quot;Caramel Frapaccino\u0026quot;,\u0026quot;additions\u0026quot;:\u0026quot;Whip Cream\u0026quot;}\r\n0\r\n\r\nAppScale sends back a 411 response:\r\n\r\nHTTP/1.1 411 Length Required\r\nServer: nginx/0.7.65\r\nDate: Wed, 02 Jan 2013 20:48:19 GMT\r\nContent-Type: text/html\r\nContent-Length: 181\r\nConnection: close\r\n\r\n\u0026lt;html\u0026gt;\r\n\u0026lt;head\u0026gt;\u0026lt;title\u0026gt;411 Length Required\u0026lt;/title\u0026gt;\u0026lt;/head\u0026gt;\r\n\u0026lt;body bgcolor\u003d\u0026quot;white\u0026quot;\u0026gt;\r\n\u0026lt;center\u0026gt;\u0026lt;h1\u0026gt;411 Length Required\u0026lt;/h1\u0026gt;\u0026lt;/center\u0026gt;\r\n\u0026lt;hr\u0026gt;\u0026lt;center\u0026gt;nginx/0.7.65\u0026lt;/center\u0026gt;\r\n\u0026lt;/body\u0026gt;\r\n\u0026lt;/html\u0026gt;\r\n\r\nChunk encoding is the default in HTTP/1.1 and must be supported out of the box.\r\n",
+        "timestamp": 1357160279,
+        "attachments": []
+      },
+      {
+        "id": 1,
+        "commenterId": -1901724974959481752,
+        "content": "Fixed with Nginx upgrade.",
+        "timestamp": 1361171001,
+        "attachments": []
+      }
+    ]
+  },
+  {
+    "id": 216,
+    "status": "Duplicate",
+    "summary": "AppScale Load Balancer Uses 302 Redirects",
+    "labels": [
+      "Type-Review",
+      "Priority-Medium"
+    ],
+    "stars": 0,
+    "commentCount": 2,
+    "comments": [
+      {
+        "id": 0,
+        "commenterId": 4517378632160862,
+        "content": "This makes it very difficult to use AppScale as a runtime for web APIs. System assumes that all accesses are going to be made using a web browser. We need to have more permanence in the app URL.\r\n",
+        "timestamp": 1357160187,
+        "attachments": []
+      },
+      {
+        "id": 1,
+        "commenterId": -1901724974959481752,
+        "content": "",
+        "timestamp": 1365092571,
+        "attachments": []
+      }
+    ]
+  },
+  {
+    "id": 215,
+    "status": "New",
+    "summary": "ATTENTION: REPORT BUGS ON GITHUB SITE",
+    "labels": [
+      "Type-Other",
+      "Priority-Critical"
+    ],
+    "stars": 0,
+    "commentCount": 2,
+    "comments": [
+      {
+        "id": 0,
+        "commenterId": -78406317576613864,
+        "content": "https://launchpad.net/appscale\r\n\r\nor for help use the mailing list:\r\nhttp://groups.google.com/group/appscale_community",
+        "timestamp": 1315300953,
+        "attachments": []
+      },
+      {
+        "id": 1,
+        "commenterId": -78406317576613864,
+        "content": "No longer on launchpad. \r\n\r\nUse github instead: \r\nhttp://github.com/AppScale",
+        "timestamp": 1347245605,
+        "attachments": []
+      }
+    ]
+  }
+]

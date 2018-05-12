@@ -2,7 +2,7 @@ import { TestBed, async } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { FetchGoogleCodeService } from './fetch-googlecode.service';
 import * as mockGoogleCodeProject from '../models/googlecode/mock/project.json';
-import * as mockGoogleCodeIssues from '../models/googlecode/mock/issues.json';
+import * as mockGoogleCodeIssues from '../models/googlecode/mock/issues-1.json';
 import * as mockGoogleCodeIssuePage from '../models/googlecode/mock/issues-page-1.json';
 import { GoogleCodeProject } from '../models/googlecode/googlecode-project';
 import { GoogleCodeIssue } from '../models/googlecode/googlecode-issue';

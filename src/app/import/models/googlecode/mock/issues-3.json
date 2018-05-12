@@ -1,0 +1,127 @@
+[
+  {
+    "id": 17,
+    "status": "Fixed",
+    "summary": "Need way to name where apps are publicly",
+    "labels": [
+      "Type-Enhancement",
+      "Priority-Medium"
+    ],
+    "stars": 1,
+    "commentCount": 3,
+    "comments": [
+      {
+        "id": 0,
+        "commenterId": 7534346584898749507,
+        "content": "Need a new controller that can show where the apps in this instance are as\r\nwell as report on cpu / mem usage\r\n",
+        "timestamp": 1237282511,
+        "attachments": []
+      },
+      {
+        "id": 1,
+        "commenterId": 7534346584898749507,
+        "content": "",
+        "timestamp": 1237282526,
+        "attachments": []
+      },
+      {
+        "id": 2,
+        "commenterId": 7534346584898749507,
+        "content": "",
+        "timestamp": 1237407126,
+        "attachments": []
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "status": "Fixed",
+    "summary": "Finding app.yaml is done incorrectly on jaiku",
+    "labels": [
+      "Type-Defect",
+      "Priority-Medium",
+      "Usability"
+    ],
+    "stars": 1,
+    "commentCount": 4,
+    "comments": [
+      {
+        "id": 0,
+        "commenterId": 7534346584898749507,
+        "content": "The way we locate the app.yaml file in the tar\u0027ed appengine app doesn\u0027t\r\ncorrectly find it for Jaiku.",
+        "timestamp": 1237282413,
+        "attachments": []
+      },
+      {
+        "id": 1,
+        "commenterId": 7534346584898749507,
+        "content": "",
+        "timestamp": 1237314145,
+        "attachments": []
+      },
+      {
+        "id": 2,
+        "commenterId": 7534346584898749507,
+        "content": "Problem occurred since there was more than one app.yaml file in the tarball. Behavior\r\nis now as follows:\r\n\r\nIf there is no app.yaml file, we fail and ask them to put one in.\r\n\r\nIf there is only one, we take it.\r\n\r\nIf there is greater than one, we fail, list all the app.yaml files, and ask them to\r\nremove the extras.",
+        "timestamp": 1237432549,
+        "attachments": []
+      },
+      {
+        "id": 3,
+        "commenterId": 7534346584898749507,
+        "content": "",
+        "timestamp": 1237582912,
+        "attachments": []
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "status": "Fixed",
+    "summary": "Current image type is only c1.xlarge",
+    "labels": [
+      "Type-Enhancement",
+      "Priority-Medium",
+      "Usability"
+    ],
+    "stars": 1,
+    "commentCount": 5,
+    "comments": [
+      {
+        "id": 0,
+        "commenterId": 7534346584898749507,
+        "content": "Change this later to be other sizes (ec2-run-instances instance-type)\r\n",
+        "timestamp": 1235427633,
+        "attachments": []
+      },
+      {
+        "id": 1,
+        "commenterId": 7534346584898749507,
+        "content": "Can\u0027t be fixed in current version of AppScale since Eucalyptus has a known bug\r\n(http://eucalyptus.cs.ucsb.edu/ticket/44) where multiple image types can\u0027t be used.\r\nWill add in a command line argument to appscale-run-instances (defaults to c1.xlarge\r\nif not present) and propogate it to the AppControllers as needed for use spawning up VMs.",
+        "timestamp": 1236821204,
+        "attachments": []
+      },
+      {
+        "id": 2,
+        "commenterId": 7534346584898749507,
+        "content": "",
+        "timestamp": 1237498020,
+        "attachments": []
+      },
+      {
+        "id": 3,
+        "commenterId": 7534346584898749507,
+        "content": "Change made, will verify in next test version.",
+        "timestamp": 1237507393,
+        "attachments": []
+      },
+      {
+        "id": 4,
+        "commenterId": 7534346584898749507,
+        "content": "",
+        "timestamp": 1237582939,
+        "attachments": []
+      }
+    ]
+  }
+]
