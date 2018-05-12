@@ -8,6 +8,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TrackForeverIssue } from '../import/models/trackforever/trackforever-issue';
 import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock-trackforever-project';
 import { MarkdownPipe } from '../shared/pipes/markdown.pipe';
+import { MomentModule } from 'angular2-moment';
 
 describe('IssuePageComponent', () => {
   let component: IssuePageComponent;
@@ -23,7 +24,10 @@ describe('IssuePageComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [ RouterTestingModule ],
+      imports: [
+        RouterTestingModule,
+        MomentModule,
+      ],
       declarations: [ IssuePageComponent, MarkdownPipe ],
       providers: [ {provide: IssueService, useValue: issueServiceStub}]
     })
