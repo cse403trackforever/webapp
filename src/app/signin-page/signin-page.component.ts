@@ -11,6 +11,8 @@ import { faFacebook, faGithub } from '@fortawesome/free-brands-svg-icons';
 export class SigninPageComponent implements OnInit {
   faFacebook = faFacebook;
   faGithub = faGithub;
+  email;
+  password;
 
   constructor(public authService: AuthenticationService, private router: Router) { }
 
@@ -28,18 +30,35 @@ export class SigninPageComponent implements OnInit {
   }
 
   tryFacebookLogin() {
-    this.authService.doFacebookLogin()
-    .then(res => {
-      this.router.navigate(['/myprojects']);
-    }, err => console.log(err)
-    );
+    this.authService.facebookSignIn()
+      .then(res => {
+        this.afterSignIn();
+      }, err => console.log(err)
+      );
   }
 
   tryGithubLogin() {
-    this.authService.doGithubLogin()
-    .then(res => {
-      this.router.navigate(['/myprojects']);
-    }, err => console.log(err)
-    );
+    this.authService.githubSignIn()
+      .then(res => {
+        this.afterSignIn();
+      }, err => console.log(err)
+      );
+  }
+
+  tryEmailLogin(formData) {
+    const value = {
+      email: formData.value.email,
+      password: formData.value.password
+    };
+    this.authService.emailSignIn(value)
+      .then(res => {
+        this.afterSignIn();
+      }, err => console.log(err)
+      );
+  }
+
+  afterSignIn() {
+    // TODO perform any after sign in steps needed here
+    this.router.navigate(['/myprojects']);
   }
 }

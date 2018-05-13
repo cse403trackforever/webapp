@@ -16,7 +16,6 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { IssuePageComponent } from './issue-page/issue-page.component';
 import { ProjectPageComponent } from './project-page/project-page.component';
 import { SigninPageComponent } from './signin-page/signin-page.component';
-import { SignoutPageComponent } from './signout-page/signout-page.component';
 
 // Services
 import { AuthenticationService } from './authentication.service';
@@ -31,6 +30,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { MyProjectsPageComponent } from './my-projects-page/my-projects-page.component';
 import { ExportModule } from './export/export.module';
 import { MarkdownPipe } from './shared/pipes/markdown.pipe';
+import { FormsModule } from '@angular/forms';
 import { MomentModule } from 'angular2-moment';
 
 export const firebaseConfig = {
@@ -52,7 +52,6 @@ export const firebaseConfig = {
     SigninPageComponent,
     DbkeyPipe,
     MarkdownPipe,
-    SignoutPageComponent,
     MyProjectsPageComponent,
   ],
   imports: [
@@ -68,7 +67,8 @@ export const firebaseConfig = {
     IssueModule,
     FontAwesomeModule,
     ExportModule,
-    MomentModule,
+    FormsModule,
+    MomentModule
   ],
   providers: [
     AuthenticationService,

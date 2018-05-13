@@ -28,7 +28,7 @@ export class AuthenticationService {
     return this.user;
   }
 
-  doFacebookLogin() {
+  facebookSignIn() {
     return new Promise<any>((resolve, reject) => {
       const provider = new firebase.auth.FacebookAuthProvider();
       this.afAuth.auth
@@ -42,7 +42,7 @@ export class AuthenticationService {
     });
   }
 
-  doGithubLogin() {
+  githubSignIn() {
     return new Promise<any>((resolve, reject) => {
       const provider = new firebase.auth.GithubAuthProvider();
       this.afAuth.auth
@@ -56,7 +56,17 @@ export class AuthenticationService {
     });
   }
 
-  doRegister(value) {
+  emailSignIn(value) {
+    return new Promise<any>((resolve, reject) => {
+      this.afAuth.auth.signInWithEmailAndPassword(value.email, value.password)
+        .then(res => {
+          resolve(res);
+        }, err => reject(err));
+    });
+  }
+
+  register(value) {
+    console.log('register');
     return new Promise<any>((resolve, reject) => {
       this.afAuth.auth.createUserWithEmailAndPassword(value.email, value.password)
         .then(res => {
@@ -65,8 +75,8 @@ export class AuthenticationService {
     });
   }
 
-  logout() {
-    setTimeout(() => this.afAuth.auth.signOut(), 1000);
+  signOut() {
+    this.afAuth.auth.signOut();
   }
 }
 

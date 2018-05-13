@@ -37,4 +37,9 @@ export class AppComponent implements OnInit {
   toggleCollapsed(): void {
     this.collapsed = !this.collapsed;
   }
+
+  signOut(): void {
+    this.authService.signOut();
+    this.router.navigate(['/home']);
+  }
 }

@@ -5,7 +5,6 @@ import { ProjectPageComponent } from './project-page/project-page.component';
 import { IssuePageComponent } from './issue-page/issue-page.component';
 import { ImportPageComponent } from './import/import-page/import-page.component';
 import { SigninPageComponent } from './signin-page/signin-page.component';
-import { SignoutPageComponent } from './signout-page/signout-page.component';
 import { MyProjectsPageComponent } from './my-projects-page/my-projects-page.component';
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -15,7 +14,6 @@ const routes: Routes = [
   { path: 'project/:projectId/issue/:issueId', component: IssuePageComponent },
   { path: 'import', component: ImportPageComponent },
   { path: 'signin', component: SigninPageComponent },
-  { path: 'signout', component: SignoutPageComponent }
 ];
 
 @NgModule({

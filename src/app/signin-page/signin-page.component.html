@@ -4,23 +4,21 @@
 
   <div class="container auth">
     <div class="email">
-      <form class="form-register">
+      <form #f='ngForm' (ngSubmit)="tryEmailLogin(f)" class="form-register">
         <p>Sign in or sign up with a registered account</p>
-        <div class="form-group">
-          <label for="inputEmail" class="sr-only">Email address</label>
-          <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-        </div>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" [(ngModel)]="email" name="email" class="form-control" placeholder="Email address" required autofocus>
 
-        <div class="form-group">
-          <label for="inputPassword" class="sr-only">Password</label>
-          <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        </div>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" [(ngModel)]="password" name="password" class="form-control" placeholder="Password" required>
 
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       </form>
     </div>
 
     <div class="container signin social">
+      <fa-icon name="faTasks"></fa-icon>
+
       <p>Or sign in using social media</p>
       <button type="button" class="btn btn-social-icon btn-facebook" (click)="tryFacebookLogin()">
         <fa-icon [icon]="faFacebook"></fa-icon>

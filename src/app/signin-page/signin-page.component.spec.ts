@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { SigninPageComponent } from './signin-page.component';
 import { AuthenticationService } from '../authentication.service';
@@ -7,25 +7,33 @@ import { User } from '../shared/models/user';
 import { mockUser } from '../shared/models/mock/mock-user';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FormsModule } from '@angular/forms';
 
 describe('SigninPageComponent', () => {
   let component: SigninPageComponent;
   let fixture: ComponentFixture<SigninPageComponent>;
   let authServiceStub: Partial<AuthenticationService>;
+  let routerSpy;
 
   beforeEach(async(() => {
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     // stub auth service
     authServiceStub = {
       getUser(): Observable<User> {
-        return Observable.of(mockUser);
+        return Observable.of(null);
+      },
+      emailSignIn(value): any {
+        console.log('stub');
+        return new Promise((resolve) => resolve(mockUser));
       }
     };
 
     TestBed.configureTestingModule({
-      imports: [ FontAwesomeModule ],
-      declarations: [ SigninPageComponent ],
+      imports: [FontAwesomeModule, FormsModule,
+        // RouterTestingModule.withRoutes([{path: '/myprojects', component: MyProjectsPageComponent}])
+      ],
+      declarations: [SigninPageComponent],
       providers: [
         {
           provide: AuthenticationService,
@@ -34,7 +42,8 @@ describe('SigninPageComponent', () => {
         {
           provide: Router,
           useValue: routerSpy
-        }]
+        }
+      ]
     })
       .compileComponents();
   }));
@@ -48,4 +57,20 @@ describe('SigninPageComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should tell router to navigate to myprojects after successful email login', fakeAsync(() => {
+    const formData = {
+      value: {
+        email: 'christine_ta@outlook.com',
+        password: 'christine_ta@outlook.com'
+      }
+    };
+
+    component.tryEmailLogin(formData);
+    tick();
+    fixture.detectChanges();
+    spyOn(component, 'tryEmailLogin');
+
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/myprojects']);
+  }));
 });
