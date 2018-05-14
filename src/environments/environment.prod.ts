@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://example.com/api/', // TODO replace with deployed API
-  mockBackend: true,
+  apiUrl: 'https:/cse403trackforever.github.io/api/', // TODO replace with deployed API
+  mockBackend: false,
 };
