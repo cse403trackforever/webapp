@@ -6,6 +6,7 @@ import { IssuePageComponent } from './issue-page/issue-page.component';
 import { ImportPageComponent } from './import/import-page/import-page.component';
 import { SigninPageComponent } from './signin-page/signin-page.component';
 import { MyProjectsPageComponent } from './my-projects-page/my-projects-page.component';
+import { UserPageComponent } from './user-page/user-page.component';
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomePageComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'project/:projectId/issue/:issueId', component: IssuePageComponent },
   { path: 'import', component: ImportPageComponent },
   { path: 'signin', component: SigninPageComponent },
+  { path: 'user', component: UserPageComponent }
 ];
 
 @NgModule({

@@ -1,6 +1,6 @@
-import { User } from '../user';
+import { AuthUser } from '../auth-user';
 
-export const mockUser: User = {
+export const mockUser: AuthUser = {
     displayName: 'Christine',
     email: 'cta95@cs.washington.edu',
     photoUrl: 'google.com',

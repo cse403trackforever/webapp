@@ -3,11 +3,11 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 import { SigninPageComponent } from './signin-page.component';
 import { AuthenticationService } from '../authentication.service';
 import { Observable } from 'rxjs/Observable';
-import { User } from '../shared/models/user';
 import { mockUser } from '../shared/models/mock/mock-user';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
+import { AuthUser } from '../shared/models/auth-user';
 
 describe('SigninPageComponent', () => {
   let component: SigninPageComponent;
@@ -20,7 +20,7 @@ describe('SigninPageComponent', () => {
 
     // stub auth service
     authServiceStub = {
-      getUser(): Observable<User> {
+      getUser(): Observable<AuthUser> {
         return Observable.of(null);
       },
       emailSignIn(value): any {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
 import { Router } from '@angular/router';
-import { User } from './shared/models/user';
+import { AuthUser } from './shared/models/auth-user';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +10,8 @@ import { User } from './shared/models/user';
 })
 
 export class AppComponent implements OnInit {
-  user: User;
+  user: AuthUser;
   url: string;
-  title = 'Track Forever';
   collapsed = true;
 
   constructor(public authService: AuthenticationService, private router: Router) { }

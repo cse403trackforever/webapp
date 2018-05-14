@@ -1,7 +1,5 @@
-export interface User {
-    displayName: string;
-    email: string;
-    photoUrl: string;
-    uid: string;
-    providerId: string;
+import { AuthUser } from './auth-user';
+
+export class User {
+    authUser: AuthUser;
 }

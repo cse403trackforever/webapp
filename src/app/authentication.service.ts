@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { Observable } from 'rxjs/Observable';
-import { User } from './shared/models/user';
+import { AuthUser } from './shared/models/auth-user';
 
 @Injectable()
 export class AuthenticationService {
-  private user: Observable<User>;
+  private user: Observable<AuthUser>;
 
   constructor(public afAuth: AngularFireAuth) {
     this.user = afAuth.authState.map((user: firebase.UserInfo) => {
@@ -24,7 +24,7 @@ export class AuthenticationService {
     });
   }
 
-  getUser(): Observable<User> {
+  getUser(): Observable<AuthUser> {
     return this.user;
   }
 

@@ -17,16 +17,16 @@ export class SigninPageComponent implements OnInit {
   constructor(public authService: AuthenticationService, private router: Router) { }
 
   ngOnInit() {
-    // If the user is already logged in, redirects to home
-    this.authService.getUser()
-      .subscribe(user => {
-        if (user) {
-          console.log('signin page - user is signed in');
-          this.router.navigate(['/myprojects']);
-        } else {
-          console.log('signin page - user is not signed in');
-        }
-      });
+    // // If the user is already logged in, redirects to home
+    // this.authService.getUser()
+    //   .subscribe(user => {
+    //     if (user) {
+    //       console.log('signin page - user is signed in');
+    //       this.router.navigate(['/myprojects']);
+    //     } else {
+    //       console.log('signin page - user is not signed in');
+    //     }
+    //   });
   }
 
   tryFacebookLogin() {

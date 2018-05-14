@@ -32,6 +32,7 @@ import { ExportModule } from './export/export.module';
 import { MarkdownPipe } from './shared/pipes/markdown.pipe';
 import { FormsModule } from '@angular/forms';
 import { MomentModule } from 'angular2-moment';
+import { UserPageComponent } from './user-page/user-page.component';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyBA71GS_jZvo9N2Qk3deEw89i1XxYLRZHs',
@@ -53,6 +54,7 @@ export const firebaseConfig = {
     DbkeyPipe,
     MarkdownPipe,
     MyProjectsPageComponent,
+    UserPageComponent,
   ],
   imports: [
     BrowserModule,

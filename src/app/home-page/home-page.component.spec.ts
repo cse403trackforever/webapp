@@ -6,8 +6,8 @@ import { Observable } from 'rxjs/Observable';
 import { DbkeyPipe } from '../shared/pipes/dbkey.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthenticationService } from '../authentication.service';
-import { User } from '../shared/models/user';
 import { mockUser } from '../shared/models/mock/mock-user';
+import { AuthUser } from '../shared/models/auth-user';
 
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
@@ -17,7 +17,7 @@ describe('HomePageComponent', () => {
   beforeEach(async(() => {
     // stub auth service
     authServiceStub = {
-      getUser(): Observable<User> {
+      getUser(): Observable<AuthUser> {
         return Observable.of(mockUser);
       }
     };
