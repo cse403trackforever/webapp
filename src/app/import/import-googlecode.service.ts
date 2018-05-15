@@ -28,7 +28,7 @@ export class ImportGoogleCodeService implements ConvertService {
       hash: '',
       prevHash: '',
       id: issue.id.toString(),
-      projectId: projectId,
+      projectId: `GoogleCode:${projectId}`,
       status: issue.status,
       summary: issue.summary,
       labels: issue.labels,
@@ -54,7 +54,7 @@ export class ImportGoogleCodeService implements ConvertService {
     const newProject = {
       hash: '',
       prevHash: '',
-      id: project.name,
+      id: `GoogleCode:${project.name}`,
       ownerName: '',
       name: project.name,
       description: project.description,

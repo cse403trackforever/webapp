@@ -22,20 +22,32 @@ export class OfflineIssueService implements IssueService {
     );
   }
 
+  setIssue(projectKey: string, issues: Array<TrackForeverIssue>): Observable<string> {
+    return Observable.fromPromise(this.dataService.getProject(projectKey).then(project => {
+      issues.forEach(issue => project.issues.set(issue.id, issue));
+      return this.dataService.addProject(project);
+    }));
+  }
+
   getProject(projectKey: string): Observable<TrackForeverProject> {
     return Observable.fromPromise(this.dataService.getProject(projectKey));
   }
 
-  getProjects(): Observable<TrackForeverProject[]> {
+  setProject(project: TrackForeverProject): Observable<string> {
+    return Observable.fromPromise(this.dataService.addProject(project));
+  }
+
+  getProjects(): Observable<Array<TrackForeverProject>> {
     return new Observable((observer) => {
-      const projects: TrackForeverProject[] = [];
-      this.dataService.getKeys().then((keys: string[]) => {
+      const projects: Array<TrackForeverProject> = [];
+      this.dataService.getKeys().then((keys: Array<string>) => {
         keys.forEach((key) => {
           this.dataService.getProject(key).then((project: TrackForeverProject) => {
             projects.push(project);
             observer.next(projects);
           });
         });
+        observer.complete();
       });
     });
   }

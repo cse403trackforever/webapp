@@ -28,7 +28,7 @@ export class ImportRedmineService {
       hash: '',
       prevHash: '',
       id: issue.id.toString(),
-      projectId: issue.project_id.name,
+      projectId: `Redmine:${issue.project_id.name}`,
       status: issue.status.name,
       summary: issue.description,
       labels: [],
@@ -47,7 +47,7 @@ export class ImportRedmineService {
     const newProject = {
       hash: '',
       prevHash: '',
-      id: project.id.toString(),
+      id: `Redmine:${project.id}`,
       ownerName: '',
       name: project.name,
       description: project.description,

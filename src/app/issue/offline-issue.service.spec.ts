@@ -11,7 +11,7 @@ describe('OfflineIssueService', () => {
   let dataServiceSpy: jasmine.SpyObj<DataService>;
 
   beforeEach(() => {
-    const spy = jasmine.createSpyObj('DataService', ['getProject', 'getKeys']);
+    const spy = jasmine.createSpyObj('DataService', ['getProject', 'getKeys', 'addProject']);
 
     TestBed.configureTestingModule({
       providers: [
@@ -62,5 +62,21 @@ describe('OfflineIssueService', () => {
 
     service.getProjects()
       .subscribe(projects => expect(projects).toEqual([p]));
+  }));
+
+  it('should set an issue', async(() => {
+    dataServiceSpy.getProject.and.returnValue(new Promise((resolve) => resolve(mockTrackforeverProject)));
+    dataServiceSpy.addProject.and.returnValue(new Promise(resolve => resolve(mockTrackforeverProject.id)));
+    service.setIssue(mockTrackforeverProject.id, Array.from(mockTrackforeverProject.issues).map(e => e[1])).subscribe(r => {
+      expect(r).toEqual(mockTrackforeverProject.id);
+    });
+  }));
+
+  it('should set a project', async(() => {
+    dataServiceSpy.getProject.and.returnValue(new Promise((resolve) => resolve(mockTrackforeverProject)));
+    dataServiceSpy.addProject.and.returnValue(new Promise(resolve => resolve(mockTrackforeverProject.id)));
+    service.setProject(mockTrackforeverProject).subscribe(r => {
+      expect(r).toEqual(mockTrackforeverProject.id);
+    });
   }));
 });

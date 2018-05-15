@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MyProjectsPageComponent } from './my-projects-page.component';
-import { DbkeyPipe } from '../shared/pipes/dbkey.pipe';
 import { RouterLink } from '@angular/router';
 import { IssueService } from '../issue/issue.service';
 import { Observable } from 'rxjs/Observable';
@@ -30,7 +29,7 @@ describe('MyProjectsPageComponent', () => {
         RouterTestingModule,
         NgbModule.forRoot(),
       ],
-      declarations: [MyProjectsPageComponent, DbkeyPipe],
+      declarations: [MyProjectsPageComponent],
       providers: [
         {
           provide: IssueService,

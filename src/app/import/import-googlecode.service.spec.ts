@@ -50,15 +50,15 @@ describe('ImportGoogleCodeService', () => {
       .reduce((acc, v) => acc.concat(v));
 
     const issueHashes = [
-      'a8e2103895ae8ce0b926024dd8914e5ac27a6c3eb03f451fc7638538d9a44e03fdb337da66f867d36e84d7b6c4c9e318c082ae7688e4aad186ec0b3f04ac98e9',
-      '9303e529a68b4b76d2a984e5198b59eda5c6ae986d89dba00e6695422f5ee885a7565a7f273753b19f16da01758cb4c20d54f184e57ee1299874abddf16f7329',
-      '96519355e060878e750eb2a102c77e300e7d5b53c937d8b39ac0b7545de4ca682ac1019d3a8d73f341337633b5e9f60828333ee0cea25e6c4239788b56b35b46',
-      '4ba11e75e4bbc0e5fbd26e3e35fa21a3f8783129403aadce8dabfe30c7aa5e57bc94a3b32691622cca6af51eaad816a90caa60741aa6b4bb9b2ee3942f5a2b83',
-      '11eb97a929f8c7a76a2c91cdd41bdb987e96676e2254f8ce70eed4d59ae69ba135e92d0b4ca821aed047cd6fe391e57b59ef1764a7844a890f4cd2fbf98b06a5',
-      'ab9d8d9f67320a45ceef26869d0eb6a624c895d17ad544a449d43e332237e8626f7a0eafd8ff90f5142c864e97224a4aa6a04dfa443c757fd8b3b16aa005c627',
-      'b7ca3824a9a987f616e36bdfb47646dec1c811f2c5d8b614a7e9282fed04c7cfbfdd63074c89faaf24f4f0a67f45cc71361f69648571eecdea5b97cf8b240057',
-      'c8588ab48e4fc952bff46e589fb91bd644f6bc7bb28a3e95fea19246e5bb644e9713dc596b577bb6ace192aba545d0b382ce41e412c035c8cf9052497671a21e',
-      '9326f387e46720738b9aef3efd6ed87b70f70d270fb03cde917fdaa91af250355e42a2de06db08ff877a309293930e70250ac64d831236956b607bc89f69404a',
+      '536e80937c88fb48f9456309a475938b2bc511363c6c6e05c64c15f121d1c7a3856b85979b82f55581b4d9534ff88d7881546799a81ac5990887d87dcb7b196d',
+      '275e912224ccbbc3decaca54f5ef50abd4ae612cd11b38f6ff08f04db05f342a4fa36dfec73b7a4970f70834fa6702358143defc6df2ceaef695294374fe4c32',
+      'ab1d02fd1752f7ba5226e2ed25237fe99aaec5482174c3934f1f2de1841bf9be5fc13cf0c6e2b9c9abe37377f904f5aacc80445f00138fb463171a2f2dc3ab2b',
+      '910d660d00232eb6ba681a2fef2625b1a1e1104ecbfb5ea0d0f83cfdc24239310f327c26102cf5d57a58267715edd55f912748ee7ba64d9ac053a1a8cc921c7b',
+      '45695531cc4e54695278c9cf729488c1f63e5ee5130f0cda25e2717f1fd03fc8a823e9e7f4113064415d8ec7fc2910d8b640338d90d3cc6d182be660b3cb1bf2',
+      '7233b61573ca5dea8ef5c1e58dabd68dbe2fa1bbcd7c6414778a0b00700eda2b16b324debaff8fb45f35ff689a991f60a6603972919ac41795972bf70a3f4d63',
+      '318613974491f9734e6a15209df92bb54d2fe6bc2616f0bf939118060f7c7e5a600ed9ba21a9ceadffc8ca626d99d100c1a1636d0c4256cb705cc57bca59f06e',
+      'dd8a683d2cccd6e82e5b38d8c0394ed69a746e1ee90e69c0dff1ad35d4a0b4b85bb0e0812e144f72448ebbd356139abd077aaa11622a4e804e2a8b0e2bde97c5',
+      '20124fb3329265744bbfbfcb4807569463508e65c1eea4f4a5de864074c0bc13fc6b7a0c4980a57ebd05e3c1e6beafadebde6e7085d6c82eacf6e19427236762',
     ];
 
     fetchServiceSpy.fetchProject.and.returnValue(Observable.of(mockProject));
@@ -78,10 +78,10 @@ describe('ImportGoogleCodeService', () => {
         // check that the number of issues matches
         expect(project.issues.size).toBe(mockIssues.length);
 
-        expect(project.hash).toEqual('06575b41cf51eff51ed380a637d0601c4cfd4c44af40a0ff442474e88918c61103d1a80b0455c3d6d887052994' +
-          '19f0303812940857783aac8db2cc89e66652e4');
+        expect(project.hash).toEqual('5c229c4dc6c518b45a9cdd67f71f572f3ba141d6ec3a7001d9aa3068cfc67d25000f411561ecb86ffaa' +
+        '054307fa78cf8eae4ffe45cfa505f8ad97ae397397e56');
         expect(project.prevHash).toEqual('');
-        expect(project.id).toEqual(mockProject.name);
+        expect(project.id).toEqual(`GoogleCode:${mockProject.name}`);
         expect(project.ownerName).toEqual('');
         expect(project.name).toEqual(mockProject.name);
         expect(project.description).toEqual(mockProject.description);
@@ -101,7 +101,7 @@ describe('ImportGoogleCodeService', () => {
       expect(issue.hash).toEqual(issueHashes[index]);
       expect(issue.prevHash).toEqual('');
       expect(issue.id).toEqual(gc.id.toString());
-      expect(issue.projectId).toEqual(projectId, 'project id should match');
+      expect(issue.projectId).toEqual(`GoogleCode:${projectId}`, 'project id should match');
       expect(issue.status).toEqual(gc.status);
       expect(issue.summary).toEqual(gc.summary);
       expect(issue.labels).toEqual(gc.labels);

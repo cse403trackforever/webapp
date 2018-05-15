@@ -20,8 +20,6 @@ import { SigninPageComponent } from './signin-page/signin-page.component';
 // Services
 import { AuthenticationService } from './authentication.service';
 
-import { DbkeyPipe } from './shared/pipes/dbkey.pipe';
-
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 // Firebase Authentication
 import { AngularFireModule } from 'angularfire2';
@@ -51,7 +49,6 @@ export const firebaseConfig = {
     HomePageComponent,
     IssuePageComponent,
     SigninPageComponent,
-    DbkeyPipe,
     MarkdownPipe,
     MyProjectsPageComponent,
     UserPageComponent,

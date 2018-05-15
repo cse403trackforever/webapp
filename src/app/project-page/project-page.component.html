@@ -32,7 +32,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr routerLink="/project/{{project | dbkey}}/issue/{{issue.id}}"
+          <tr routerLink="/project/{{project.id}}/issue/{{issue.id}}"
               *ngFor="let issue of getIssuesForCurrentPage()">
             <th scope="row">{{issue.id}}</th>
             <td>{{issue.summary}}</td>

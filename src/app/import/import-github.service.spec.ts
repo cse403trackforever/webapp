@@ -58,10 +58,10 @@ describe('ImportGithubService', () => {
 
     service.importProject({ownerName, projectName})
       .subscribe((p: TrackForeverProject) => {
-        expect(p.hash).toEqual('05afbcbe5e5cb2e4954cd99d9a8c00e23073ee5ea1bb32d03e55d7a3af' +
-        '016b3da4442acaa2b767f417de9de68362c1d40d3fd53eebb855cb24e3ad8ffc1eca77');
+        expect(p.hash).toEqual('190998f576c5c6fc354e29cb8fb9a914e84b6adb3cae2f205b09' +
+        'f2dcd29504794b43c3e1a034b4fecb022bc61c00b09255504111eceb27530ee250daa154b374');
         expect(p.prevHash).toEqual('');
-        expect(p.id).toEqual(testProject.id.toString());
+        expect(p.id).toEqual(`GitHub:${testProject.id}`);
         expect(p.ownerName).toEqual(testProject.owner.login);
         expect(p.name).toEqual(projectName);
         expect(p.description).toEqual(testProject.description || '');

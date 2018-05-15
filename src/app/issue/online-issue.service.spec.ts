@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, async } from '@angular/core/testing';
 
 import { OnlineIssueService } from './online-issue.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
@@ -24,7 +24,7 @@ describe('OnlineIssueService', () => {
   });
 
   // see https://angular.io/guide/http#expecting-and-answering-requests
-  it('should get an issue', () => {
+  it('should get an issue', async(() => {
     const testIssue = mockTrackforeverProject.issues.entries().next().value[1];
     const projectKey = 'my-project';
     const issueId = '123';
@@ -41,9 +41,31 @@ describe('OnlineIssueService', () => {
 
     // assert that there are no outstanding requests
     httpTestingController.verify();
-  });
+  }));
 
-  it('should get a project', () => {
+  it('should set some issues', async(() => {
+    const issues = Array.from(mockTrackforeverProject.issues).map(e => e[1]);
+    const map = new Map([[mockTrackforeverProject.id, issues]]);
+
+    service.setIssues(map).subscribe(() => {
+      const req = httpTestingController.expectOne(`${environment.apiUrl}/issues`);
+      expect(req.request.method).toEqual('PUT');
+      expect(req.request.body).toEqual(map);
+    });
+  }));
+
+  it('should get some issues', async(() => {
+    const issues = Array.from(mockTrackforeverProject.issues).map(e => e[1].id);
+    const map = new Map([[mockTrackforeverProject.id, issues]]);
+
+    service.getRequestedIssues(map).subscribe(() => {
+      const req = httpTestingController.expectOne(`${environment.apiUrl}/issues`);
+      expect(req.request.method).toEqual('POST');
+      expect(req.request.body).toEqual(map);
+    });
+  }));
+
+  it('should get a project', async(() => {
     const testProject = mockTrackforeverProject;
     const projectKey = 'my-project';
 
@@ -56,9 +78,17 @@ describe('OnlineIssueService', () => {
     req.flush(testProject);
 
     httpTestingController.verify();
-  });
+  }));
 
-  it('should get project summaries', () => {
+  it('should set data for projects', async(() => {
+    service.setProjects([mockTrackforeverProject]).subscribe(() => {
+      const req = httpTestingController.expectOne(`${environment.apiUrl}/projects`);
+      expect(req.request.method).toEqual('PUT');
+      expect(req.request.body).toEqual([mockTrackforeverProject]);
+    });
+  }));
+
+  it('should get project summaries', async(() => {
     const testProjects = [ mockTrackforeverProject ];
 
     service.getProjects()
@@ -70,5 +100,13 @@ describe('OnlineIssueService', () => {
     req.flush(testProjects);
 
     httpTestingController.verify();
-  });
+  }));
+
+  it('should get some issues', async(() => {
+    service.getRequestedProjects([mockTrackforeverProject.id]).subscribe(() => {
+      const req = httpTestingController.expectOne(`${environment.apiUrl}/issues`);
+      expect(req.request.method).toEqual('POST');
+      expect(req.request.body).toEqual([mockTrackforeverProject.id]);
+    });
+  }));
 });

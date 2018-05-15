@@ -1,9 +1,9 @@
 import { TrackForeverProject } from '../../trackforever/trackforever-project';
 
 export const mockRedmineTrackForeverProject: TrackForeverProject = {
-  hash: '971c7c0974cdd0241c0f7c7ab48db543f0cea53acc26a6b68548f306b1deaf6c93b922d76208c4cd5e5789f110bd709aabdcefec31cf0eb6cf17b8b8ba7995fa',
+  hash: '2b93695f92bbdbd45d6fa30dd07e89d29baa1434d27d1171b527ba3f7d43c6460afd6a426b8809f0990fcb6cbb0c9fa4a338efcfe45c048b6122fa0accacc337',
   prevHash: '',
-  id: '1',
+  id: 'Redmine:1',
   ownerName: '',
   name: 'Boring Project',
   description: 'Lorem Ipsum is simply dummy text of the printing and ' +
@@ -19,11 +19,11 @@ export const mockRedmineTrackForeverProject: TrackForeverProject = {
     [
       '5',
       {
-        hash: 'a789de4cde90f514c9374b7603622022ac877b7ee9a2d1bbeb68e0a563bd' +
-        '7179ba718b5e55e34be0b5dcc3236202eb89b7f9124d898811d7b752a5db2ed5c932',
+        hash: '04d8985e9aa7e024ae4404be425588ee22ab4f5a280715157fc1bc383c92c068e54' +
+        '5d2214729877647e9c53087a924c54932aab3df6a8430d25a80fa422b2ccf',
         prevHash: '',
         id: '5',
-        projectId: 'my-project',
+        projectId: 'Redmine:my-project',
         status: 'closed',
         summary: 'Replace the project description with real content.',
         labels: [],
@@ -38,11 +38,11 @@ export const mockRedmineTrackForeverProject: TrackForeverProject = {
     [
       '123',
       {
-        hash: '5077771b88ffd0b7c50f1d9e0e1968ff30118e71888f238f40c812aeacf0c22' +
-        'b1a1aa0631878659c90298e798d04f184bbcd619682532441ff2e05543d002a74',
+        hash: 'f817f2f45393d1bfe08a886796b7c2bbf2445aa83933683e9305fc8cb87ba3755b54' +
+        '0b504972cfc125f1993c5e5565149a36e89688a268d3f285825d4a3b6b6f',
         prevHash: '',
         id: '123',
-        projectId: 'my-project',
+        projectId: 'Redmine:my-project',
         status: 'open',
         summary: 'Fix the thing',
         labels: [],

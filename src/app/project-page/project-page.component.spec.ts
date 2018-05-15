@@ -4,7 +4,6 @@ import { ProjectPageComponent } from './project-page.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IssueService } from '../issue/issue.service';
 import { Observable } from 'rxjs/Observable';
-import { DbkeyPipe } from '../shared/pipes/dbkey.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
 import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock-trackforever-project';
@@ -46,7 +45,7 @@ describe('ProjectPageComponent', () => {
           useValue: exportServiceStub
         },
       ],
-      declarations: [ ProjectPageComponent, DbkeyPipe, MarkdownPipe ],
+      declarations: [ ProjectPageComponent, MarkdownPipe ],
     })
     .compileComponents();
   }));

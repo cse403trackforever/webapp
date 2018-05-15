@@ -42,7 +42,7 @@ export class ImportGithubService implements ConvertService {
       hash: '',
       prevHash: '',
       id: issue.number.toString(),
-      projectId: projectId.toString(),
+      projectId: `GitHub:${projectId}`,
       status: issue.state,
       summary: issue.title,
       labels: issue.labels.map((label: GitHubLabel) => label.name),
@@ -68,7 +68,7 @@ export class ImportGithubService implements ConvertService {
     const newProject = {
       hash: '',
       prevHash: '',
-      id: project.id.toString(),
+      id: `GitHub:${project.id}`,
       ownerName: project.owner.login,
       name: projectName,
       description: project.description || '',
