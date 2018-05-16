@@ -90,8 +90,12 @@ export class ImportGithubService implements ConvertService {
       this.fetchService.fetchIssues(ownerName, projectName, 1)
         .flatMap((response: HttpResponse<GitHubIssue[]>): Observable<[GitHubIssue, GitHubComment[]][]> => {
           const link = response.headers.get('link');
-          const matches = regex.exec(link);
-          const lastIndex = Number.parseInt(matches[1]);
+          // Assume only one page unless link header is set
+          let lastIndex = 1;
+          if (link) {
+            const matches = regex.exec(link);
+            lastIndex = Number.parseInt(matches[1]);
+          }
           let pages = Observable.of(response);
 
           let i = 1;

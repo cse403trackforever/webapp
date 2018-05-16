@@ -70,6 +70,35 @@ describe('ImportGithubService', () => {
       });
   }));
 
+  it('should import single page', async(() => {
+    const testProject = <GitHubProject> <any> mockGithubProject;
+    const testIssues = <Array<GitHubIssue>> <any> mockGithubIssues;
+    const testComments = <Array<GitHubComment>> <any> mockGithubComments;
+
+    const headers = new HttpHeaders();
+    const response = new HttpResponse<Array<GitHubIssue>>({body: testIssues, headers: headers});
+
+    const ownerName = testProject.owner.login;
+    const projectName = testProject.name;
+
+    fetchServiceSpy.fetchProject.and.returnValue(Observable.of(testProject));
+    fetchServiceSpy.fetchIssues.and.returnValue(Observable.of(response));
+    fetchServiceSpy.fetchComments.and.returnValue(Observable.of(testComments));
+
+    service.importProject({ownerName, projectName})
+      .subscribe((p: TrackForeverProject) => {
+        expect(p.hash).toEqual('190998f576c5c6fc354e29cb8fb9a914e84b6adb3cae2f205b09' +
+        'f2dcd29504794b43c3e1a034b4fecb022bc61c00b09255504111eceb27530ee250daa154b374');
+        expect(p.prevHash).toEqual('');
+        expect(p.id).toEqual(`GitHub:${testProject.id}`);
+        expect(p.ownerName).toEqual(testProject.owner.login);
+        expect(p.name).toEqual(projectName);
+        expect(p.description).toEqual(testProject.description || '');
+        expect(p.source).toEqual('GitHub');
+        matchIssues(p.issues, testIssues, p.id, testComments);
+      });
+  }));
+
   function matchIssues(converted: Map<string, TrackForeverIssue>, source: GitHubIssue[], projectId: string,
                        comments: GitHubComment[]) {
     converted.forEach(issue => {
