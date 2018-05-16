@@ -7,23 +7,31 @@
   </div>
 
   <div>
-    <button class="btn btn-outline-primary" type="button" (click)="export()">Export</button>
-  </div>
-
-  <div>
     <div class="container">
-      <h2>Issues</h2>
       <div class="row">
-        <form class="form-inline col-md-6 col-xl-4">
-          <input class="form-control col-12 col-sm mb-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success col-12 col-sm-auto ml-sm-2 mb-2" type="submit">Search</button>
-        </form>
+        <input [(ngModel)]="queryString" (keyup)="updateIssues()" class="form-control col-12 col-sm mb-2" type="search"
+               placeholder="Search" aria-label="Search">
+        <div ngbDropdown>
+          <button class="btn btn-outline-secondary" id="labelFilterDropdown" ngbDropdownToggle>Labels</button>
+          <div ngbDropdownMenu aria-labelledby="labelFilterDropdown">
+            <button *ngFor="let label of labels" class="dropdown-item" (click)="toggleLabelFilter(label)">
+              <span class="badge">
+                <fa-icon *ngIf="labelFilters.has(label)" [icon]="faCheckSquare"></fa-icon>
+                <span *ngIf="!labelFilters.has(label)" class="spacer">&nbsp;</span>
+              </span>
+              {{label}}
+            </button>
+          </div>
+        </div>
+        <div>
+          <button class="btn btn-outline-primary" type="button" (click)="export()">Export</button>
+        </div>
       </div>
 
-      TODO - filters, column customization
+      <!--TODO - filters, column customization-->
     </div>
 
-    <div class="container table-responsive">
+    <div class="container table-responsive" *ngIf="issuesForCurrentPage?.length > 0; else noIssues">
       <table class="table table-hover">
         <thead class="thead-light">
           <tr class="text-nowrap">
@@ -33,18 +41,21 @@
         </thead>
         <tbody>
           <tr routerLink="/project/{{project.id}}/issue/{{issue.id}}"
-              *ngFor="let issue of getIssuesForCurrentPage()">
+              *ngFor="let issue of issuesForCurrentPage">
             <th scope="row">{{issue.id}}</th>
             <td>{{issue.summary}}</td>
           </tr>
         </tbody>
       </table>
     </div>
+    <ng-template #noIssues>
+      No issues found
+    </ng-template>
   </div>
 
-  <ngb-pagination *ngIf="project.issues.size > pageSize"
+  <ngb-pagination *ngIf="issues.length > pageSize"
                   [pageSize]="pageSize"
-                  [collectionSize]="project.issues.size"
+                  [collectionSize]="issues.length"
                   [(page)]="page"
                   [boundaryLinks]="true"
                   [maxSize]="10"

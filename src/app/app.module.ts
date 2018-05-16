@@ -67,7 +67,7 @@ export const firebaseConfig = {
     FontAwesomeModule,
     ExportModule,
     FormsModule,
-    MomentModule
+    MomentModule,
   ],
   providers: [
     AuthenticationService,
