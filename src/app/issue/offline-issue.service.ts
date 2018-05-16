@@ -41,13 +41,12 @@ export class OfflineIssueService implements IssueService {
     return new Observable((observer) => {
       const projects: Array<TrackForeverProject> = [];
       this.dataService.getKeys().then((keys: Array<string>) => {
-        keys.forEach((key) => {
-          this.dataService.getProject(key).then((project: TrackForeverProject) => {
+        Promise.all(keys.map((key) => {
+          return this.dataService.getProject(key).then((project: TrackForeverProject) => {
             projects.push(project);
             observer.next(projects);
           });
-        });
-        observer.complete();
+        })).then(() => observer.complete());
       });
     });
   }

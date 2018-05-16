@@ -79,4 +79,22 @@ describe('OfflineIssueService', () => {
       expect(r).toEqual(mockTrackforeverProject.id);
     });
   }));
+
+  it('should not complete getProjects prematurely', async(() => {
+    const projectKey = 'my-project';
+    const p = mockTrackforeverProject;
+
+    dataServiceSpy.getProject.and.returnValue(new Promise((resolve) => setTimeout(() => resolve(p), 300)));
+    dataServiceSpy.getKeys.and.returnValue(new Promise((resolve) => resolve([projectKey])));
+
+    let nexted = false;
+    service.getProjects()
+      .subscribe(projects => {
+          nexted = true;
+          expect(projects).toEqual([p]);
+        },
+        error => fail(),
+        () => expect(nexted).toBeTruthy()
+      );
+  }));
 });
