@@ -6,19 +6,15 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
 body {
-    font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
-    font-size: 14px;
-}
-
-.container {
-    padding-top: 25px;
+  font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
+  font-size: 14px;
 }
 
 .auth {
-    text-align: center;
-    width: 350px;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: lightblue;
-    padding: 25px;
+  text-align: center;
+  width: 350px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: lightblue;
+  padding: 25px;
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
 import { Router } from '@angular/router';
 import { AuthUser } from './shared/models/auth-user';
+import { faClock } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ export class AppComponent implements OnInit {
   user: AuthUser;
   url: string;
   collapsed = true;
+  faClock = faClock;
 
   constructor(public authService: AuthenticationService, private router: Router) { }
 

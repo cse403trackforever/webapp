@@ -1,38 +1,53 @@
-<!-- navigation bar -->
-<nav class="navbar navbar-expand-md navbar-light bg-light">
-  <a class="navbar-brand" routerLink="/home">
-    <img src="/assets/navbar-icon.svg" width="30" height="30" alt="">
-  </a>
+<header>
+  <!-- navigation bar -->
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="container d-flex justify-content-between">
+      <a routerLink="/home" class="navbar-brand d-flex align-items-center">
+        <fa-icon [icon]="faClock"></fa-icon>
+        <strong class="pl-1">TrackForever</strong>
+      </a>
 
-  <button class="navbar-toggler" type="button" data-toggle="collapse"
-    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-    aria-expanded="false" aria-label="Toggle navigation"
-    (click)="toggleCollapsed()">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+      <button *ngIf="user" class="navbar-toggler" type="button" data-toggle="collapse"
+        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation"
+        (click)="toggleCollapsed()">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-  <!-- nav bar items if user is signed in -->
-  <div *ngIf="user" id="navbarSupportedContent" [ngClass]="{'collapse': collapsed, 'navbar-collapse': true}">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" routerLink="/home">Home</a>
-      </li>
+      <!-- nav bar items if user is signed in -->
+      <div *ngIf="user" id="navbarSupportedContent" [ngClass]="{'collapse': collapsed, 'navbar-collapse': true}">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" routerLink="/home">Home</a>
+          </li>
 
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/user">User Settings</a>
-      </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/user">User Settings</a>
+          </li>
 
-      <li class="nav-item">
-        <a class="nav-link" (click)="signOut()">Sign Out</a>
-      </li>
-    </ul>
+          <li class="nav-item">
+            <a class="nav-link" (click)="signOut()">Sign Out</a>
+          </li>
+        </ul>
 
-    <form class="form-inline">
-      <button class="btn btn-primary ml-3" routerLink="/import">Import Project</button>
-    </form>
-  </div>
-</nav>
+        <form class="form-inline">
+          <button class="btn btn-primary" routerLink="/import">Import Project</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+</header>
 
-<main role="main">
+<main role="main" class="bg-light pb-4">
   <router-outlet></router-outlet>
 </main>
+
+<footer class="text-muted pt-4">
+  <div class="container">
+    <p class="float-right">
+      <a href="#">Back to top</a>
+    </p>
+    <p>Track Forever is © cse403trackforever</p>
+    <p>New to Track Forever, check out our <a href="https://github.com/cse403trackforever/webapp">Source Code</a>.</p>
+  </div>
+</footer>

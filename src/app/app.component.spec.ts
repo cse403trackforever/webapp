@@ -5,6 +5,7 @@ import { AuthenticationService } from './authentication.service';
 import { Observable } from 'rxjs/Observable';
 import { mockUser } from './shared/models/mock/mock-user';
 import { AuthUser } from './shared/models/auth-user';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 describe('AppComponent', () => {
   let authServiceStub: Partial<AuthenticationService>;
@@ -19,7 +20,7 @@ describe('AppComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [ AppComponent ],
-      imports: [ RouterTestingModule ],
+      imports: [ RouterTestingModule, FontAwesomeModule ],
       providers: [ {provide: AuthenticationService, useValue: authServiceStub} ]
     }).compileComponents();
   }));
