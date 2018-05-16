@@ -18,6 +18,7 @@ import { ImportComponent } from '../import.component';
 })
 export class ImportTrackForeverComponent extends ImportComponent {
   projectFile: File = null;
+  fileText = 'Choose JSON file';
 
   constructor(importService: ImportService) {
     super(importService);
@@ -25,6 +26,7 @@ export class ImportTrackForeverComponent extends ImportComponent {
 
   handleFileInput(files: FileList) {
     this.projectFile = files.item(0);
+    this.fileText = (this.projectFile) ? this.projectFile.name : 'Choose JSON file';
   }
 
   onSubmit(): void {
