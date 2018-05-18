@@ -11,13 +11,7 @@ export class MarkdownPipe implements PipeTransform {
       return '';
     }
     if (options) {
-      if (options.source === ImportSource.GitHub) {
-        if (options.markedOptions) {
-          options.markedOptions.gfm = true;
-        } else {
-          options.markedOptions = {gfm: true};
-        }
-      } else if (options.source === ImportSource.GoogleCode && !options.force) {
+      if (options.source === ImportSource.GoogleCode && !options.force) {
         // GoogleCode content is already formatted as HTML
         return markdown;
       }
