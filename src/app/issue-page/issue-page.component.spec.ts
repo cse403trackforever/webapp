@@ -7,7 +7,7 @@ import 'rxjs/add/observable/of';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock-trackforever-project';
 import { MarkdownPipe } from '../shared/pipes/markdown.pipe';
-import { MomentModule } from 'angular2-moment';
+import { MomentModule } from 'ngx-moment';
 
 describe('IssuePageComponent', () => {
   let component: IssuePageComponent;

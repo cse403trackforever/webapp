@@ -7,13 +7,8 @@
       "files": [
         "/favicon.ico",
         "/index.html",
-        "/.nojekyll",
-        "/404.html"
-      ],
-      "versionedFiles": [
-        "/*.bundle.css",
-        "/*.bundle.js",
-        "/*.chunk.js"
+        "/*.css",
+        "/*.js"
       ]
     }
   }, {

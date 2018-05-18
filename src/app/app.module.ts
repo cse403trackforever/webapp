@@ -29,7 +29,7 @@ import { MyProjectsPageComponent } from './my-projects-page/my-projects-page.com
 import { ExportModule } from './export/export.module';
 import { MarkdownPipe } from './shared/pipes/markdown.pipe';
 import { FormsModule } from '@angular/forms';
-import { MomentModule } from 'angular2-moment';
+import { MomentModule } from 'ngx-moment';
 import { UserPageComponent } from './user-page/user-page.component';
 
 export const firebaseConfig = {

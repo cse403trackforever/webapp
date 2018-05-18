@@ -20,6 +20,7 @@ describe('SyncService', () => {
       'getIssue',
       'setIssues',
       'getRequestedProjects',
+      'getRequestedIssues',
       'getHashes'
     ]);
 
@@ -64,14 +65,18 @@ describe('SyncService', () => {
   });
 
   it('doesn\'t crash', async(() => {
-    offlineSpy.getProjects.and.returnValue(Observable.of([mockRedmineTrackForeverProject]));
-    onlineSpy.getHashes.and.returnValue(() => {
-      const map = new Map();
-      Array.from(mockRedmineTrackForeverProject.issues).forEach(e => {
-        map.set(e[0], e[1].hash);
-      });
-      return Observable.of(map);
+    const map = new Map();
+    Array.from(mockRedmineTrackForeverProject.issues).forEach(e => {
+      map.set(e[0], e[1].hash);
     });
+
+    offlineSpy.getProjects.and.returnValue(Observable.of([mockRedmineTrackForeverProject]));
+    onlineSpy.getHashes.and.returnValue(Observable.of(map));
+    onlineSpy.getRequestedProjects.and.returnValue(Observable.of([]));
+    onlineSpy.getRequestedIssues.and.returnValue(Observable.of([]));
+
+    // TODO mock every other method of offline and online services which are called in sync
+
     service.sync().subscribe(r => expect(r).toBeTruthy());
   }));
 });

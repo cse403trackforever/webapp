@@ -2,7 +2,7 @@
 
 language: node_js
 node_js:
-  - 6.11.0
+  - 8.11.2
 dist: trusty
 sudo: required
 

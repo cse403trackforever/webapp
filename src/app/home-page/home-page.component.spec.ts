@@ -1,12 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { HomePageComponent } from './home-page.component';
-import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthenticationService } from '../authentication.service';
 import { mockUser } from '../shared/models/mock/mock-user';
 import { AuthUser } from '../shared/models/auth-user';
+import { Router } from '@angular/router';
 
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
@@ -21,12 +20,18 @@ describe('HomePageComponent', () => {
       }
     };
 
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+
     TestBed.configureTestingModule({
-      imports: [ RouterTestingModule, FontAwesomeModule ],
+      imports: [ FontAwesomeModule ],
       providers: [
         {
           provide: AuthenticationService,
           useValue: authServiceStub
+        },
+        {
+          provide: Router,
+          useValue: routerSpy
         }
       ],
       declarations: [ HomePageComponent ]
@@ -40,7 +45,7 @@ describe('HomePageComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create', async(() => {
     expect(component).toBeTruthy();
-  });
+  }));
 });
