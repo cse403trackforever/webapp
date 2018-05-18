@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IssueService } from '../issue/issue.service';
 import { ActivatedRoute } from '@angular/router';
 import { TrackForeverIssue } from '../import/models/trackforever/trackforever-issue';
+import { ImportSource } from '../import/models/import-source';
 
 @Component({
   selector: 'app-issue-details',
@@ -10,6 +11,7 @@ import { TrackForeverIssue } from '../import/models/trackforever/trackforever-is
 })
 export class IssuePageComponent implements OnInit {
   issue: TrackForeverIssue;
+  source: ImportSource;
 
   constructor(
     private issueService: IssueService,
@@ -23,8 +25,10 @@ export class IssuePageComponent implements OnInit {
   getIssue(): void {
     const projectId = this.route.snapshot.paramMap.get('projectId');
     const issueId = this.route.snapshot.paramMap.get('issueId');
-    this.issueService.getIssue(projectId, issueId)
-      .subscribe(issue => this.issue = issue);
+    this.issueService.getProject(projectId).subscribe(project => {
+      this.source = <ImportSource> project.source;
+      this.issue = project.issues.get(issueId);
+    });
   }
 
 }

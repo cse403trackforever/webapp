@@ -3,7 +3,7 @@
 
   <div class="container">
     <h2>Description</h2>
-    <p [innerHTML]="project.description | markdown"></p>
+    <p [innerHTML]="project.description | markdown: {source: project.source, force: true}"></p>
   </div>
 
   <div>

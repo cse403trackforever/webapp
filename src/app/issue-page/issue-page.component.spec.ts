@@ -5,7 +5,6 @@ import { IssueService } from '../issue/issue.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TrackForeverIssue } from '../import/models/trackforever/trackforever-issue';
 import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock-trackforever-project';
 import { MarkdownPipe } from '../shared/pipes/markdown.pipe';
 import { MomentModule } from 'angular2-moment';
@@ -13,15 +12,10 @@ import { MomentModule } from 'angular2-moment';
 describe('IssuePageComponent', () => {
   let component: IssuePageComponent;
   let fixture: ComponentFixture<IssuePageComponent>;
-  let issueServiceStub: Partial<IssueService>;
+  let issueServiceSpy: jasmine.SpyObj<IssueService>;
 
   beforeEach(async(() => {
-    // stub IssueService for testing
-    issueServiceStub = {
-      getIssue(): Observable<TrackForeverIssue> {
-        return Observable.of(mockTrackforeverProject.issues[0]);
-      }
-    };
+    const issueSpy = jasmine.createSpyObj('IssueService', ['getProject']);
 
     TestBed.configureTestingModule({
       imports: [
@@ -29,18 +23,23 @@ describe('IssuePageComponent', () => {
         MomentModule,
       ],
       declarations: [ IssuePageComponent, MarkdownPipe ],
-      providers: [ {provide: IssueService, useValue: issueServiceStub}]
+      providers: [ {provide: IssueService, useValue: issueSpy}]
     })
     .compileComponents();
+
+    issueServiceSpy = TestBed.get(IssueService);
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IssuePageComponent);
     component = fixture.componentInstance;
+
+    issueServiceSpy.getProject.and.returnValue(Observable.of(mockTrackforeverProject));
+
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create', async(() => {
     expect(component).toBeTruthy();
-  });
+  }));
 });
