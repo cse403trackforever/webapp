@@ -98,8 +98,7 @@ export class ImportGithubService implements ConvertService {
           }
           let pages = Observable.of(response);
 
-          let i = 1;
-          while (++i <= lastIndex) {
+          for (let i = 2; i <= lastIndex; i++) {
             pages = Observable.merge(pages, this.fetchService.fetchIssues(ownerName, projectName, i));
           }
 
