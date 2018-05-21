@@ -1,4 +1,4 @@
 export interface RedmineIssueSubstructure {
-  id: Number;
+  id: number;
   name: string;
 }

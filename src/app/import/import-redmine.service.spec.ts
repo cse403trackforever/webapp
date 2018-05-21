@@ -19,10 +19,10 @@ describe('ImportRedmineService', () => {
       fetchProject(projectName: string): Observable<RedmineProject> {
         return Observable.of(mockRedmineProject);
       },
-      fetchIssues(projectName: string, projectID: Number, limit: Number, offset: Number): Observable<RedmineIssueArray> {
+      fetchIssues(projectName: string, projectID: number, limit: number, offset: number): Observable<RedmineIssueArray> {
         return Observable.of(mockRedmineIssueArray);
       },
-      fetchIssue(projectID: Number, issueID: Number): Observable<RedmineIssue> {
+      fetchIssue(projectID: number, issueID: number): Observable<RedmineIssue> {
         return Observable.of(mockRedmineIssueArray.issues.find(issue => issue.id === issueID));
       }
     };

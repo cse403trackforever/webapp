@@ -14,7 +14,7 @@ import { SyncService } from '../sync/sync.service';
 
 export interface ImportRedmineArgs {
   projectName: string;
-  projectID: Number;
+  projectID: number;
 }
 
 @Injectable()

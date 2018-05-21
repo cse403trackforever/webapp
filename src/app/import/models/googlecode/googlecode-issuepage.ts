@@ -1,7 +1,7 @@
 import { GoogleCodeIssueSummary } from './googlecode-issuesummary';
 
 export interface GoogleCodeIssuePage {
-    pageNumber: Number;
-    totalPages: Number;
+    pageNumber: number;
+    totalPages: number;
     issues: Array<GoogleCodeIssueSummary>;
 }

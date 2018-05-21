@@ -1,10 +1,10 @@
 export interface RedmineProject {
-  id: Number;
+  id: number;
   name: string;
   identifier: string;
   description: string;
   homepage: string;
-  is_public?: Boolean;
+  is_public?: boolean;
   created_on: string;
   updated_on: string;
 }

@@ -5,14 +5,14 @@ export interface GoogleCodeProject {
     name: string;
     summary: string;
     description: string;
-    stars: Number;
+    stars: number;
     license?: string;
     contentLicense: string;
     labels: Array<string>;
     links: Array<GoogleCodeLink>;
     blogs: Array<GoogleCodeLink>;
-    creationTime?: Number;
-    hasSource: Boolean;
+    creationTime?: number;
+    hasSource: boolean;
     repoType: string;
     subRepos: Array<string>;
     ancestorRepo?: string;

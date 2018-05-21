@@ -36,7 +36,7 @@ export class ImportPageComponent implements OnInit {
    * Signal to the user that the import is in progress
    * @param working whether progress is being made
    */
-  onWorking(working: Boolean) {
+  onWorking(working: boolean) {
     this.working = working.valueOf();
   }
 

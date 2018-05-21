@@ -20,7 +20,7 @@ import { ImportRedmineService } from '../import-redmine.service';
 })
 export class ImportRedmineComponent extends ImportComponent {
   projectName: string;
-  projectID: Number;
+  projectID: number;
 
   constructor(importService: ImportService) {
     super(importService);

@@ -1,4 +1,4 @@
 export interface GitHubLabel {
-    id: Number;
+    id: number;
     name: string;
 }

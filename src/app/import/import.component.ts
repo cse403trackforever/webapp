@@ -7,7 +7,7 @@ export abstract class ImportComponent {
   // Gives a user readable error message on failure
   @Output() error = new EventEmitter<string>();
   // Signals that the import has begun
-  @Output() working = new EventEmitter<Boolean>();
+  @Output() working = new EventEmitter<boolean>();
 
   protected constructor(private importService: ImportService) { }
 

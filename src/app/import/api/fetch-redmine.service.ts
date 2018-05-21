@@ -14,12 +14,12 @@ export class FetchRedmineService {
     return this.http.get<RedmineProject>(`${this.baseUrl}/projects/${projectName}.json`);
   }
 
-  fetchIssues(projectName: string, projectID: Number, limit: Number, offset: Number): Observable<RedmineIssueArray> {
+  fetchIssues(projectName: string, projectID: number, limit: number, offset: number): Observable<RedmineIssueArray> {
     const url = `${this.baseUrl}/issues.json?projectID=${projectID}&limit=${limit}&offset=${offset}`;
     return this.http.get<RedmineIssueArray>(url);
   }
 
-  fetchIssue(projectID: Number, issueID: Number): Observable<RedmineIssue> {
+  fetchIssue(projectID: number, issueID: number): Observable<RedmineIssue> {
     return this.http.get<RedmineIssue>(`${this.baseUrl}/issues/${issueID}.json?project_id=${projectID}`);
   }
 

@@ -3,7 +3,7 @@ import { GitHubLabel } from './github-label';
 
 export interface GitHubIssue {
     comments_url: string;
-    number: Number;
+    number: number;
     state: string;
     title: string;
     body: string;

@@ -28,7 +28,7 @@ export class ImportGithubService implements ConvertService {
   constructor(private fetchService: FetchGithubService) {
   }
 
-  private static convertIssueToTrackForever(issue: GitHubIssue, projectId: Number, ghComments: Array<GitHubComment>): TrackForeverIssue {
+  private static convertIssueToTrackForever(issue: GitHubIssue, projectId: number, ghComments: Array<GitHubComment>): TrackForeverIssue {
     let comments: TrackForeverComment[] = [];
     if (issue.body) {
       comments.push({

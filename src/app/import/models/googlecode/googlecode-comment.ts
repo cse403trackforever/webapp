@@ -1,9 +1,9 @@
 import { GoogleCodeAttachment } from './googlecode-attachment';
 
 export interface GoogleCodeComment {
-    id: Number;
-    commenterId: Number;
+    id: number;
+    commenterId: number;
     content: string;
-    timestamp: Number;
+    timestamp: number;
     attachments: Array<GoogleCodeAttachment>;
 }

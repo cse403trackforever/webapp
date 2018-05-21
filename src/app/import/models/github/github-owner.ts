@@ -1,5 +1,5 @@
 export interface GitHubOwner {
-    id: Number;
+    id: number;
     login: string;
     type: string;
 }
