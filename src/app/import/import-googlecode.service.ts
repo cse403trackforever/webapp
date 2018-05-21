@@ -71,10 +71,9 @@ export class ImportGoogleCodeService implements ConvertService {
       this.fetchService.fetchProject(projectName),
       this.fetchService.fetchIssuePage(projectName, 1)
         .flatMap((issuePage: GoogleCodeIssuePage) => {
-          let i = 1;
           let pages: Observable<GoogleCodeIssuePage> = Observable.of(issuePage);
           // Get each issue page 2 -> totalPages
-          while (i++ < issuePage.totalPages) {
+          for (let i = 2; i <= issuePage.totalPages; i++) {
             pages = Observable.merge(pages, this.fetchService.fetchIssuePage(projectName, i));
           }
 

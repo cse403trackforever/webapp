@@ -64,10 +64,9 @@ export class ImportRedmineService {
     return Observable.forkJoin(
       this.fetchService.fetchProject(projectName),
       this.fetchService.fetchIssues(projectName, projectID, 100, 0).flatMap((issuePage: RedmineIssueArray) => {
-        let i = 0;
         let pages: Observable<RedmineIssueArray> = Observable.of(issuePage);
 
-        while (++i < Math.round(issuePage.total_count.valueOf() / 100.0)) {
+        for (let i = 1; i < Math.round(issuePage.total_count.valueOf() / 100.0); i++) {
           pages = Observable.merge(pages, this.fetchService.fetchIssues(projectName, projectID, 100, 100 * i));
         }
 
