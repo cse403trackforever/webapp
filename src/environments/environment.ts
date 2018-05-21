@@ -7,4 +7,12 @@ export const environment = {
   production: false,
   apiUrl: 'https://localhost:8080/trackforever', // TODO replace with local API
   mockBackend: false,
+  firebaseConfig: {
+    apiKey: 'AIzaSyBA71GS_jZvo9N2Qk3deEw89i1XxYLRZHs',
+    authDomain: 'track-forever-b0adf.firebaseapp.com',
+    databaseURL: 'https://track-forever-b0adf.firebaseio.com',
+    storageBucket: 'track-forever-b0adf.appspot.com',
+    projectId: 'track-forever-b0adf',
+    messagingSenderId: '102665664344'
+  }
 };

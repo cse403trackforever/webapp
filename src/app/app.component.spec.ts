@@ -1,7 +1,7 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AuthenticationService } from './authentication.service';
+import { AuthenticationService } from './authentication/authentication.service';
 import { Observable } from 'rxjs/Observable';
 import { mockUser } from './shared/models/mock/mock-user';
 import { AuthUser } from './shared/models/auth-user';

@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserPageComponent } from './user-page.component';
-import { AuthenticationService } from '../authentication.service';
+import { AuthenticationService } from '../authentication/authentication.service';
 import { AuthUser } from '../shared/models/auth-user';
 import { Observable } from 'rxjs/Observable';
 import { mockUser } from '../shared/models/mock/mock-user';

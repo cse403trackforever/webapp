@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
-import { AuthenticationService } from '../authentication.service';
+import { AuthenticationService } from '../authentication/authentication.service';
 import { Router } from '@angular/router';
 import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
 

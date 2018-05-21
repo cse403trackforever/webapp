@@ -7,15 +7,36 @@ import { ImportPageComponent } from './import/import-page/import-page.component'
 import { SigninPageComponent } from './signin-page/signin-page.component';
 import { MyProjectsPageComponent } from './my-projects-page/my-projects-page.component';
 import { UserPageComponent } from './user-page/user-page.component';
+import { AuthGuard } from './shared/guards/auth.guard';
+
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomePageComponent },
-  { path: 'myprojects', component: MyProjectsPageComponent },
-  { path: 'project/:id', component: ProjectPageComponent },
-  { path: 'project/:projectId/issue/:issueId', component: IssuePageComponent },
-  { path: 'import', component: ImportPageComponent },
   { path: 'signin', component: SigninPageComponent },
-  { path: 'user', component: UserPageComponent }
+  {
+    path: 'myprojects',
+    component: MyProjectsPageComponent,
+    canActivate: [ AuthGuard ]
+  },
+  {
+    path: 'project/:id',
+    component: ProjectPageComponent,
+    canActivate: [ AuthGuard ]
+  },
+  {
+    path: 'project/:projectId/issue/:issueId',
+    component: IssuePageComponent,
+    canActivate: [ AuthGuard ]
+  },
+  {
+    path: 'import',
+    component: ImportPageComponent,
+    canActivate: [ AuthGuard ]
+  },
+  {
+    path: 'user',
+    component: UserPageComponent
+  },
 ];
 
 @NgModule({

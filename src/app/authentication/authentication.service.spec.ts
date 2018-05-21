@@ -6,7 +6,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable } from 'rxjs/Observable';
 import { FirebaseApp, AngularFireModule } from 'angularfire2';
 import { RouterTestingModule } from '@angular/router/testing';
-import { firebaseConfig } from './app.module';
+import { environment } from '../../environments/environment';
 import * as firebase from 'firebase/app';
 
 describe('AuthenticationService', () => {
@@ -15,6 +15,8 @@ describe('AuthenticationService', () => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     const authState: firebase.User = null;
     const mockAngularFireAuth: any = { authState: Observable.of(authState)};
+
+    const firebaseConfig = environment.firebaseConfig;
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, AngularFireModule.initializeApp(firebaseConfig)],

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '../authentication.service';
+import { Component } from '@angular/core';
+import { AuthenticationService } from '../authentication/authentication.service';
 import { Router } from '@angular/router';
 import { faFacebook, faGithub } from '@fortawesome/free-brands-svg-icons';
 
@@ -8,7 +8,7 @@ import { faFacebook, faGithub } from '@fortawesome/free-brands-svg-icons';
   templateUrl: './signin-page.component.html',
   styleUrls: ['./signin-page.component.css']
 })
-export class SigninPageComponent implements OnInit {
+export class SigninPageComponent {
   faFacebook = faFacebook;
   faGithub = faGithub;
   email;
@@ -16,33 +16,17 @@ export class SigninPageComponent implements OnInit {
 
   constructor(public authService: AuthenticationService, private router: Router) { }
 
-  ngOnInit() {
-    // // If the user is already logged in, redirects to home
-    // this.authService.getUser()
-    //   .subscribe(user => {
-    //     if (user) {
-    //       console.log('signin page - user is signed in');
-    //       this.router.navigate(['/myprojects']);
-    //     } else {
-    //       console.log('signin page - user is not signed in');
-    //     }
-    //   });
+  private tryLogin(p: Promise<any>): void {
+    p.then(() => this.afterSignIn())
+      .catch(err => console.log(err));
   }
 
   tryFacebookLogin() {
-    this.authService.facebookSignIn()
-      .then(res => {
-        this.afterSignIn();
-      }, err => console.log(err)
-      );
+    this.tryLogin(this.authService.facebookSignIn());
   }
 
   tryGithubLogin() {
-    this.authService.githubSignIn()
-      .then(res => {
-        this.afterSignIn();
-      }, err => console.log(err)
-      );
+    this.tryLogin(this.authService.githubSignIn());
   }
 
   tryEmailLogin(formData) {
@@ -50,15 +34,12 @@ export class SigninPageComponent implements OnInit {
       email: formData.value.email,
       password: formData.value.password
     };
-    this.authService.emailSignIn(value)
-      .then(res => {
-        this.afterSignIn();
-      }, err => console.log(err)
-      );
+    this.tryLogin(this.authService.emailSignIn(value));
   }
 
   afterSignIn() {
     // TODO perform any after sign in steps needed here
-    this.router.navigate(['/myprojects']);
+    const redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/myprojects';
+    this.router.navigate([redirect]);
   }
 }

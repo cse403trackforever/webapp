@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from './authentication.service';
 import { Router } from '@angular/router';
 import { AuthUser } from './shared/models/auth-user';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
+import { AuthenticationService } from './authentication/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -12,26 +12,15 @@ import { faClock } from '@fortawesome/free-regular-svg-icons';
 
 export class AppComponent implements OnInit {
   user: AuthUser;
-  url: string;
   collapsed = true;
   faClock = faClock;
 
   constructor(public authService: AuthenticationService, private router: Router) { }
 
   ngOnInit(): void {
-
     this.authService.getUser()
       .subscribe(user => {
         this.user = user;
-        const url = this.router.routerState.snapshot.url;
-
-        // redirects the user as necessary
-        if (user && url === '/home') {
-          this.router.navigate(['/myprojects']);
-        } else if (!user && url !== '/home' && url !== '/signin' && url !== '/signout') {
-
-          this.router.navigate(['/signin']);
-        }
       });
   }
 
@@ -40,6 +29,7 @@ export class AppComponent implements OnInit {
   }
 
   signOut(): void {
+    this.user = undefined;
     this.authService.signOut();
     this.router.navigate(['/home']);
   }
