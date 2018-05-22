@@ -63,6 +63,10 @@ export class AuthenticationService {
     return this.signIn(this.afAuth.auth.createUserWithEmailAndPassword(value.email, value.password));
   }
 
+  resetPassword(value) {
+    return this.afAuth.auth.sendPasswordResetEmail(value);
+  }
+
   signOut() {
     this.loggedIn = false;
     this.afAuth.auth.signOut();

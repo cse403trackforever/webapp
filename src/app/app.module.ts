@@ -26,6 +26,7 @@ import { MomentModule } from 'ngx-moment';
 import { UserPageComponent } from './user-page/user-page.component';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { SigninPageComponent } from './signin-page/signin-page.component';
+import { PasswordResetPageComponent } from './password-reset-page/password-reset-page.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { SigninPageComponent } from './signin-page/signin-page.component';
     MarkdownPipe,
     MyProjectsPageComponent,
     UserPageComponent,
+    PasswordResetPageComponent,
   ],
   imports: [
     BrowserModule,

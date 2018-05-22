@@ -8,11 +8,13 @@ import { SigninPageComponent } from './signin-page/signin-page.component';
 import { MyProjectsPageComponent } from './my-projects-page/my-projects-page.component';
 import { UserPageComponent } from './user-page/user-page.component';
 import { AuthGuard } from './shared/guards/auth.guard';
+import { PasswordResetPageComponent } from './password-reset-page/password-reset-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomePageComponent },
   { path: 'signin', component: SigninPageComponent },
+  { path: 'reset', component: PasswordResetPageComponent },
   {
     path: 'myprojects',
     component: MyProjectsPageComponent,
