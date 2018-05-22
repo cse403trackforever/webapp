@@ -8,7 +8,7 @@
       <div class="form-group">
         <label for="sourceSelect">Source</label>
         <select class="form-control custom-select" id="sourceSelect" name="sourceSelect" [(ngModel)]="selectedItem" (ngModelChange)="onSelect($event)">
-          <option *ngFor="let option of options" [value]="option">{{option}}</option>
+          <option *ngFor="let option of textOptions" [value]="option">{{option}}</option>
         </select>
       </div>
     </form>
@@ -17,10 +17,10 @@
     <div class="loader mx-auto" *ngIf="working"></div>
 
     <div [ngSwitch]="selectedItem" [hidden]="working" #switch>
-      <app-import-github *ngSwitchCase="options[0]" (working)="onWorking($event)" (complete)="onComplete($event)" (error)="onError($event)"></app-import-github>
-      <app-import-googlecode *ngSwitchCase="options[1]" (working)="onWorking($event)" (complete)="onComplete($event)" (error)="onError($event)"></app-import-googlecode>
-      <app-import-redmine *ngSwitchCase="options[2]" (working)="onWorking($event)" (complete)="onComplete($event)" (error)="onError($event)"></app-import-redmine>
-      <app-import-trackforever *ngSwitchCase="options[3]" (working)="onWorking($event)" (complete)="onComplete($event)" (error)="onError($event)"></app-import-trackforever>
+      <app-import-github *ngSwitchCase="options.GitHub" (working)="onWorking($event)" (complete)="onComplete($event)" (error)="onError($event)"></app-import-github>
+      <app-import-googlecode *ngSwitchCase="options.GoogleCode" (working)="onWorking($event)" (complete)="onComplete($event)" (error)="onError($event)"></app-import-googlecode>
+      <app-import-redmine *ngSwitchCase="options.Redmine" (working)="onWorking($event)" (complete)="onComplete($event)" (error)="onError($event)"></app-import-redmine>
+      <app-import-trackforever *ngSwitchCase="options.JSON" (working)="onWorking($event)" (complete)="onComplete($event)" (error)="onError($event)"></app-import-trackforever>
       <p *ngSwitchDefault>Select a source</p>
     </div>
   </div>

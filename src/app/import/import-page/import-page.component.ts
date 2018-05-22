@@ -1,6 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+// Available importers and name to display
+enum ImportOptions {
+  GitHub = 'GitHub',
+  GoogleCode = 'Google Code',
+  Redmine = 'Redmine',
+  JSON = 'JSON',
+}
+
 @Component({
   selector: 'app-import-page',
   templateUrl: './import-page.component.html',
@@ -11,15 +19,10 @@ export class ImportPageComponent implements OnInit {
   // Error message to be displayed. Message will display when this value is Truthy.
   errorMessage = '';
   working = false;
+  options = ImportOptions;
+  textOptions = Object.keys(this.options).map(e => this.options[e]);
 
-  options: string[] = [
-    'GitHub',
-    'Google Code',
-    'Redmine',
-    'JSON',
-  ];
-
-  selectedItem = this.options[0];
+  selectedItem = ImportOptions.GitHub;
 
   constructor(private router: Router) { }
 
