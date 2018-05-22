@@ -20,7 +20,6 @@ addons:
 script:
   - npm run lint
   - npm run test:headless
-  - xvfb-run npm run e2e
   - ng build --prod
 
 after_success:

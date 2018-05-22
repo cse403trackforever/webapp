@@ -8,13 +8,11 @@ import { AuthUser } from '../shared/models/auth-user';
 export class AuthenticationService {
   private user: Observable<AuthUser>;
 
-  private loggedIn = false;
   redirectUrl: string;
 
   constructor(public afAuth: AngularFireAuth) {
     this.user = afAuth.authState.map((user: firebase.UserInfo) => {
       if (user) {
-        this.loggedIn = true;
         return {
           displayName: user.displayName,
           email: user.email,
@@ -23,7 +21,6 @@ export class AuthenticationService {
           providerId: user.providerId
         };
       } else {
-        this.loggedIn = false;
         return null;
       }
     });
@@ -33,14 +30,13 @@ export class AuthenticationService {
     return this.user;
   }
 
-  isLoggedIn(): boolean {
-    return this.loggedIn;
+  isLoggedIn(): Observable<boolean> {
+    return this.user.map(user => user != null);
   }
 
   private signIn(p: Promise<any>): Promise<any> {
     return p
       .then(res => {
-        this.loggedIn = true;
         return res;
       })
       .catch(err => console.log(err));
@@ -68,7 +64,6 @@ export class AuthenticationService {
   }
 
   signOut() {
-    this.loggedIn = false;
     this.afAuth.auth.signOut();
   }
 }

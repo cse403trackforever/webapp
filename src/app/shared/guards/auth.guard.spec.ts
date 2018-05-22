@@ -3,6 +3,7 @@ import { TestBed, async } from '@angular/core/testing';
 import { AuthGuard } from './auth.guard';
 import { Router, RouterStateSnapshot } from '@angular/router';
 import { AuthenticationService } from '../../authentication/authentication.service';
+import { Observable } from 'rxjs';
 
 describe('AuthGuard', () => {
   let guard: AuthGuard;
@@ -38,19 +39,22 @@ describe('AuthGuard', () => {
 
   it('should redirect if not logged in', async(() => {
     const redirectUrl = '/redirect_to_here';
-    authServiceSpy.isLoggedIn.and.returnValue(false);
+    authServiceSpy.isLoggedIn.and.returnValue(Observable.of(false));
     routerSpy.navigate.and.callFake(() => {});
 
-    expect(guard.canActivate(null, <RouterStateSnapshot> { url: redirectUrl })).toBeFalsy();
-
-    expect(routerSpy.navigate.calls.count()).toEqual(1);
-    expect(routerSpy.navigate.calls.mostRecent().args).toEqual([['/signin']]);
-    expect(authServiceSpy.redirectUrl).toEqual(redirectUrl);
+    guard.canActivate(null, <RouterStateSnapshot> { url: redirectUrl })
+      .subscribe(canActivate => {
+        expect(canActivate).toBeFalsy();
+        expect(routerSpy.navigate.calls.count()).toEqual(1);
+        expect(routerSpy.navigate.calls.mostRecent().args).toEqual([['/signin']]);
+        expect(authServiceSpy.redirectUrl).toEqual(redirectUrl);
+      });
   }));
 
   it('should activate if logged in', async(() => {
-    authServiceSpy.isLoggedIn.and.returnValue(true);
+    authServiceSpy.isLoggedIn.and.returnValue(Observable.of(true));
 
-    expect(guard.canActivate(null, null)).toBeTruthy();
+    guard.canActivate(null, null)
+      .subscribe(canActivate => expect(canActivate).toBeTruthy());
   }));
 });
