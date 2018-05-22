@@ -51,7 +51,7 @@ export class AuthenticationService {
   }
 
   emailSignIn(value) {
-    return this.signIn(this.afAuth.auth.signInWithEmailAndPassword(value.email, value.password));
+    return this.afAuth.auth.signInWithEmailAndPassword(value.email, value.password);
   }
 
   register(value) {

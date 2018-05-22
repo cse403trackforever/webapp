@@ -13,12 +13,15 @@ export class SigninPageComponent {
   faGithub = faGithub;
   email;
   password;
+  error;
 
   constructor(public authService: AuthenticationService, private router: Router) { }
 
   private tryLogin(p: Promise<any>): void {
     p.then(() => this.afterSignIn())
-      .catch(err => console.log(err));
+      .catch(err => {
+        this.error = true;
+      });
   }
 
   tryFacebookLogin() {
@@ -38,7 +41,7 @@ export class SigninPageComponent {
   }
 
   afterSignIn() {
-    // TODO perform any after sign in steps needed here
+    this.error = false;
     const redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/myprojects';
     this.router.navigate([redirect]);
   }

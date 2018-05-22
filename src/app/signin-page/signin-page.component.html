@@ -4,7 +4,8 @@
 
   <div class="container auth">
     <div class="email">
-      <form #f='ngForm' (ngSubmit)="tryEmailLogin(f)" class="form-register">
+        <p *ngIf="error" class="alert alert-danger">Invalid email or incorrect password, please try again</p>
+        <form #f='ngForm' (ngSubmit)="tryEmailLogin(f)" class="form-register">
         <p>Sign in or sign up with a registered account</p>
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="email" [(ngModel)]="email" name="email" class="form-control mb-2" placeholder="Email address" required autofocus>
