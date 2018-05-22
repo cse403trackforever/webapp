@@ -1,16 +1,15 @@
 <div class="container" *ngIf="project">
   <h1>{{project.name}}</h1>
 
-  <div class="container">
-    <h2>Description</h2>
-    <p [innerHTML]="project.description | markdown: {source: project.source, force: true}"></p>
-  </div>
+  <p [innerHTML]="project.description | markdown: {source: project.source, force: true}"></p>
 
-  <div>
-    <div class="container">
-      <div class="row">
-        <input [(ngModel)]="queryString" (keyup)="updateIssues()" class="form-control col-12 col-sm mb-2" type="search"
-               placeholder="Search" aria-label="Search">
+  <form>
+    <div class="form-row align-items-center">
+      <div class="col-auto">
+        <input [(ngModel)]="queryString" [ngModelOptions]="{standalone: true}" (keyup)="updateIssues()" class="form-control col-12 col-sm mb-2" type="search"
+                placeholder="Search" aria-label="Search">
+      </div>
+      <div class="col-auto mb-2">
         <div ngbDropdown>
           <button class="btn btn-outline-secondary" id="labelFilterDropdown" ngbDropdownToggle>Labels</button>
           <div ngbDropdownMenu aria-labelledby="labelFilterDropdown">
@@ -23,35 +22,33 @@
             </button>
           </div>
         </div>
-        <div>
-          <button class="btn btn-outline-primary" type="button" (click)="export()">Export</button>
-        </div>
       </div>
-
-      <!--TODO - filters, column customization-->
+      <div class="col-auto mb-2">
+        <button class="btn btn-outline-primary" type="button" (click)="export()">Export</button>
+      </div>
     </div>
+  </form>
 
-    <div class="container table-responsive" *ngIf="issuesForCurrentPage?.length > 0; else noIssues">
-      <table class="table table-hover">
-        <thead class="thead-light">
-          <tr class="text-nowrap">
-            <th scope="col">ID # <fa-icon [icon]="faSortUp"></fa-icon></th>
-            <th scope="col">Summary</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr routerLink="/project/{{project.id}}/issue/{{issue.id}}"
-              *ngFor="let issue of issuesForCurrentPage">
-            <th scope="row">{{issue.id}}</th>
-            <td>{{issue.summary}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <ng-template #noIssues>
-      No issues found
-    </ng-template>
+  <div class="table-responsive" *ngIf="issuesForCurrentPage?.length > 0; else noIssues">
+    <table class="table table-hover">
+      <thead class="thead-light">
+        <tr class="text-nowrap">
+          <th scope="col">ID # <fa-icon [icon]="faSortUp"></fa-icon></th>
+          <th scope="col">Summary</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr routerLink="/project/{{project.id}}/issue/{{issue.id}}"
+            *ngFor="let issue of issuesForCurrentPage">
+          <th scope="row">{{issue.id}}</th>
+          <td>{{issue.summary}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+  <ng-template #noIssues>
+    No issues found
+  </ng-template>
 
   <ngb-pagination *ngIf="issues.length > pageSize"
                   [pageSize]="pageSize"
@@ -60,21 +57,6 @@
                   [boundaryLinks]="true"
                   [maxSize]="10"
                   [rotate]="true"
-                  [ellipses]="false"></ngb-pagination>
-
-<!--
-  Issue summary model:
-
-  id: string;
-  projectId: string;
-  status: string;
-  summary: string;
-  labels: string[];
-  numComments: number;
-  submitterName: string;
-  assignees: string[];
-  timeCreated: number;
-  timeUpdated: number;
-  timeClosed: number;
--->
+                  [ellipses]="false"
+                  class="d-flex justify-content-center"></ngb-pagination>
 </div>

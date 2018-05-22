@@ -1,47 +1,43 @@
 <div class="container" *ngIf="projects">
-    <h1>My Projects</h1>
+  <h1>My Projects</h1>
+  <div class="row">
+    <form class="form-inline col-md-6 col-xl-4">
+      <input class="form-control col-12 col-sm mb-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success col-12 col-sm-auto ml-sm-2 mb-2" type="submit">Search</button>
+    </form>
+  </div>
+  TODO - filters, column customization
 
-    <div class="container">
-        <div class="row">
-            <form class="form-inline col-md-6 col-xl-4">
-                <input class="form-control col-12 col-sm mb-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success col-12 col-sm-auto ml-sm-2 mb-2" type="submit">Search</button>
-            </form>
-        </div>
-        TODO - filters, column customization
-    </div>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead class="thead-light">
+        <tr class="text-nowrap">
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Source</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr routerLink="/project/{{project.id}}" *ngFor="let project of getProjectsForCurrentPage()">
+          <td>{{project.name}}</td>
+          <td>{{project.description.length > 50
+              ? (project.description | slice:0:47) + '...'
+              : project.description}}</td>
+          <td>{{project.source}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-    <div class="container table-responsive">
-        <table class="table table-hover">
-            <thead class="thead-light">
-                <tr class="text-nowrap">
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Source</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr routerLink="/project/{{project.id}}" *ngFor="let project of getProjectsForCurrentPage()">
-                    <th scope="row"><a href="">1</a></th>
-                    <td>{{project.name}}</td>
-                    <td>{{project.description.length > 50
-                            ? (project.description | slice:0:47) + '...'
-                            : project.description}}</td>
-                    <td>{{project.source}}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <ngb-pagination *ngIf="projects.length > pageSize"
-                    [pageSize]="pageSize"
-                    [collectionSize]="projects.length"
-                    [(page)]="page"
-                    [boundaryLinks]="true"
-                    [maxSize]="10"
-                    [rotate]="true"
-                    [ellipses]="false"></ngb-pagination>
+  <ngb-pagination *ngIf="projects.length > pageSize"
+                  [pageSize]="pageSize"
+                  [collectionSize]="projects.length"
+                  [(page)]="page"
+                  [boundaryLinks]="true"
+                  [maxSize]="10"
+                  [rotate]="true"
+                  [ellipses]="false"
+                  class="d-flex justify-content-center"></ngb-pagination>
 </div>
 
 <!-- TODO no projects message -->

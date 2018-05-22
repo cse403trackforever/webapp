@@ -3,12 +3,12 @@
 
   <div class="row">
     <div class="col left">
-      <div class="container">
+      <div>
         <h2>Summary</h2>
         <p [innerHTML]="issue.summary | markdown: {source: source}"></p>
       </div>
 
-      <div class="container">
+      <div>
           <h2>Comments</h2>
           <div class="comment-section">
             <div class="comment" *ngFor='let comment of issue.comments'>
@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <div class="container issue-details col right">
+    <div class="issue-details col right">
       <h2>Issue details</h2>
 
       <p><span>Project ID:</span> {{issue.projectId}}</p> <!-- create hyperlink back to project -->
