@@ -1,6 +1,6 @@
 import { TestBed, async } from '@angular/core/testing';
 import { ImportTrackForeverService } from './import-trackforever.service';
-import { mockTrackforeverProject } from './models/trackforever/mock/mock-trackforever-project';
+import { mockTrackforeverProject } from '../models/trackforever/mock/mock-trackforever-project';
 
 describe('ImportTrackForeverService', () => {
   let service: ImportTrackForeverService;

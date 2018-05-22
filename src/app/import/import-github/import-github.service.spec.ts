@@ -1,19 +1,19 @@
 import { TestBed, async } from '@angular/core/testing';
 
 import { ImportGithubService } from './import-github.service';
-import { FetchGithubService } from './api/fetch-github.service';
+import { FetchGithubService } from './fetch-github.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
-import { GitHubProject } from './models/github/github-project';
-import * as mockGithubProject from './models/github/mock/mockGithubProject.json';
-import * as mockGithubIssues from './models/github/mock/mockGithubIssues.json';
-import * as mockGithubComments from './models/github/mock/mockGithubComments.json';
-import { GitHubIssue } from './models/github/github-issue';
-import { GitHubComment } from './models/github/github-comment';
-import { TrackForeverProject } from './models/trackforever/trackforever-project';
-import { TrackForeverIssue } from './models/trackforever/trackforever-issue';
-import { TrackForeverComment } from './models/trackforever/trackforever-comment';
-import { SyncService } from '../sync/sync.service';
+import { GitHubProject } from './models/github-project';
+import * as mockGithubProject from './models/mock/mockGithubProject.json';
+import * as mockGithubIssues from './models/mock/mockGithubIssues.json';
+import * as mockGithubComments from './models/mock/mockGithubComments.json';
+import { GitHubIssue } from './models/github-issue';
+import { GitHubComment } from './models/github-comment';
+import { TrackForeverProject } from '../models/trackforever/trackforever-project';
+import { TrackForeverIssue } from '../models/trackforever/trackforever-issue';
+import { TrackForeverComment } from '../models/trackforever/trackforever-comment';
+import { SyncService } from '../../sync/sync.service';
 import { HttpResponse, HttpHeaders } from '@angular/common/http';
 
 describe('ImportGithubService', () => {

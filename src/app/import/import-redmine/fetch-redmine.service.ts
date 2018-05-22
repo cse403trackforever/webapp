@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
-import { RedmineProject } from '../models/redmine/redmine-project';
-import { RedmineIssue } from '../models/redmine/redmine-issue';
-import { RedmineIssueArray } from '../models/redmine/redmine-issueArray';
+import { RedmineProject } from './models/redmine-project';
+import { RedmineIssue } from './models/redmine-issue';
+import { RedmineIssueArray } from './models/redmine-issueArray';
 
 @Injectable()
 export class FetchRedmineService {

@@ -4,13 +4,13 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/merge';
-import { TrackForeverProject } from './models/trackforever/trackforever-project';
-import { TrackForeverIssue } from './models/trackforever/trackforever-issue';
-import { FetchRedmineService } from './api/fetch-redmine.service';
-import { RedmineIssue } from './models/redmine/redmine-issue';
-import { RedmineProject } from './models/redmine/redmine-project';
-import { RedmineIssueArray } from './models/redmine/redmine-issueArray';
-import { SyncService } from '../sync/sync.service';
+import { TrackForeverProject } from '../models/trackforever/trackforever-project';
+import { TrackForeverIssue } from '../models/trackforever/trackforever-issue';
+import { FetchRedmineService } from './fetch-redmine.service';
+import { RedmineIssue } from './models/redmine-issue';
+import { RedmineProject } from './models/redmine-project';
+import { RedmineIssueArray } from './models/redmine-issueArray';
+import { SyncService } from '../../sync/sync.service';
 
 export interface ImportRedmineArgs {
   projectName: string;

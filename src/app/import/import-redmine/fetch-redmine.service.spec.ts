@@ -1,11 +1,11 @@
 import { TestBed, async } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { FetchRedmineService } from './fetch-redmine.service';
-import { RedmineProject } from '../models/redmine/redmine-project';
-import { RedmineIssueArray } from '../models/redmine/redmine-issueArray';
-import { mockRedmineIssueArray } from '../models/redmine/mock/mock-redmine-issueArray';
-import { mockRedmineProject } from '../models/redmine/mock/mock-redmine-project';
-import { RedmineIssue } from '../models/redmine/redmine-issue';
+import { RedmineProject } from './models/redmine-project';
+import { RedmineIssueArray } from './models/redmine-issueArray';
+import { mockRedmineIssueArray } from './models/mock/mock-redmine-issueArray';
+import { mockRedmineProject } from './models/mock/mock-redmine-project';
+import { RedmineIssue } from './models/redmine-issue';
 
 describe('FetchRedmineService', () => {
   let service: FetchRedmineService;

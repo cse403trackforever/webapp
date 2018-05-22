@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { FetchRedmineService } from './api/fetch-redmine.service';
+import { FetchRedmineService } from './fetch-redmine.service';
 import { ImportRedmineService } from './import-redmine.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
-import { RedmineProject } from './models/redmine/redmine-project';
-import { mockRedmineProject } from './models/redmine/mock/mock-redmine-project';
-import { RedmineIssueArray } from './models/redmine/redmine-issueArray';
-import { mockRedmineIssueArray } from './models/redmine/mock/mock-redmine-issueArray';
-import { RedmineIssue } from './models/redmine/redmine-issue';
-import { mockRedmineTrackForeverProject } from './models/redmine/mock/mock-redmine-trackforever-project';
+import { RedmineProject } from './models/redmine-project';
+import { mockRedmineProject } from './models/mock/mock-redmine-project';
+import { RedmineIssueArray } from './models/redmine-issueArray';
+import { mockRedmineIssueArray } from './models/mock/mock-redmine-issueArray';
+import { RedmineIssue } from './models/redmine-issue';
+import { mockRedmineTrackForeverProject } from './models/mock/mock-redmine-trackforever-project';
 
 describe('ImportRedmineService', () => {
   let fetchServiceStub: Partial<FetchRedmineService>;

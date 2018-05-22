@@ -4,9 +4,9 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/merge';
-import { TrackForeverProject } from './models/trackforever/trackforever-project';
-import { ConvertService } from './convert.service';
-import { TrackForeverIssue } from './models/trackforever/trackforever-issue';
+import { TrackForeverProject } from '../models/trackforever/trackforever-project';
+import { ConvertService } from '../convert.service';
+import { TrackForeverIssue } from '../models/trackforever/trackforever-issue';
 
 @Injectable()
 export class ImportTrackForeverService implements ConvertService {

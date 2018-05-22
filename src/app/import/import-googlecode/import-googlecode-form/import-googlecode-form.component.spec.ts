@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { ImportTrackForeverComponent } from './import-trackforever.component';
-import { ImportService } from '../import.service';
+import { ImportGooglecodeFormComponent } from './import-googlecode-form.component';
+import { ImportService } from '../../import.service';
 
-describe('ImportTrackForeverComponent', () => {
-  let component: ImportTrackForeverComponent;
-  let fixture: ComponentFixture<ImportTrackForeverComponent>;
+describe('ImportGooglecodeFormComponent', () => {
+  let component: ImportGooglecodeFormComponent;
+  let fixture: ComponentFixture<ImportGooglecodeFormComponent>;
   let importServiceStub: Partial<ImportService>;
 
   beforeEach(async(() => {
@@ -16,10 +16,10 @@ describe('ImportTrackForeverComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      declarations: [ImportTrackForeverComponent],
+      declarations: [ImportGooglecodeFormComponent],
       imports: [FormsModule],
     })
-      .overrideComponent(ImportTrackForeverComponent, {
+      .overrideComponent(ImportGooglecodeFormComponent, {
         set: {
           providers: [
             {
@@ -33,7 +33,7 @@ describe('ImportTrackForeverComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ImportTrackForeverComponent);
+    fixture = TestBed.createComponent(ImportGooglecodeFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

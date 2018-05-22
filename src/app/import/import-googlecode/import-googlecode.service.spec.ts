@@ -1,21 +1,21 @@
 import { TestBed, async } from '@angular/core/testing';
 
-import { FetchGoogleCodeService } from './api/fetch-googlecode.service';
+import { FetchGoogleCodeService } from './fetch-googlecode.service';
 import { ImportGoogleCodeService } from './import-googlecode.service';
-import * as mockGoogleCodeProject from './models/googlecode/mock/project.json';
-import * as mockGoogleCodeIssuePage1 from './models/googlecode/mock/issues-page-1.json';
-import * as mockGoogleCodeIssuePage2 from './models/googlecode/mock/issues-page-2.json';
-import * as mockGoogleCodeIssuePage3 from './models/googlecode/mock/issues-page-3.json';
-import * as mockGoogleCodeIssues1 from './models/googlecode/mock/issues-1.json';
-import * as mockGoogleCodeIssues2 from './models/googlecode/mock/issues-2.json';
-import * as mockGoogleCodeIssues3 from './models/googlecode/mock/issues-3.json';
-import { GoogleCodeIssue } from './models/googlecode/googlecode-issue';
+import * as mockGoogleCodeProject from './models/mock/project.json';
+import * as mockGoogleCodeIssuePage1 from './models/mock/issues-page-1.json';
+import * as mockGoogleCodeIssuePage2 from './models/mock/issues-page-2.json';
+import * as mockGoogleCodeIssuePage3 from './models/mock/issues-page-3.json';
+import * as mockGoogleCodeIssues1 from './models/mock/issues-1.json';
+import * as mockGoogleCodeIssues2 from './models/mock/issues-2.json';
+import * as mockGoogleCodeIssues3 from './models/mock/issues-3.json';
+import { GoogleCodeIssue } from './models/googlecode-issue';
 import { Observable } from 'rxjs/Observable';
-import { GoogleCodeProject } from './models/googlecode/googlecode-project';
-import { GoogleCodeIssuePage } from './models/googlecode/googlecode-issuepage';
-import { TrackForeverIssue } from './models/trackforever/trackforever-issue';
-import { TrackForeverComment } from './models/trackforever/trackforever-comment';
-import { GoogleCodeComment } from './models/googlecode/googlecode-comment';
+import { GoogleCodeProject } from './models/googlecode-project';
+import { GoogleCodeIssuePage } from './models/googlecode-issuepage';
+import { TrackForeverIssue } from '../models/trackforever/trackforever-issue';
+import { TrackForeverComment } from '../models/trackforever/trackforever-comment';
+import { GoogleCodeComment } from './models/googlecode-comment';
 
 describe('ImportGoogleCodeService', () => {
   let service: ImportGoogleCodeService;

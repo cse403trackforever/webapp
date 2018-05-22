@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { ImportComponent } from '../import.component';
-import { ImportService } from '../import.service';
-import { ConvertService } from '../convert.service';
+import { ImportComponent } from '../../import.component';
+import { ImportService } from '../../import.service';
+import { ConvertService } from '../../convert.service';
 import { ImportGithubService } from '../import-github.service';
-import { FetchGithubService } from '../api/fetch-github.service';
+import { FetchGithubService } from '../fetch-github.service';
 
 @Component({
   selector: 'app-import-github',
-  templateUrl: './import-github.component.html',
-  styleUrls: ['./import-github.component.css'],
+  templateUrl: './import-github-form.component.html',
+  styleUrls: ['./import-github-form.component.css'],
   providers: [
     ImportService,
     FetchGithubService,
@@ -18,7 +18,7 @@ import { FetchGithubService } from '../api/fetch-github.service';
     }
   ]
 })
-export class ImportGithubComponent extends ImportComponent {
+export class ImportGithubFormComponent extends ImportComponent {
   ownerName: string;
   projectName: string;
 

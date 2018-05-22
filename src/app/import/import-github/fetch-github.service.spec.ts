@@ -2,12 +2,12 @@ import { TestBed, async } from '@angular/core/testing';
 
 import { FetchGithubService } from './fetch-github.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import * as mockGithubProject from '../models/github/mock/mockGithubProject.json';
-import * as mockGithubIssues from '../models/github/mock/mockGithubIssues.json';
-import * as mockGithubComments from '../models/github/mock/mockGithubComments.json';
-import { GitHubProject } from '../models/github/github-project';
-import { GitHubIssue } from '../models/github/github-issue';
-import { GitHubComment } from '../models/github/github-comment';
+import * as mockGithubProject from './models/mock/mockGithubProject.json';
+import * as mockGithubIssues from './models/mock/mockGithubIssues.json';
+import * as mockGithubComments from './models/mock/mockGithubComments.json';
+import { GitHubProject } from './models/github-project';
+import { GitHubIssue } from './models/github-issue';
+import { GitHubComment } from './models/github-comment';
 
 describe('FetchGithubService', () => {
   let service: FetchGithubService;

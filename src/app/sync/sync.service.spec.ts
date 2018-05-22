@@ -3,7 +3,7 @@ import { TestBed, async } from '@angular/core/testing';
 import { OnlineIssueService } from '../issue/online-issue.service';
 import { OfflineIssueService } from '../issue/offline-issue.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { mockRedmineTrackForeverProject } from '../import/models/redmine/mock/mock-redmine-trackforever-project';
+import { mockRedmineTrackForeverProject } from '../import/import-redmine/models/mock/mock-redmine-trackforever-project';
 import { Observable } from 'rxjs/Observable';
 
 

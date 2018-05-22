@@ -1,4 +1,4 @@
-import { TrackForeverProject } from '../../trackforever/trackforever-project';
+import { TrackForeverProject } from '../../../models/trackforever/trackforever-project';
 
 export const mockRedmineTrackForeverProject: TrackForeverProject = {
   hash: '2b93695f92bbdbd45d6fa30dd07e89d29baa1434d27d1171b527ba3f7d43c6460afd6a426b8809f0990fcb6cbb0c9fa4a338efcfe45c048b6122fa0accacc337',

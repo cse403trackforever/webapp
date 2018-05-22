@@ -5,17 +5,17 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/reduce';
-import { TrackForeverProject } from './models/trackforever/trackforever-project';
-import { TrackForeverIssue } from './models/trackforever/trackforever-issue';
-import { TrackForeverComment } from './models/trackforever/trackforever-comment';
-import { FetchGoogleCodeService } from './api/fetch-googlecode.service';
-import { GoogleCodeIssue } from './models/googlecode/googlecode-issue';
-import { GoogleCodeComment } from './models/googlecode/googlecode-comment';
-import { GoogleCodeProject } from './models/googlecode/googlecode-project';
-import { GoogleCodeIssuePage } from './models/googlecode/googlecode-issuepage';
-import { GoogleCodeIssueSummary } from './models/googlecode/googlecode-issuesummary';
-import { ConvertService } from './convert.service';
-import { SyncService } from '../sync/sync.service';
+import { TrackForeverProject } from '../models/trackforever/trackforever-project';
+import { TrackForeverIssue } from '../models/trackforever/trackforever-issue';
+import { TrackForeverComment } from '../models/trackforever/trackforever-comment';
+import { FetchGoogleCodeService } from './fetch-googlecode.service';
+import { GoogleCodeIssue } from './models/googlecode-issue';
+import { GoogleCodeComment } from './models/googlecode-comment';
+import { GoogleCodeProject } from './models/googlecode-project';
+import { GoogleCodeIssuePage } from './models/googlecode-issuepage';
+import { GoogleCodeIssueSummary } from './models/googlecode-issuesummary';
+import { ConvertService } from '../convert.service';
+import { SyncService } from '../../sync/sync.service';
 
 @Injectable()
 export class ImportGoogleCodeService implements ConvertService {

@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { ImportRedmineComponent } from './import-redmine.component';
-import { ImportService } from '../import.service';
+import { ImportRedmineFormComponent } from './import-redmine-form.component';
+import { ImportService } from '../../import.service';
 
-describe('ImportRedmineComponent', () => {
-  let component: ImportRedmineComponent;
-  let fixture: ComponentFixture<ImportRedmineComponent>;
+describe('ImportRedmineFormComponent', () => {
+  let component: ImportRedmineFormComponent;
+  let fixture: ComponentFixture<ImportRedmineFormComponent>;
   let importServiceStub: Partial<ImportService>;
 
   beforeEach(async(() => {
@@ -16,10 +16,10 @@ describe('ImportRedmineComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      declarations: [ImportRedmineComponent],
+      declarations: [ImportRedmineFormComponent],
       imports: [FormsModule],
     })
-      .overrideComponent(ImportRedmineComponent, {
+      .overrideComponent(ImportRedmineFormComponent, {
         set: {
           providers: [
             {
@@ -33,7 +33,7 @@ describe('ImportRedmineComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ImportRedmineComponent);
+    fixture = TestBed.createComponent(ImportRedmineFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

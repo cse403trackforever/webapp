@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { ImportGoogleCodeService } from '../import-googlecode.service';
-import { ConvertService } from '../convert.service';
-import { ImportService } from '../import.service';
-import { FetchGoogleCodeService } from '../api/fetch-googlecode.service';
-import { ImportComponent } from '../import.component';
+import { ConvertService } from '../../convert.service';
+import { ImportService } from '../../import.service';
+import { FetchGoogleCodeService } from '../fetch-googlecode.service';
+import { ImportComponent } from '../../import.component';
 
 @Component({
   selector: 'app-import-googlecode',
-  templateUrl: './import-googlecode.component.html',
-  styleUrls: ['./import-googlecode.component.css'],
+  templateUrl: './import-googlecode-form.component.html',
+  styleUrls: ['./import-googlecode-form.component.css'],
   providers: [
     ImportService,
     FetchGoogleCodeService,
@@ -18,7 +18,7 @@ import { ImportComponent } from '../import.component';
     }
   ]
 })
-export class ImportGoogleCodeComponent extends ImportComponent {
+export class ImportGooglecodeFormComponent extends ImportComponent {
   projectName: string;
 
   constructor(importService: ImportService) {

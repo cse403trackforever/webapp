@@ -4,17 +4,17 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/observable/forkJoin';
-import { FetchGithubService } from './api/fetch-github.service';
-import { GitHubProject } from './models/github/github-project';
-import { GitHubIssue } from './models/github/github-issue';
-import { GitHubLabel } from './models/github/github-label';
-import { GitHubComment } from './models/github/github-comment';
-import { GitHubOwner } from './models/github/github-owner';
-import { TrackForeverProject } from './models/trackforever/trackforever-project';
-import { TrackForeverIssue } from './models/trackforever/trackforever-issue';
-import { TrackForeverComment } from './models/trackforever/trackforever-comment';
-import { ConvertService } from './convert.service';
-import { SyncService } from '../sync/sync.service';
+import { FetchGithubService } from './fetch-github.service';
+import { GitHubProject } from './models/github-project';
+import { GitHubIssue } from './models/github-issue';
+import { GitHubLabel } from './models/github-label';
+import { GitHubComment } from './models/github-comment';
+import { GitHubOwner } from './models/github-owner';
+import { TrackForeverProject } from '../models/trackforever/trackforever-project';
+import { TrackForeverIssue } from '../models/trackforever/trackforever-issue';
+import { TrackForeverComment } from '../models/trackforever/trackforever-comment';
+import { ConvertService } from '../convert.service';
+import { SyncService } from '../../sync/sync.service';
 import { HttpResponse } from '@angular/common/http';
 
 export interface ImportGithubArgs {

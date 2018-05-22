@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { GitHubProject } from '../models/github/github-project';
-import { GitHubIssue } from '../models/github/github-issue';
-import { GitHubComment } from '../models/github/github-comment';
+import { GitHubProject } from './models/github-project';
+import { GitHubIssue } from './models/github-issue';
+import { GitHubComment } from './models/github-comment';
 
 @Injectable()
 export class FetchGithubService {
