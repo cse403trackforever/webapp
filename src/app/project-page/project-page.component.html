@@ -29,7 +29,7 @@
     </div>
   </form>
 
-  <div class="table-responsive" *ngIf="issuesForCurrentPage?.length > 0; else noIssues">
+  <div class="table-responsive" *ngIf="issues.length > 0; else noIssues">
     <table class="table table-hover">
       <thead class="thead-light">
         <tr class="text-nowrap">
@@ -39,7 +39,7 @@
       </thead>
       <tbody>
         <tr routerLink="/project/{{project.id}}/issue/{{issue.id}}"
-            *ngFor="let issue of issuesForCurrentPage">
+            *ngFor="let issue of getIssuesForCurrentPage()">
           <th scope="row">{{issue.id}}</th>
           <td>{{issue.summary}}</td>
         </tr>
