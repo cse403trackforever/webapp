@@ -29,6 +29,11 @@ export class ImportGithubService implements ConvertService {
   }
 
   private static convertIssueToTrackForever(issue: GitHubIssue, projectId: number, ghComments: Array<GitHubComment>): TrackForeverIssue {
+    // Don't convert PRs
+    if (issue.pull_request) {
+      return null;
+    }
+
     let comments: TrackForeverComment[] = [];
     if (issue.body) {
       comments.push({
@@ -123,7 +128,7 @@ export class ImportGithubService implements ConvertService {
         const githubComments: GitHubComment[] = githubIssueAndComment[1];
 
         return ImportGithubService.convertIssueToTrackForever(githubIssue, githubProject.id, githubComments);
-      }).forEach(issue => project.issues.set(issue.id, issue));
+      }).filter(e => e).forEach(issue => project.issues.set(issue.id, issue));
 
       return project;
     });
