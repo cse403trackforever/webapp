@@ -27,6 +27,7 @@ import { UserPageComponent } from './user-page/user-page.component';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { SigninPageComponent } from './signin-page/signin-page.component';
 import { PasswordResetPageComponent } from './password-reset-page/password-reset-page.component';
+import { SignUpPageComponent } from './sign-up-page/sign-up-page.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { PasswordResetPageComponent } from './password-reset-page/password-reset
     MyProjectsPageComponent,
     UserPageComponent,
     PasswordResetPageComponent,
+    SignUpPageComponent,
   ],
   imports: [
     BrowserModule,

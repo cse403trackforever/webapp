@@ -1,3 +1,4 @@
+import { SignUpPageComponent } from './sign-up-page/sign-up-page.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomePageComponent } from './home-page/home-page.component';
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'home', component: HomePageComponent },
   { path: 'signin', component: SigninPageComponent },
   { path: 'reset', component: PasswordResetPageComponent },
+  { path: 'signup', component: SignUpPageComponent },
   {
     path: 'myprojects',
     component: MyProjectsPageComponent,

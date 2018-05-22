@@ -10,6 +10,7 @@ export class PasswordResetPageComponent implements OnInit {
   beforeSubmit: boolean;
   afterSubmit: boolean;
   error: boolean;
+  email;
 
   constructor(private authService: AuthenticationService) { }
 

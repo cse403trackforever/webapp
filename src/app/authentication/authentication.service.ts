@@ -55,8 +55,7 @@ export class AuthenticationService {
   }
 
   register(value) {
-    console.log('register');
-    return this.signIn(this.afAuth.auth.createUserWithEmailAndPassword(value.email, value.password));
+    return this.afAuth.auth.createUserWithEmailAndPassword(value.email, value.password);
   }
 
   resetPassword(value) {

@@ -1,0 +1,19 @@
+<div class="container text-center">
+
+  <h1>Join Track Forever</h1>
+
+  <div class="container auth">
+    <p *ngIf="error" class="alert alert-danger">{{ errorMessage }}</p>
+
+    <form #f='ngForm' (ngSubmit)="trySignUp(f)" class="form-register">
+      <p>Sign up with your email</p>
+      <label for="inputEmail" class="sr-only">Email address</label>
+      <input type="email" [(ngModel)]="email" name="email" class="form-control mb-2" placeholder="Email address" required autofocus>
+
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input type="password" [(ngModel)]="password" name="password" class="form-control mb-2" placeholder="Password" required>
+
+      <button class="btn btn-primary btn-block" type="submit">Sign up</button>
+    </form>
+  </div>
+</div>
