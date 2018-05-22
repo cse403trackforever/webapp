@@ -50,15 +50,15 @@ describe('ImportGoogleCodeService', () => {
       .reduce((acc, v) => acc.concat(v));
 
     const issueHashes = [
-      '536e80937c88fb48f9456309a475938b2bc511363c6c6e05c64c15f121d1c7a3856b85979b82f55581b4d9534ff88d7881546799a81ac5990887d87dcb7b196d',
-      '275e912224ccbbc3decaca54f5ef50abd4ae612cd11b38f6ff08f04db05f342a4fa36dfec73b7a4970f70834fa6702358143defc6df2ceaef695294374fe4c32',
-      'ab1d02fd1752f7ba5226e2ed25237fe99aaec5482174c3934f1f2de1841bf9be5fc13cf0c6e2b9c9abe37377f904f5aacc80445f00138fb463171a2f2dc3ab2b',
-      '910d660d00232eb6ba681a2fef2625b1a1e1104ecbfb5ea0d0f83cfdc24239310f327c26102cf5d57a58267715edd55f912748ee7ba64d9ac053a1a8cc921c7b',
-      '45695531cc4e54695278c9cf729488c1f63e5ee5130f0cda25e2717f1fd03fc8a823e9e7f4113064415d8ec7fc2910d8b640338d90d3cc6d182be660b3cb1bf2',
-      '7233b61573ca5dea8ef5c1e58dabd68dbe2fa1bbcd7c6414778a0b00700eda2b16b324debaff8fb45f35ff689a991f60a6603972919ac41795972bf70a3f4d63',
-      '318613974491f9734e6a15209df92bb54d2fe6bc2616f0bf939118060f7c7e5a600ed9ba21a9ceadffc8ca626d99d100c1a1636d0c4256cb705cc57bca59f06e',
-      'dd8a683d2cccd6e82e5b38d8c0394ed69a746e1ee90e69c0dff1ad35d4a0b4b85bb0e0812e144f72448ebbd356139abd077aaa11622a4e804e2a8b0e2bde97c5',
-      '20124fb3329265744bbfbfcb4807569463508e65c1eea4f4a5de864074c0bc13fc6b7a0c4980a57ebd05e3c1e6beafadebde6e7085d6c82eacf6e19427236762',
+      'c7578594f9cbc2d5f4f1e3b7c7e6c11ff8bdcc662eec7ed649de50d128f212a82828689afb2992ab66bafe70520db73ebefab3e50652c453750553d6646cfe1d',
+      'd2c5c8728f018049343438df8bef3699677b5e8c243be0837c6985f98688c39779d5910970591f0b57588c3e5bc92692a4c5d379a68e3559a832e3cd96ee75db',
+      '9482d53c0aeab77472220da0d8aa9527a85933c77049e9207f2902b60003356e302dffdb9b8bf47d3a526bf3fcf1444f76a26ee94ca98b30a56256fdd2669fcc',
+      '1c48e5a3a7c632d9be73b157e8d045622ad6a7c3b9d4b93969db594c16849e982288ccd2f767e8afb5485822ff758decdb76e044ee7397c0ca67e75b15c51a5d',
+      '882c85c4599355585aaf5274cd1a4f22f84e868693d0f6cfa3ade5825d64322ed9d91252368e830e4886262248d424ee958ee51129f391320f658f5f41638787',
+      '77e9a44545d8b9def52cb5521c619521f89c5fa4660772a9634f861f33c7d6cede37a8b9782d3f7252f91ca7e11109e58f6e69c9fae2230175f1452b9594bdff',
+      '65b39d28a13052b61252cb9ac1e7c37a99369caa884ca3e6e88513ea2f59b819e066afaaa93d6a6aa1984ad2c75aa5a4188a492056323e3bfd7cc6ad4af73bc0',
+      'e336b7983b43650e163a4d26cc4b8e4ac7c58e534dccd46e8a9a8fa1c6df8690346d40a82ed18a14a4495a3744df4877f532e9352ea103a637d55f5b8bff4138',
+      '9da0f3f743adba265749163caf5925887b3e8e17a6a3abd04d4de9a5ed53bb881cb89fc678caa47bcf1554921d2705684133e8560e84cf70863a6693d1eb2c02',
     ];
 
     fetchServiceSpy.fetchProject.and.returnValue(Observable.of(mockProject));
@@ -97,7 +97,6 @@ describe('ImportGoogleCodeService', () => {
       const index = gcIssues.indexOf(gc);
       expect(gc).toBeTruthy();
 
-      console.log(`index! ${index}`);
       expect(issue.hash).toEqual(issueHashes[index]);
       expect(issue.prevHash).toEqual('');
       expect(issue.id).toEqual(gc.id.toString());
@@ -108,9 +107,9 @@ describe('ImportGoogleCodeService', () => {
       matchComments(issue.comments, gc.comments);
       expect(issue.submitterName).toEqual('Anonymous');
       expect(issue.assignees).toEqual([]);
-      expect(issue.timeCreated).toEqual(-1);
-      expect(issue.timeUpdated).toEqual(-1);
-      expect(issue.timeClosed).toEqual(-1);
+      expect(issue.timeCreated).toBeNull();
+      expect(issue.timeUpdated).toBeNull();
+      expect(issue.timeClosed).toBeNull();
     });
   }
 

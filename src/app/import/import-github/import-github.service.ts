@@ -49,9 +49,9 @@ export class ImportGithubService implements ConvertService {
       comments: comments,
       submitterName: issue.user.login,
       assignees: issue.assignees.map((owner: GitHubOwner) => owner.login),
-      timeCreated: (issue.created_at) ? Date.parse(issue.created_at) : -1,
-      timeUpdated: (issue.updated_at) ? Date.parse(issue.updated_at) : -1,
-      timeClosed: (issue.closed_at) ? Date.parse(issue.closed_at) : -1
+      timeCreated: (issue.created_at) ? Math.floor(Date.parse(issue.created_at) / 1000) : null,
+      timeUpdated: (issue.updated_at) ? Math.floor(Date.parse(issue.updated_at) / 1000) : null,
+      timeClosed: (issue.closed_at) ? Math.floor(Date.parse(issue.closed_at) / 1000) : null
     };
     newIssue.hash = SyncService.getHash(newIssue, false);
     return newIssue;

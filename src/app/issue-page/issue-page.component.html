@@ -26,9 +26,9 @@
       <p><span>Status:</span> {{issue.status}}</p>
       <p><span>Labels:</span> {{issue.labels}}</p>
       <p><span>Submitter:</span> {{issue.submitterName}}</p>
-      <p *ngIf="issue.timeCreated.valueOf() > 0"><span>Created:</span> {{issue.timeCreated | amFromUnix | amCalendar}}</p>
-      <p *ngIf="issue.timeUpdated.valueOf() > 0"><span>Last updated:</span> {{issue.timeUpdated | amFromUnix | amCalendar}}</p>
-      <p *ngIf="issue.timeClosed.valueOf() > 0"><span>Last closed:</span> {{issue.timeClosed | amFromUnix | amCalendar}}</p>
+      <p *ngIf="issue.timeCreated"><span>Created:</span> {{issue.timeCreated | amFromUnix | amCalendar}}</p>
+      <p *ngIf="issue.timeUpdated"><span>Last updated:</span> {{issue.timeUpdated | amFromUnix | amCalendar}}</p>
+      <p *ngIf="issue.timeClosed"><span>Last closed:</span> {{issue.timeClosed | amFromUnix | amCalendar}}</p>
     </div>
   </div>
 

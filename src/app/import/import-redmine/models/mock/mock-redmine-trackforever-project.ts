@@ -19,8 +19,8 @@ export const mockRedmineTrackForeverProject: TrackForeverProject = {
     [
       '5',
       {
-        hash: '04d8985e9aa7e024ae4404be425588ee22ab4f5a280715157fc1bc383c92c068e54' +
-        '5d2214729877647e9c53087a924c54932aab3df6a8430d25a80fa422b2ccf',
+        hash: '06c1035a4ef2ed12ae3d46aea1103ca814eb70201f729aa8819c61f5d2b0d4e65f' +
+        '5e215b45a351260a05b2976deec6ecb8f2c3d3f2654a95f4bbe1b72e1d4719',
         prevHash: '',
         id: '5',
         projectId: 'Redmine:my-project',
@@ -30,16 +30,16 @@ export const mockRedmineTrackForeverProject: TrackForeverProject = {
         comments: [],
         submitterName: 'David Dupre',
         assignees: [],
-        timeCreated: 1525542698000,
-        timeUpdated: 1525542749000,
-        timeClosed: 1525542749000
+        timeCreated: 1525542698,
+        timeUpdated: 1525542749,
+        timeClosed: 1525542749
       }
     ],
     [
       '123',
       {
-        hash: 'f817f2f45393d1bfe08a886796b7c2bbf2445aa83933683e9305fc8cb87ba3755b54' +
-        '0b504972cfc125f1993c5e5565149a36e89688a268d3f285825d4a3b6b6f',
+        hash: '942b40a7e4b1896128dbe96686c55e8d35d756f18c057164bd0ffcbfd7962933c83' +
+        '3b4d916a9c19ed957a0c11819b4fe8370a501874dd338d0180d8a144c5c35',
         prevHash: '',
         id: '123',
         projectId: 'Redmine:my-project',
@@ -49,9 +49,9 @@ export const mockRedmineTrackForeverProject: TrackForeverProject = {
         comments: [],
         submitterName: 'denvercoder9',
         assignees: ['denvercoder9'],
-        timeCreated: 1525542997000,
-        timeUpdated: 1525542997000,
-        timeClosed: -1
+        timeCreated: 1525542997,
+        timeUpdated: 1525542997,
+        timeClosed: null
       }
     ]
   ])

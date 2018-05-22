@@ -35,9 +35,9 @@ export class ImportGoogleCodeService implements ConvertService {
       comments: issue.comments.map((comment: GoogleCodeComment) => this.convertCommentToTrackForever(comment)),
       submitterName: 'Anonymous',
       assignees: [],
-      timeCreated: -1,
-      timeUpdated: -1,
-      timeClosed: -1
+      timeCreated: null,
+      timeUpdated: null,
+      timeClosed: null
     };
     newIssue.hash = SyncService.getHash(newIssue, false);
     return newIssue;

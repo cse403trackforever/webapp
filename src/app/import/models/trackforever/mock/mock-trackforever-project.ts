@@ -64,7 +64,7 @@ export const mockTrackforeverProject: TrackForeverProject = {
         ],
         timeCreated: 1523574466,
         timeUpdated: 1523574466,
-        timeClosed: -1,
+        timeClosed: null,
       }
     ]
   ])

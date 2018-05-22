@@ -120,9 +120,21 @@ describe('ImportGithubService', () => {
       }
       expect(issue.submitterName).toEqual(gh.user.login);
       expect(issue.assignees).toEqual(gh.assignees.map(owner => owner.login));
-      expect(issue.timeCreated).toEqual(gh.created_at ? Date.parse(gh.created_at) : -1);
-      expect(issue.timeUpdated).toEqual(gh.updated_at ? Date.parse(gh.updated_at) : -1);
-      expect(issue.timeClosed).toEqual(gh.closed_at ? Date.parse(gh.closed_at) : -1);
+      if (gh.created_at) {
+        expect(issue.timeCreated).toEqual(Math.floor(Date.parse(gh.created_at) / 1000));
+      } else {
+        expect(issue.timeCreated).toBeNull();
+      }
+      if (gh.updated_at) {
+        expect(issue.timeUpdated).toEqual(Math.floor(Date.parse(gh.updated_at) / 1000));
+      } else {
+        expect(issue.timeUpdated).toBeNull();
+      }
+      if (gh.closed_at) {
+        expect(issue.timeClosed).toEqual(Math.floor(Date.parse(gh.closed_at) / 1000));
+      } else {
+        expect(issue.timeClosed).toBeNull();
+      }
     });
   }
 

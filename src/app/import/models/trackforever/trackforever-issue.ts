@@ -11,7 +11,7 @@ export interface TrackForeverIssue {
   comments: Array<TrackForeverComment>;
   submitterName: string;
   assignees: Array<string>;
-  timeCreated: number;
-  timeUpdated: number;
-  timeClosed: number;
+  timeCreated?: number;
+  timeUpdated?: number;
+  timeClosed?: number;
 }
