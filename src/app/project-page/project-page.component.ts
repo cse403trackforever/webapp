@@ -46,16 +46,7 @@ export class ProjectPageComponent implements OnInit {
       .filter(i => i.id.includes(query) || i.summary.toLowerCase().includes(query))
 
       // filter based on labels
-      .filter(i => {
-        let matches = true;
-        this.labelFilters.forEach(l => {
-          if (!i.labels.includes(l)) {
-            matches = false;
-            return;
-          }
-        });
-        return matches;
-      });
+      .filter(i => Array.from(this.labelFilters).every(l => i.labels.includes(l)));
 
     this.issuesForCurrentPage = this.getIssuesForCurrentPage();
   }
