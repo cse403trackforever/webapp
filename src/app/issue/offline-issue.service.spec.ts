@@ -64,10 +64,10 @@ describe('OfflineIssueService', () => {
       .subscribe(projects => expect(projects).toEqual([p]));
   }));
 
-  it('should set an issue', async(() => {
+  it('should set issues', async(() => {
     dataServiceSpy.getProject.and.returnValue(new Promise((resolve) => resolve(mockTrackforeverProject)));
     dataServiceSpy.addProject.and.returnValue(new Promise(resolve => resolve(mockTrackforeverProject.id)));
-    service.setIssue(mockTrackforeverProject.id, Array.from(mockTrackforeverProject.issues).map(e => e[1])).subscribe(r => {
+    service.setIssues(mockTrackforeverProject.id, Array.from(mockTrackforeverProject.issues).map(e => e[1])).subscribe(r => {
       expect(r).toEqual(mockTrackforeverProject.id);
     });
   }));

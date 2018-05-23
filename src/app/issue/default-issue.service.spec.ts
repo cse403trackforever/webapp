@@ -8,11 +8,13 @@ import { OnlineIssueService } from './online-issue.service';
 import { OfflineIssueService } from './offline-issue.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock-trackforever-project';
+import { SyncService } from '../sync/sync.service';
 
 describe('DefaultIssueService', () => {
   let service: DefaultIssueService;
   let offlineSpy: jasmine.SpyObj<OfflineIssueService>;
   let onlineSpy: jasmine.SpyObj<OnlineIssueService>;
+  let syncServiceSpy: jasmine.SpyObj<SyncService>;
 
   const mockOnline: Partial<Navigator> = {onLine: true};
   const mockOffline: Partial<Navigator> = {onLine: false};
@@ -23,8 +25,10 @@ describe('DefaultIssueService', () => {
    * @param {boolean} online the value of Navigator.onLine
    */
   function setupTest(online: boolean) {
-    const offSpy = jasmine.createSpyObj('OfflineIssueService', ['getProject', 'getProjects', 'getIssue']);
+    const offSpy = jasmine.createSpyObj('OfflineIssueService',
+      ['getProject', 'getProjects', 'getIssue', 'setIssue', 'setProject']);
     const onSpy = jasmine.createSpyObj('OnlineIssueService', ['getProject', 'getProjects', 'getIssue']);
+    const syncSpy = jasmine.createSpyObj('SyncService', ['sync']);
 
     TestBed.configureTestingModule({
       providers: [
@@ -40,6 +44,10 @@ describe('DefaultIssueService', () => {
         {
           provide: 'Navigator',
           useValue: online ? mockOnline : mockOffline
+        },
+        {
+          provide: SyncService,
+          useValue: syncSpy
         }
       ]
     });
@@ -47,6 +55,7 @@ describe('DefaultIssueService', () => {
     service = TestBed.get(DefaultIssueService);
     offlineSpy = TestBed.get(OfflineIssueService);
     onlineSpy = TestBed.get(OnlineIssueService);
+    syncServiceSpy = TestBed.get(SyncService);
   }
 
   it('should be created', async(() => {
@@ -219,5 +228,57 @@ describe('DefaultIssueService', () => {
         expect(onlineSpy.getProjects.calls.count()).toBe(0);
         expect(offlineSpy.getProjects.calls.count()).toBe(1);
       });
+  }));
+
+  it('should set issues offline', async(() => {
+    setupTest(false);
+
+    const issue = mockTrackforeverProject.issues.get('123');
+    const res = 'hello';
+
+    offlineSpy.setIssue.and.returnValue(Observable.of(res));
+
+    service.setIssue(issue)
+      .subscribe(r => expect(r).toEqual(res));
+  }));
+
+  it('should set issues online', async(() => {
+    setupTest(true);
+
+    const issue = mockTrackforeverProject.issues.get('123');
+    const res = 'hello';
+    const res2 = 'hello?';
+
+    offlineSpy.setIssue.and.returnValue(Observable.of(res));
+    syncServiceSpy.sync.and.returnValue(Observable.of(res2));
+
+    service.setIssue(issue)
+      .subscribe(r => expect(r).toEqual(res2));
+
+    expect(syncServiceSpy.sync.calls.count()).toBe(1);
+  }));
+
+  it('should set projects offline', async(() => {
+    setupTest(false);
+
+    const res = 'hello';
+
+    offlineSpy.setProject.and.returnValue(Observable.of(res));
+
+    service.setProject(mockTrackforeverProject)
+      .subscribe(r => expect(r).toEqual(res));
+  }));
+
+  it('should set projects online', async(() => {
+    setupTest(true);
+
+    const res = 'hello';
+    const res2 = 'hello?';
+
+    offlineSpy.setProject.and.returnValue(Observable.of(res));
+    syncServiceSpy.sync.and.returnValue(Observable.of(res2));
+
+    service.setProject(mockTrackforeverProject)
+      .subscribe(r => expect(r).toEqual(res2));
   }));
 });

@@ -69,7 +69,7 @@ export class SyncService {
       // Update locally unmodified issues
       o = this.onlineIssueService.getIssue(projectId, updatedIssue.id);
     }
-    return o.mergeMap(newIssue => this.offlineIssueService.setIssue(projectId, [newIssue]));
+    return o.mergeMap(newIssue => this.offlineIssueService.setIssues(projectId, [newIssue]));
   }
 
   private getTasks(projects: Array<TrackForeverProject>, remoteHashes: Map<string, HashResponse>): SyncTask {
@@ -135,7 +135,7 @@ export class SyncService {
     const reqIssues: Observable<string> = this.onlineIssueService.getRequestedIssues(task.issuesToFetch)
       .mergeMap(newIssues => {
         const obs: Observable<string>[] = [];
-        newIssues.forEach((val, key) => obs.push(this.offlineIssueService.setIssue(key, val)));
+        newIssues.forEach((val, key) => obs.push(this.offlineIssueService.setIssues(key, val)));
         return obs;
       })
       .mergeAll();

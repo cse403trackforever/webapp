@@ -13,4 +13,8 @@ export abstract class IssueService {
   abstract getProject(projectKey: string): Observable<TrackForeverProject>;
 
   abstract getIssue(projectKey: string, issueId: string): Observable<TrackForeverIssue>;
+
+  abstract setProject(project: TrackForeverProject): Observable<any>;
+
+  abstract setIssue(issue: TrackForeverIssue): Observable<any>;
 }

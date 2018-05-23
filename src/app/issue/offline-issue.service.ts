@@ -22,7 +22,14 @@ export class OfflineIssueService implements IssueService {
     );
   }
 
-  setIssue(projectKey: string, issues: Array<TrackForeverIssue>): Observable<string> {
+  setIssue(issue: TrackForeverIssue): Observable<string> {
+    return Observable.fromPromise(this.dataService.getProject(issue.projectId).then(project => {
+      project.issues.set(issue.id, issue);
+      return this.dataService.addProject(project);
+    }));
+  }
+
+  setIssues(projectKey: string, issues: Array<TrackForeverIssue>): Observable<string> {
     return Observable.fromPromise(this.dataService.getProject(projectKey).then(project => {
       issues.forEach(issue => project.issues.set(issue.id, issue));
       return this.dataService.addProject(project);

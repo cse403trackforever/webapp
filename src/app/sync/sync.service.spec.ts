@@ -13,7 +13,7 @@ describe('SyncService', () => {
   let onlineSpy: jasmine.SpyObj<OnlineIssueService>;
 
   beforeEach(() => {
-    const offSpy = jasmine.createSpyObj('OfflineIssueService', ['getProjects', 'setIssue', 'setProject']);
+    const offSpy = jasmine.createSpyObj('OfflineIssueService', ['getProjects', 'setIssues', 'setProject']);
     const onSpy = jasmine.createSpyObj('OnlineIssueService', [
       'getProject',
       'setProjects',

@@ -8,6 +8,8 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
 import { TrackForeverIssue } from '../import/models/trackforever/trackforever-issue';
+import { SyncService } from '../sync/sync.service';
+import { mergeMap } from 'rxjs/internal/operators';
 
 /**
  * Determines online/offline state and fetches projects from the appropriate source
@@ -19,7 +21,8 @@ export class DefaultIssueService implements IssueService {
   constructor(
     private online: OnlineIssueService,
     private offline: OfflineIssueService,
-    @Inject('Navigator') private navigator: Navigator
+    @Inject('Navigator') private navigator: Navigator,
+    private syncService: SyncService,
   ) { }
 
   /**
@@ -31,7 +34,7 @@ export class DefaultIssueService implements IssueService {
    * @returns {Observable<T>} the observable returned by whichever input was used
    */
   private choose<T>(onlineObs: () => Observable<T>, offlineObs: () => Observable<T>): Observable<T> {
-    if (this.navigator.onLine && !this.serverDown) {
+    if (this.isOnline()) {
       return onlineObs().catch((e) => {
         if (e instanceof HttpErrorResponse) {
           console.log('api request failed -- defaulting to offline database');
@@ -49,6 +52,10 @@ export class DefaultIssueService implements IssueService {
       });
     }
     return offlineObs();
+  }
+
+  private isOnline(): boolean {
+    return this.navigator.onLine && !this.serverDown;
   }
 
   getProjects(): Observable<TrackForeverProject[]> {
@@ -70,5 +77,22 @@ export class DefaultIssueService implements IssueService {
       () => this.online.getIssue(projectKey, issueId),
       () => this.offline.getIssue(projectKey, issueId),
     );
+  }
+
+  private syncIfOnline(obs: Observable<any>): Observable<any> {
+    if (this.isOnline()) {
+      return obs.pipe(
+        mergeMap(() => this.syncService.sync())
+      );
+    }
+    return obs;
+  }
+
+  setIssue(issue: TrackForeverIssue): Observable<any> {
+    return this.syncIfOnline(this.offline.setIssue(issue));
+  }
+
+  setProject(project: TrackForeverProject): Observable<any> {
+    return this.syncIfOnline(this.offline.setProject(project));
   }
 }

@@ -1,20 +1,10 @@
-.comment {
-    margin-bottom: 25px;
-    max-width: 750px;
-    margin-left: auto;
-    margin-right: auto;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #d3d3d35c;
+.dropdown-toggle::after {
+  display: none;
 }
 
-.comment > .commenter {
-    background-color: #d3d3d35c;
-    padding: 15px;
-}
-
-.comment > .content {
-    padding: 15px;
+.dropdown-toggle {
+  border: none;
+  background: none;
 }
 
 .issue-details {

@@ -22,6 +22,10 @@ export class OnlineIssueService implements IssueService {
     });
   }
 
+  setIssue(issue: TrackForeverIssue) {
+    return this.http.put(`${environment.apiUrl}/issue`, issue);
+  }
+
   setIssues(issues: Map<string, Array<TrackForeverIssue>>) {
     return this.http.put(`${environment.apiUrl}/issues`, issues);
   }
@@ -40,6 +44,10 @@ export class OnlineIssueService implements IssueService {
 
   setProjects(projects: Array<TrackForeverProject>) {
     return this.http.put(`${environment.apiUrl}/projects`, projects);
+  }
+
+  setProject(project: TrackForeverProject) {
+    return this.http.put(`${environment.apiUrl}/project`, project);
   }
 
   getRequestedProjects(projectIds: Array<string>): Observable<Array<TrackForeverProject>> {
