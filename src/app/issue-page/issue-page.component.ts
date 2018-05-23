@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-issue-details',
+  selector: 'app-issue-page',
   templateUrl: './issue-page.component.html',
   styleUrls: ['./issue-page.component.css']
 })
@@ -19,6 +19,7 @@ export class IssuePageComponent implements OnInit {
   private sub: Subscription;
   issue: TrackForeverIssue;
   source: ImportSource;
+  projectName: string;
   isAddingComment = false;
   faEllipsis = faEllipsisH;
 
@@ -38,6 +39,7 @@ export class IssuePageComponent implements OnInit {
     const issueId = this.route.snapshot.paramMap.get('issueId');
     this.sub = this.issueService.getProject(projectId).subscribe(project => {
       this.source = <ImportSource> project.source;
+      this.projectName = project.name;
       this.issue = project.issues.get(issueId);
     });
   }
@@ -93,6 +95,42 @@ export class IssuePageComponent implements OnInit {
     const updatedIssue: TrackForeverIssue = JSON.parse(JSON.stringify(this.issue));
 
     updatedIssue.comments[index] = comment;
+
+    this.issueService.setIssue(updatedIssue)
+      .subscribe(() => {
+        this.sub.unsubscribe();
+        this.getIssue();
+      });
+  }
+
+  assign(assignee: string) {
+    // make a copy of the issue
+    const updatedIssue: TrackForeverIssue = JSON.parse(JSON.stringify(this.issue));
+
+    // toggle assignment
+    if (this.issue.assignees.includes(assignee)) {
+      updatedIssue.assignees.splice(updatedIssue.assignees.indexOf(assignee), 1);
+    } else {
+      updatedIssue.assignees.push(assignee);
+    }
+
+    this.issueService.setIssue(updatedIssue)
+      .subscribe(() => {
+        this.sub.unsubscribe();
+        this.getIssue();
+      });
+  }
+
+  applyLabel(label: string) {
+    // make a copy of the issue
+    const updatedIssue: TrackForeverIssue = JSON.parse(JSON.stringify(this.issue));
+
+    // apply the label
+    if (this.issue.labels.includes(label)) {
+      updatedIssue.labels.splice(updatedIssue.labels.indexOf(label), 1);
+    } else {
+      updatedIssue.labels.push(label);
+    }
 
     this.issueService.setIssue(updatedIssue)
       .subscribe(() => {

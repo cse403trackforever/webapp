@@ -21,13 +21,15 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MyProjectsPageComponent } from './my-projects-page/my-projects-page.component';
 import { ExportModule } from './export/export.module';
 import { MarkdownPipe } from './shared/pipes/markdown.pipe';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MomentModule } from 'ngx-moment';
 import { UserPageComponent } from './user-page/user-page.component';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { SigninPageComponent } from './signin-page/signin-page.component';
 import { PasswordResetPageComponent } from './password-reset-page/password-reset-page.component';
 import { SignUpPageComponent } from './sign-up-page/sign-up-page.component';
+import { CreateIssuePageComponent } from './create-issue-page/create-issue-page.component';
+import { IssueDetailsComponent } from './issue-details/issue-details.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,8 @@ import { SignUpPageComponent } from './sign-up-page/sign-up-page.component';
     UserPageComponent,
     PasswordResetPageComponent,
     SignUpPageComponent,
+    CreateIssuePageComponent,
+    IssueDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,6 +59,7 @@ import { SignUpPageComponent } from './sign-up-page/sign-up-page.component';
     FontAwesomeModule,
     ExportModule,
     FormsModule,
+    ReactiveFormsModule,
     MomentModule,
     AuthenticationModule,
   ],

@@ -13,6 +13,37 @@ import { mockUser } from '../shared/models/mock/mock-user';
 import { ActivatedRoute } from '@angular/router';
 import { TrackForeverIssue } from '../import/models/trackforever/trackforever-issue';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Component, Directive, EventEmitter, Input, Output } from '@angular/core';
+
+/**
+ * For testing components that use [routerLink]
+ *
+ * Disabling tslint because the selector needs to match the original RouterLinkDirective
+ */
+/* tslint:disable */
+@Directive({
+  selector: '[routerLink]',
+  host: { '(click)': 'onClick()' }
+})
+class RouterLinkStubDirective {
+  @Input('routerLink') linkParams: any;
+  navigatedTo: any = null;
+
+  onClick() {
+    this.navigatedTo = this.linkParams;
+  }
+}
+/* tslint:enable */
+
+@Component({
+  selector: 'app-issue-details',
+  template: '',
+})
+class IssueDetailsStubComponent {
+  @Input() issue: TrackForeverIssue;
+  @Output() assigned = new EventEmitter<string>();
+  @Output() labeled = new EventEmitter<string>();
+}
 
 describe('IssuePageComponent', () => {
   let component: IssuePageComponent;
@@ -30,7 +61,12 @@ describe('IssuePageComponent', () => {
         FormsModule,
         FontAwesomeModule,
       ],
-      declarations: [IssuePageComponent, MarkdownPipe],
+      declarations: [
+        IssuePageComponent,
+        MarkdownPipe,
+        RouterLinkStubDirective,
+        IssueDetailsStubComponent,
+      ],
       providers: [
         {
           provide: IssueService,

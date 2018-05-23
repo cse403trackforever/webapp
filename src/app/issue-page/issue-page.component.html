@@ -1,64 +1,67 @@
 <div class="container" *ngIf="issue">
-  <h1>Issue #{{issue.id}}</h1>
+  <h2 class="mt-2">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb p-0 bg-transparent">
+        <li class="breadcrumb-item">
+          <a class="text-dark" [routerLink]="['/project', issue.projectId]">{{projectName}}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Issue #{{issue.id}}</li>
+      </ol>
+    </nav>
+  </h2>
+  <h4 [innerHTML]="issue.summary | markdown: {source: source}"></h4>
+  <div>
+    <span [class]="issue.status === 'closed' ? 'badge badge-danger' : 'badge badge-primary'">{{issue.status}}</span>
+    <span
+      class="ml-1">{{issue.submitterName}} submitted this issue {{issue.timeCreated | amFromUnix | amTimeAgo}}</span>
+  </div>
+
+  <hr>
 
   <div class="row">
     <div class="col left">
-      <div>
-        <h2>Summary</h2>
-        <p [innerHTML]="issue.summary | markdown: {source: source}"></p>
+      <div class="card mb-1" *ngFor='let comment of issue.comments'>
+        <h6 class="card-header d-flex flex-row">
+          <div class="flex-grow-1">{{ comment.commenterName }} commented</div>
+          <div ngbDropdown>
+            <button id="commentDrop" ngbDropdownToggle class="bg-transparent border border-0">
+              <fa-icon [icon]="faEllipsis" size="xs"></fa-icon>
+            </button>
+            <div ngbDropdownMenu aria-labelledby="commentDrop">
+              <button class="dropdown-item"
+                      (click)="removeComment(issue.comments.indexOf(comment))">Delete
+              </button>
+            </div>
+          </div>
+        </h6>
+        <div class="card-body" [innerHTML]="comment.content | markdown: {source: source}"></div>
       </div>
 
-      <div>
-        <h2>Comments</h2>
-        <div class="card mb-1" *ngFor='let comment of issue.comments'>
-          <h6 class="card-header d-flex flex-row">
-            <div class="flex-grow-1">{{ comment.commenterName }} commented</div>
-            <div ngbDropdown>
-              <button id="commentDrop" ngbDropdownToggle>
-                <fa-icon [icon]="faEllipsis" size="xs"></fa-icon>
-              </button>
-              <div ngbDropdownMenu aria-labelledby="commentDrop">
-                <button class="dropdown-item"
-                        (click)="removeComment(issue.comments.indexOf(comment))">Delete</button>
-              </div>
-            </div>
-          </h6>
-          <div class="card-body" [innerHTML]="comment.content | markdown: {source: source}"></div>
-        </div>
+      <hr>
 
-        <div class="loader mx-auto" *ngIf="isAddingComment"></div>
-        <div class="card mt-1">
-          <form *ngIf="!isAddingComment"
-                #commentForm="ngForm"
-                (ngSubmit)="addComment(commentContent.value)"
-                class="comment-section">
-            <div class="card-body">
-              <textarea type="text" class="form-control" placeholder="Leave a comment" #commentContent></textarea>
-            </div>
-            <div class="d-flex flex-row justify-content-end card-footer">
-              <button class="btn btn-secondary mr-1"
-                      (click)="addComment(commentContent.value, true)">Close and comment</button>
-              <button type="submit" class="btn btn-success">Comment</button>
-            </div>
-          </form>
-        </div>
+      <div class="loader mx-auto" *ngIf="isAddingComment"></div>
+      <div class="card mt-1">
+        <form *ngIf="!isAddingComment"
+              #commentForm="ngForm"
+              (ngSubmit)="addComment(commentContent.value)"
+              class="comment-section">
+          <div class="card-body">
+            <textarea type="text" class="form-control" placeholder="Leave a comment" #commentContent></textarea>
+          </div>
+          <div class="d-flex flex-row justify-content-end card-footer">
+            <button class="btn btn-secondary mr-1"
+                    *ngIf="issue.status !== 'closed'"
+                    (click)="addComment(commentContent.value, true)">Close and comment
+            </button>
+            <button type="submit" class="btn btn-success">Comment</button>
+          </div>
+        </form>
       </div>
     </div>
 
     <div class="issue-details col right">
-      <h2>Issue details</h2>
-
-      <p><span>Project ID:</span> {{issue.projectId}}</p> <!-- create hyperlink back to project -->
-      <p><span>Status:</span> {{issue.status}}</p>
-      <p><span>Labels:</span> {{issue.labels}}</p>
-      <p><span>Submitter:</span> {{issue.submitterName}}</p>
-      <p *ngIf="issue.timeCreated"><span>Created:</span> {{issue.timeCreated | amFromUnix | amCalendar}}</p>
-      <p *ngIf="issue.timeUpdated"><span>Last updated:</span> {{issue.timeUpdated | amFromUnix | amCalendar}}</p>
-      <p *ngIf="issue.timeClosed"><span>Last closed:</span> {{issue.timeClosed | amFromUnix | amCalendar}}</p>
+      <app-issue-details [issue]="issue" (assigned)="assign($event)" (labeled)="applyLabel($event)"></app-issue-details>
     </div>
   </div>
-
-
-
 </div>
 

@@ -1,0 +1,54 @@
+<div class="card">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      <h6>Assignees</h6>
+      <ul>
+        <li *ngFor="let assignee of issue.assignees">
+          <div class="d-flex">
+            <span class="flex-grow-1">{{assignee}}</span>
+            <a class="btn btn-xs p-0 m-0" (click)="unassign(assignee)">
+              <fa-icon [icon]="faMinus" size="xs"></fa-icon>
+            </a>
+          </div>
+        </li>
+      </ul>
+      <form [formGroup]="assignForm">
+        <div class="input-group input-group-sm form-group">
+          <input type="text" class="form-control" placeholder="Assign someone" formControlName="text">
+          <div class="input-group-append">
+            <button type="submit" class="btn btn-outline-secondary" (click)="assign()">
+              <fa-icon [icon]="faPlus" size="xs"></fa-icon>
+            </button>
+          </div>
+        </div>
+      </form>
+    </li>
+    <li class="list-group-item">
+      <h6>Labels</h6>
+      <div *ngFor="let label of issue.labels" class="d-flex">
+        <div class="flex-grow-1">
+          <span class="badge badge-info text-left mb-1">{{label}}</span>
+        </div>
+        <a class="btn btn-xs p-0 m-0" (click)="unLabel(label)">
+          <fa-icon [icon]="faTrash" size="xs"></fa-icon>
+        </a>
+      </div>
+      <form [formGroup]="labelForm">
+        <div class="input-group input-group-sm form-group">
+          <input type="text" class="form-control" placeholder="Add a label" formControlName="text">
+          <div class="input-group-append">
+            <button type="submit" class="btn btn-outline-secondary" (click)="applyLabel()">
+              <fa-icon [icon]="faPlus" size="xs"></fa-icon>
+            </button>
+          </div>
+        </div>
+      </form>
+    </li>
+    <li class="list-group-item" *ngIf="issue.timeUpdated">
+      Last updated {{issue.timeUpdated | amFromUnix | amTimeAgo}}
+    </li>
+    <li class="list-group-item" *ngIf="issue.timeClosed">
+      Closed {{issue.timeUpdated | amFromUnix | amTimeAgo}}
+    </li>
+  </ul>
+</div>

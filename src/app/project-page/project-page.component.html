@@ -3,7 +3,7 @@
 
   <p [innerHTML]="project.description | markdown: {source: project.source, force: true}"></p>
 
-  <form>
+  <form class="float-left">
     <div class="form-row align-items-center">
       <div class="col-auto">
         <input [(ngModel)]="queryString" [ngModelOptions]="{standalone: true}" (keyup)="updateIssues()" class="form-control col-12 col-sm mb-2" type="search"
@@ -23,8 +23,16 @@
           </div>
         </div>
       </div>
+    </div>
+  </form>
+
+  <form class="float-right">
+    <div class="form-row align-items-end">
       <div class="col-auto mb-2">
         <button class="btn btn-outline-primary" type="button" (click)="export()">Export</button>
+      </div>
+      <div class="col-auto mb-2">
+        <button class="btn btn-success" id="newIssue">New issue</button>
       </div>
     </div>
   </form>
