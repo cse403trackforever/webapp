@@ -1,6 +1,6 @@
+import { mockTrackforeverProject } from './../models/trackforever/mock/mock-trackforever-project';
 import { TestBed, async } from '@angular/core/testing';
 import { ImportTrackForeverService } from './import-trackforever.service';
-import { mockTrackforeverProject } from '../models/trackforever/mock/mock-trackforever-project';
 
 describe('ImportTrackForeverService', () => {
   let service: ImportTrackForeverService;
@@ -20,14 +20,7 @@ describe('ImportTrackForeverService', () => {
   });
 
   it('should import', async(() => {
-    const p = <any> mockTrackforeverProject;
-    const json = JSON.stringify(p, (key, val) => {
-      if (key === 'issues') {
-        return Array.from(val);
-      } else {
-        return val;
-      }
-    });
+    const json = ImportTrackForeverService.toJson(mockTrackforeverProject);
     service.importProject(json)
       .subscribe(project => expect(project).toEqual(mockTrackforeverProject));
   }));
@@ -38,14 +31,7 @@ describe('ImportTrackForeverService', () => {
   }));
 
   it('should fail if missing a comment field', async(() => {
-    const p = <any> mockTrackforeverProject;
-    const json = JSON.stringify(p, (key, val) => {
-      if (key === 'issues') {
-        return Array.from(val);
-      } else {
-        return val;
-      }
-    });
+    const json = ImportTrackForeverService.toJson(mockTrackforeverProject);
     const s = json.replace('"content"', '"something-else"');
 
     expect(() => service.importProject(s))
@@ -53,14 +39,7 @@ describe('ImportTrackForeverService', () => {
   }));
 
   it('should fail if missing an issue field', async(() => {
-    const p = <any> mockTrackforeverProject;
-    const json = JSON.stringify(p, (key, val) => {
-      if (key === 'issues') {
-        return Array.from(val);
-      } else {
-        return val;
-      }
-    });
+    const json = ImportTrackForeverService.toJson(mockTrackforeverProject);
     const s = json.replace('"labels"', '"fables"');
 
     expect(() => service.importProject(s))
@@ -68,14 +47,7 @@ describe('ImportTrackForeverService', () => {
   }));
 
   it('should fail if missing a project field', async(() => {
-    const p = <any> mockTrackforeverProject;
-    const json = JSON.stringify(p, (key, val) => {
-      if (key === 'issues') {
-        return Array.from(val);
-      } else {
-        return val;
-      }
-    });
+    const json = ImportTrackForeverService.toJson(mockTrackforeverProject);
     const s = json.replace('"source"', '"???"');
 
     expect(() => service.importProject(s))

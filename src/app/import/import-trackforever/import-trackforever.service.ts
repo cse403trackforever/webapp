@@ -11,6 +11,34 @@ import { TrackForeverIssue } from '../models/trackforever/trackforever-issue';
 @Injectable()
 export class ImportTrackForeverService implements ConvertService {
 
+  /**
+   * Takes a given TrackForever object and encodes to json
+   * @param obj TrackForever object to encode
+   */
+  static toJson(obj: TrackForeverProject | TrackForeverIssue): string {
+    return JSON.stringify(obj, (key, val) => {
+      if (key === 'issues') {
+        return Object.assign({}, ...Array.from(val).map(([k, v]) => ({[k]: v})));
+      } else {
+        return val;
+      }
+    });
+  }
+
+  /**
+   * Takes the JSON representation of a TrackForverProject and returns an instance of the object
+   * @param json JSON string to parse
+   */
+  static fromJson(json: string): TrackForeverProject {
+    return JSON.parse(json, (key, val) => {
+      if (key === 'issues') {
+        return new Map<string, TrackForeverIssue>(Object.entries(val));
+      } else {
+        return val;
+      }
+    });
+  }
+
   static instanceOfComment(object: any): boolean {
     return 'commenterName' in object
       && 'content' in object;
@@ -59,13 +87,7 @@ export class ImportTrackForeverService implements ConvertService {
   importProject(json: string): Observable<TrackForeverProject> {
     let project: TrackForeverProject;
     try {
-      project = JSON.parse(json, (key, val) => {
-        if (key === 'issues') {
-          return new Map<string, TrackForeverIssue>(val);
-        } else {
-          return val;
-        }
-      });
+      project = ImportTrackForeverService.fromJson(json);
     } catch (e) {
       throw new Error('Incorrect file format. The file must be a Track Forever project json file.');
     }

@@ -1,3 +1,4 @@
+import { ImportTrackForeverService } from './../import/import-trackforever/import-trackforever.service';
 import { TestBed } from '@angular/core/testing';
 
 import { ExportService } from './export.service';
@@ -26,13 +27,7 @@ describe('ExportService', () => {
   it('should export', () => {
     const p: TrackForeverProject = mockTrackforeverProject;
     const s = service.exportProject(p);
-    expect(s).toEqual(JSON.stringify(p, (key, val) => {
-      if (key === 'issues') {
-        return Array.from(val);
-      } else {
-        return val;
-      }
-    }));
+    expect(s).toEqual(ImportTrackForeverService.toJson(p));
   });
 
   it('should download', () => {
