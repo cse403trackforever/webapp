@@ -12,8 +12,12 @@
   <h4 [innerHTML]="issue.summary | markdown: {source: source}"></h4>
   <div>
     <span [class]="issue.status === 'closed' ? 'badge badge-danger' : 'badge badge-primary'">{{issue.status}}</span>
-    <span
-      class="ml-1">{{issue.submitterName}} submitted this issue {{issue.timeCreated | amFromUnix | amTimeAgo}}</span>
+    <span class="ml-1" *ngIf="issue.timeCreated; else noCreatedDate">
+      {{issue.submitterName}} submitted this issue {{issue.timeCreated | amFromUnix | amTimeAgo}}
+    </span>
+    <ng-template #noCreatedDate>
+      <span class="ml-1">Submitted by {{issue.submitterName}}</span>
+    </ng-template>
   </div>
 
   <hr>
