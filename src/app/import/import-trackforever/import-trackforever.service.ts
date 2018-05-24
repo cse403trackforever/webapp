@@ -15,7 +15,7 @@ export class ImportTrackForeverService implements ConvertService {
    * Takes a given TrackForever object and encodes to json
    * @param obj TrackForever object to encode
    */
-  static toJson(obj: TrackForeverProject | TrackForeverIssue): string {
+  static toJson(obj: TrackForeverProject | TrackForeverProject[] | TrackForeverIssue): string {
     return JSON.stringify(obj, (key, val) => {
       if (key === 'issues') {
         return Object.assign({}, ...Array.from(val).map(([k, v]) => ({[k]: v})));
@@ -37,6 +37,14 @@ export class ImportTrackForeverService implements ConvertService {
         return val;
       }
     });
+  }
+
+  /**
+   * Convert json array of projects to array of objects
+   * @param json array of projects in json form
+   */
+  static fromJsonArray(json: string): TrackForeverProject[] {
+    return this.fromJson(json) as any;
   }
 
   static instanceOfComment(object: any): boolean {
