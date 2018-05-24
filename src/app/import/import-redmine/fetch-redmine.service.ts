@@ -7,6 +7,7 @@ import { RedmineIssueArray } from './models/redmine-issueArray';
 
 @Injectable()
 export class FetchRedmineService {
+  private corsUrl = 'https://cors-anywhere.herokuapp.com/';
   private baseUrl = 'https://cors-anywhere.herokuapp.com/https://www.redmine.org';
   constructor(private http: HttpClient) { }
 
@@ -24,6 +25,6 @@ export class FetchRedmineService {
   }
 
   setBaseUrl(newUrl: string) { // Projects are probably not hosted on www.redmine.org
-    this.baseUrl = newUrl;
+    this.baseUrl = this.corsUrl + newUrl;
   }
 }

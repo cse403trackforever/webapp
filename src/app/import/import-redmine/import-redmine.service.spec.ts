@@ -24,7 +24,8 @@ describe('ImportRedmineService', () => {
       },
       fetchIssue(projectID: number, issueID: number): Observable<RedmineIssue> {
         return Observable.of(mockRedmineIssueArray.issues.find(issue => issue.id === issueID));
-      }
+      },
+      setBaseUrl(url: string) {}
     };
 
     TestBed.configureTestingModule({
@@ -44,13 +45,15 @@ describe('ImportRedmineService', () => {
   it('should not crash', inject([ImportRedmineService], (service: ImportRedmineService) => {
     service.importProject({
       projectName: '',
-      projectID: 5
+      projectID: 5,
+      serverUrl: ''
     });
   }));
   it('should be correct', inject([ImportRedmineService], (service: ImportRedmineService) => {
     service.importProject({
       projectName: '',
-      projectID: 5
+      projectID: 5,
+      serverUrl: ''
     }).subscribe(r => {
       expect(r).toEqual(mockRedmineTrackForeverProject);
     });

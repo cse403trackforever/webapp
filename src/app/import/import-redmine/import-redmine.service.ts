@@ -15,6 +15,7 @@ import { SyncService } from '../../sync/sync.service';
 export interface ImportRedmineArgs {
   projectName: string;
   projectID: number;
+  serverUrl: string;
 }
 
 @Injectable()
@@ -59,6 +60,7 @@ export class ImportRedmineService {
   }
 
   importProject(args: ImportRedmineArgs): Observable<TrackForeverProject> {
+    this.fetchService.setBaseUrl(args.serverUrl);
     const projectName = args.projectName;
     const projectID = args.projectID;
     return Observable.forkJoin(

@@ -1,4 +1,15 @@
 <form (ngSubmit)="onSubmit()" #importForm="ngForm">
+    <div class="form-group">
+      <label for="serverUrl">Server URL</label>
+      <input type="url" class="form-control" id="serverUrl" required
+              [(ngModel)]="serverUrl" name="serverUrl"
+              #serverUrlRef="ngModel">
+      <div [hidden]="serverUrlRef.valid || serverUrlRef.pristine"
+            class="alert alert-danger">
+        Server URL is required
+      </div>
+    </div>
+
   <div class="form-group">
     <label for="projectName">Project Name</label>
     <input type="text" class="form-control" id="projectName" required

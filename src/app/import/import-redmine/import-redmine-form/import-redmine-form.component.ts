@@ -21,6 +21,7 @@ import { ImportRedmineService } from '../import-redmine.service';
 export class ImportRedmineFormComponent extends ImportComponent {
   projectName: string;
   projectID: number;
+  serverUrl: string;
 
   constructor(importService: ImportService) {
     super(importService);
@@ -28,6 +29,7 @@ export class ImportRedmineFormComponent extends ImportComponent {
 
   onSubmit(): void {
     this.importProject({
+        serverUrl: this.serverUrl,
         projectName: this.projectName,
         projectID: this.projectID
       }
