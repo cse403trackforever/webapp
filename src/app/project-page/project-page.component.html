@@ -32,7 +32,7 @@
         <button class="btn btn-outline-primary" type="button" (click)="export()">Export</button>
       </div>
       <div class="col-auto mb-2">
-        <button class="btn btn-success" id="newIssue">New issue</button>
+        <button class="btn btn-success" id="newIssue" routerLink="/project/{{project.id}}/new">New issue</button>
       </div>
     </div>
   </form>

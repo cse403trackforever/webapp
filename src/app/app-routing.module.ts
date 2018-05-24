@@ -10,6 +10,7 @@ import { MyProjectsPageComponent } from './my-projects-page/my-projects-page.com
 import { UserPageComponent } from './user-page/user-page.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { PasswordResetPageComponent } from './password-reset-page/password-reset-page.component';
+import { CreateIssuePageComponent } from './create-issue-page/create-issue-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -30,6 +31,11 @@ const routes: Routes = [
   {
     path: 'project/:projectId/issue/:issueId',
     component: IssuePageComponent,
+    canActivate: [ AuthGuard ]
+  },
+  {
+    path: 'project/:projectId/new',
+    component: CreateIssuePageComponent,
     canActivate: [ AuthGuard ]
   },
   {

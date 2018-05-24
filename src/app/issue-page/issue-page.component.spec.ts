@@ -13,27 +13,8 @@ import { mockUser } from '../shared/models/mock/mock-user';
 import { ActivatedRoute } from '@angular/router';
 import { TrackForeverIssue } from '../import/models/trackforever/trackforever-issue';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { Component, Directive, EventEmitter, Input, Output } from '@angular/core';
-
-/**
- * For testing components that use [routerLink]
- *
- * Disabling tslint because the selector needs to match the original RouterLinkDirective
- */
-/* tslint:disable */
-@Directive({
-  selector: '[routerLink]',
-  host: { '(click)': 'onClick()' }
-})
-class RouterLinkStubDirective {
-  @Input('routerLink') linkParams: any;
-  navigatedTo: any = null;
-
-  onClick() {
-    this.navigatedTo = this.linkParams;
-  }
-}
-/* tslint:enable */
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { RouterLinkStubDirective } from '../shared/router-link-stub.directive';
 
 @Component({
   selector: 'app-issue-details',
