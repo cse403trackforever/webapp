@@ -17,7 +17,7 @@ export class FetchGithubService {
 
   fetchIssues(ownerName: string, projectName: string, page: number): Observable<HttpResponse<Array<GitHubIssue>>> {
     return this.http.get<Array<GitHubIssue>>(
-      `${this.baseUrl}/${ownerName}/${projectName}/issues?per_page=100&page=${page}`,
+      `${this.baseUrl}/${ownerName}/${projectName}/issues?per_page=100&state=all&page=${page}`,
       {observe: 'response'}
    );
   }

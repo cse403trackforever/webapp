@@ -53,7 +53,8 @@ describe('FetchGithubService', () => {
     service.fetchIssues(ownerName, projectName, 1)
       .subscribe(issues => expect(issues.body).toEqual(testIssues));
 
-    const req = httpTestingController.expectOne(r => r.url.endsWith(`/${ownerName}/${projectName}/issues?per_page=100&page=1`));
+    const req = httpTestingController.expectOne(r =>
+      r.url.endsWith(`/${ownerName}/${projectName}/issues?per_page=100&state=all&page=1`));
     expect(req.request.method).toEqual('GET');
 
     req.flush(testIssues);
