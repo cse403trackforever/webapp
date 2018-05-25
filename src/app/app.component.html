@@ -1,6 +1,6 @@
 <header>
   <!-- navigation bar -->
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
     <div class="container d-flex justify-content-between">
       <a routerLink="/home" class="navbar-brand d-flex align-items-center">
         <fa-icon [icon]="faClock"></fa-icon>
@@ -38,11 +38,11 @@
   </nav>
 </header>
 
-<main role="main" class="bg-light pb-4">
+<main role="main" class="container main-content">
   <router-outlet></router-outlet>
 </main>
 
-<footer class="text-muted pt-4">
+<footer class="text-muted bg-white footer pt-3">
   <div class="container">
     <p class="float-right">
       <a href="#">Back to top</a>

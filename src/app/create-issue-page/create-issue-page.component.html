@@ -12,14 +12,14 @@
 
   <form #issueForm="ngForm">
     <div class="form-row">
-      <div class="form-group col-md-1">
+      <div class="form-group col-lg-2 col-xl-1">
         <!-- TODO add validator to prevent duplicate issue IDs -->
         <label for="id">Issue ID</label>
         <input type="text" class="form-control" id="id"
                required
                [(ngModel)]="issue.id" name="id">
       </div>
-      <div class="form-group col-md-1">
+      <div class="form-group col-lg-2 col-xl-1">
         <!-- TODO choose from existing statuses -->
         <label for="status">Initial status</label>
         <input type="text" class="form-control" id="status"
@@ -35,7 +35,7 @@
     </div>
 
     <div class="row">
-      <div class="col left">
+      <div class="col">
         <div class="card">
           <div class="card-body">
           <textarea type="text" class="form-control" placeholder="Leave a comment"
@@ -51,7 +51,7 @@
         </div>
       </div>
 
-      <div class="col-3 right">
+      <div class="col-12 col-lg-3 mt-4 mt-lg-0">
         <app-issue-details [issue]="issue"
                            (assigned)="assign($event)"
                            (labeled)="applyLabel($event)"></app-issue-details>

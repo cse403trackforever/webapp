@@ -23,7 +23,7 @@
   <hr>
 
   <div class="row">
-    <div class="col left">
+    <div class="col">
       <div class="card mb-1" *ngFor='let comment of issue.comments'>
         <h6 class="card-header d-flex flex-row">
           <div class="flex-grow-1">{{ comment.commenterName }} commented</div>
@@ -63,7 +63,7 @@
       </div>
     </div>
 
-    <div class="col-3 right">
+    <div class="col-12 col-lg-3 mt-4 mt-lg-0">
       <app-issue-details [issue]="issue" (assigned)="assign($event)" (labeled)="applyLabel($event)"></app-issue-details>
     </div>
   </div>
