@@ -29,7 +29,7 @@ export class ImportRedmineService {
       hash: '',
       prevHash: '',
       id: issue.id.toString(),
-      projectId: `Redmine:${issue.project_id.name}`,
+      projectId: `Redmine:${issue.project.name}`,
       status: issue.status.name,
       summary: issue.description,
       labels: [],

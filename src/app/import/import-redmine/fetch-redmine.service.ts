@@ -12,7 +12,8 @@ export class FetchRedmineService {
   constructor(private http: HttpClient) { }
 
   fetchProject(projectName: string): Observable<RedmineProject> {
-    return this.http.get<RedmineProject>(`${this.baseUrl}/projects/${projectName}.json`);
+    return this.http.get<{project: RedmineProject}>(`${this.baseUrl}/projects/${projectName}.json`)
+      .map(obj => obj.project);
   }
 
   fetchIssues(projectName: string, projectID: number, limit: number, offset: number): Observable<RedmineIssueArray> {
@@ -21,7 +22,8 @@ export class FetchRedmineService {
   }
 
   fetchIssue(projectID: number, issueID: number): Observable<RedmineIssue> {
-    return this.http.get<RedmineIssue>(`${this.baseUrl}/issues/${issueID}.json?project_id=${projectID}`);
+    return this.http.get<{issue: RedmineIssue}>(`${this.baseUrl}/issues/${issueID}.json?project_id=${projectID}`)
+      .map(obj => obj.issue);
   }
 
   setBaseUrl(newUrl: string) { // Projects are probably not hosted on www.redmine.org

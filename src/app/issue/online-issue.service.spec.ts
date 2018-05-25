@@ -38,9 +38,8 @@ describe('OnlineIssueService', () => {
     service.getIssue(projectKey, issueId)
       .subscribe(issue => expect(issue).toEqual(testIssue));
 
-    const req = httpTestingController.expectOne(`${environment.apiUrl}/issues`);
-    expect(req.request.method).toEqual('POST');
-    expect(req.request.body).toEqual({ projectKey, issueId });
+    const req = httpTestingController.expectOne(`${environment.apiUrl}/issues/${projectKey}/${issueId}`);
+    expect(req.request.method).toEqual('GET');
 
     // response with mock data
     req.flush(ImportTrackForeverService.toJson(testIssue));

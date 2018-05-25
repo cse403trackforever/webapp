@@ -3,7 +3,7 @@ import { RedmineIssueSubstructure } from './redmine-issue-substructure';
 
 export interface RedmineIssue {
   id: number;
-  project_id: RedmineIssueSubstructure;
+  project: RedmineIssueSubstructure;
   tracker: RedmineIssueSubstructure;
   status: RedmineIssueSubstructure;
   priority: RedmineIssueSubstructure;

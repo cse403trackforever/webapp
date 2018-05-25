@@ -39,7 +39,7 @@ describe('FetchRedmineService', () => {
     const req = httpTestingController.expectOne(r => r.url.endsWith(`/projects/${projectName}.json`));
     expect(req.request.method).toEqual('GET');
 
-    req.flush(p);
+    req.flush({project: p});
   }));
 
   it('should fetch issues', async(() => {
@@ -70,6 +70,6 @@ describe('FetchRedmineService', () => {
     const req = httpTestingController.expectOne(r => r.url.endsWith(`/issues/${issueID}.json?project_id=${projectID}`));
     expect(req.request.method).toEqual('GET');
 
-    req.flush(i);
+    req.flush({issue: i});
   }));
 });

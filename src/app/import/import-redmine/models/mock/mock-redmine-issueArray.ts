@@ -4,7 +4,7 @@ export const mockRedmineIssueArray: RedmineIssueArray = {
   issues: [
     {
       id: 5,
-      project_id: {id: 5, name: 'my-project'},
+      project: {id: 5, name: 'my-project'},
       tracker: {id: 5, name: ''},
       status: {id: 5, name: 'closed'},
       priority: {id: 5, name: ''},
@@ -21,7 +21,7 @@ export const mockRedmineIssueArray: RedmineIssueArray = {
     },
     {
       id: 123,
-      project_id: {id: 123, name: 'my-project'},
+      project: {id: 123, name: 'my-project'},
       tracker: {id: 123, name: ''},
       status: {id: 123, name: 'open'},
       priority: {id: 123, name: ''},

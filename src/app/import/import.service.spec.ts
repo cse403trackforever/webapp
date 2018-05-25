@@ -52,14 +52,21 @@ describe('ImportService', () => {
       });
   }));
 
+  const errorCall = (message): string => {
+    throw new Error(message);
+  };
+
   it('should bubble up error message', async(() => {
     const args = 'my-project';
     const errorMsg = 'error!';
 
-    convertServiceSpy.importProject.and.throwError(errorMsg);
+    convertServiceSpy.importProject.and.returnValue(Observable.of(errorCall).map(e => e(errorMsg)));
 
     service.importProject(args)
       .then(() => expect(true).toBeFalsy('should error'))
-      .catch((error) => expect(error).toEqual(errorMsg));
+      .catch((error) => {
+        console.log('got here!');
+        expect(error).toEqual(errorMsg);
+      });
   }));
 });
