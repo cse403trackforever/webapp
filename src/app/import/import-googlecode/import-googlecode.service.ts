@@ -16,6 +16,7 @@ import { GoogleCodeIssuePage } from './models/googlecode-issuepage';
 import { GoogleCodeIssueSummary } from './models/googlecode-issuesummary';
 import { ConvertService } from '../convert.service';
 import { SyncService } from '../../sync/sync.service';
+import * as Chance from 'chance';
 
 @Injectable()
 export class ImportGoogleCodeService implements ConvertService {
@@ -23,7 +24,53 @@ export class ImportGoogleCodeService implements ConvertService {
   constructor(private fetchService: FetchGoogleCodeService) {
   }
 
+  private static insertSillyNames(project: TrackForeverProject): void {
+    // find number of unique ids
+    const idMap = new Map();
+    project.issues.forEach((issue, issueId) => {
+      issue.comments.forEach(comment => {
+        idMap.set(comment.commenterName, '');
+      });
+    });
+
+    // generate unique names
+    const pChance: Chance.Chance = new Chance.Chance(project.name);
+    try {
+      const ids = pChance.unique(pChance.animal, idMap.size);
+      let i = 0;
+      idMap.forEach((name, id) => {
+        idMap.set(id, ids[i]);
+        i++;
+      });
+    } catch (e) {
+      // can get a range error if there aren't enough animals for the number of IDs
+      // give up and use default IDs
+      return;
+    }
+
+    // replace the ids with the unique names
+    project.issues.forEach((issue, issueId) => {
+      issue.submitterName = idMap.get(issue.submitterName);
+      issue.comments.forEach(comment => {
+        comment.commenterName = idMap.get(comment.commenterName);
+      });
+    });
+  }
+
+  private static formatUserId(id: number): string {
+    return `User #${id}`;
+  }
+
   private static convertIssueToTrackForever(issue: GoogleCodeIssue, projectId: string): TrackForeverIssue {
+    const comments = issue.comments.map((comment: GoogleCodeComment) => this.convertCommentToTrackForever(comment));
+
+    /*
+    The first comment of every Google Code issue represents the issue's subject body.
+    Therefore the timestamp and commenter ID for the first comment represent the issue's timeCreated and submitter ID.
+     */
+    const timeCreated = issue.comments[0].timestamp;
+    const submitterName = ImportGoogleCodeService.formatUserId(issue.comments[0].commenterId);
+
     const newIssue = {
       hash: '',
       prevHash: '',
@@ -32,10 +79,10 @@ export class ImportGoogleCodeService implements ConvertService {
       status: issue.status,
       summary: issue.summary,
       labels: issue.labels,
-      comments: issue.comments.map((comment: GoogleCodeComment) => this.convertCommentToTrackForever(comment)),
-      submitterName: 'Anonymous',
+      comments,
+      submitterName,
       assignees: [],
-      timeCreated: null,
+      timeCreated,
       timeUpdated: null,
       timeClosed: null
     };
@@ -44,13 +91,17 @@ export class ImportGoogleCodeService implements ConvertService {
   }
 
   private static convertCommentToTrackForever(comment: GoogleCodeComment): TrackForeverComment {
+    if (comment.content.length === 0) {
+      comment.content = '(No comment was entered for this change.)';
+    }
+
     return {
-      commenterName: comment.id.toString(),
+      commenterName: ImportGoogleCodeService.formatUserId(comment.commenterId),
       content: comment.content
     };
   }
 
-  private static convertProjectToTrackForever(project: GoogleCodeProject, projectName: string): TrackForeverProject {
+  private static convertProjectToTrackForever(project: GoogleCodeProject): TrackForeverProject {
     const newProject = {
       hash: '',
       prevHash: '',
@@ -65,8 +116,10 @@ export class ImportGoogleCodeService implements ConvertService {
     return newProject;
   }
 
-  // Import GitHub Project into TrackForever format
-  importProject(projectName: string): Observable<TrackForeverProject> {
+  // Import Google Code Project into TrackForever format
+  importProject(args: ImportGooglecodeArgs): Observable<TrackForeverProject> {
+    const projectName = args.projectName;
+
     return Observable.forkJoin(
       this.fetchService.fetchProject(projectName),
       this.fetchService.fetchIssuePage(projectName, 1)
@@ -83,13 +136,22 @@ export class ImportGoogleCodeService implements ConvertService {
           )).reduce((acc, curr) => acc.concat(curr));
         })
     ).map((data: [GoogleCodeProject, GoogleCodeIssue[]]) => {
-      const project = ImportGoogleCodeService.convertProjectToTrackForever(data[0], projectName);
+      const project = ImportGoogleCodeService.convertProjectToTrackForever(data[0]);
       data[1]
         .map((issue: GoogleCodeIssue) => ImportGoogleCodeService.convertIssueToTrackForever(issue, data[0].name))
         .forEach(issue => project.issues.set(issue.id, issue));
+
+      if (args.useRandomNames) {
+        ImportGoogleCodeService.insertSillyNames(project);
+      }
 
       return project;
     });
   }
 
+}
+
+export interface ImportGooglecodeArgs {
+  projectName: string;
+  useRandomNames?: boolean;
 }

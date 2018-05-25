@@ -1,7 +1,7 @@
 <div class="container" *ngIf="project">
   <h1>{{project.name}}</h1>
 
-  <p [innerHTML]="project.description | markdown: {source: project.source, force: true}"></p>
+  <p [innerHTML]="project.description | markdown: {source: project.source}"></p>
 
   <form class="float-left">
     <div class="form-row align-items-center">

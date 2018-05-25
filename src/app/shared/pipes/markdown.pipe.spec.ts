@@ -20,12 +20,13 @@ describe('MarkdownPipe', () => {
     expect(pipe.transform('*wow*')).toEqual('<p><em>wow</em></p>\n');
   });
 
-  it('should not interpret Google Code as markdown', () => {
-    expect(pipe.transform('*wow*', {source: ImportSource.GoogleCode})).toEqual('*wow*');
+  it('should use gfm', () => {
+    expect(pipe.transform('a@a.a'))
+      .toEqual('<p><a href="mailto:a@a.a">a@a.a</a></p>\n');
   });
 
-  it('should always interpret as markdown if forced', () => {
-    expect(pipe.transform('*wow*', {source: ImportSource.GoogleCode, force: true}))
-      .toEqual('<p><em>wow</em></p>\n');
+  it('should not use gfm on Google Code', () => {
+    expect(pipe.transform('a@a.a', {source: ImportSource.GoogleCode}))
+      .toEqual('<p>a@a.a</p>\n');
   });
 });

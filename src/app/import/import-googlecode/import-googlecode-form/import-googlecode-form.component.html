@@ -9,6 +9,11 @@
       Project name is required
     </div>
   </div>
-
+  <div class="form-group form-check">
+    <input type="checkbox" class="form-check-input" id="random"
+           [(ngModel)]="useRandom" name="random"
+           #randomRef="ngModel">
+    <label for="random" class="form-check-label">Replace user ID numbers with random animal names</label>
+  </div>
   <button type="submit" class="btn btn-success">Import</button>
 </form>
