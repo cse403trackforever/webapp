@@ -8,7 +8,7 @@ import { AuthenticationService } from '../authentication/authentication.service'
 import { mergeMap } from 'rxjs/operators';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
-import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisH, faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { AuthUser } from '../shared/models/auth-user';
 
 @Component({
@@ -21,8 +21,17 @@ export class IssuePageComponent implements OnInit {
   issue: TrackForeverIssue;
   source: ImportSource;
   projectName: string;
+
+  statuses = new Set();
+
   isAddingComment = false;
+  isEditingSummary = false;
+  isEditingStatus = false;
+  editedCommentIndex = -1;
+
   faEllipsis = faEllipsisH;
+  faEdit = faEdit;
+  faCheck = faCheck;
 
   constructor(
     private issueService: IssueService,
@@ -42,7 +51,44 @@ export class IssuePageComponent implements OnInit {
       this.source = <ImportSource> project.source;
       this.projectName = project.name;
       this.issue = project.issues.get(issueId);
+
+      // populate statuses
+      project.issues.forEach((issue, id) => {
+        this.statuses.add(issue.status);
+      });
     });
+  }
+
+  setEditingSummary(editing: boolean): void {
+    this.isEditingSummary = editing;
+  }
+
+  saveSummary(summary: string): void {
+    // make a copy of the issue
+    const updatedIssue: TrackForeverIssue = JSON.parse(JSON.stringify(this.issue));
+
+    updatedIssue.summary = summary;
+
+    this.issueService.setIssue(updatedIssue)
+      .subscribe(() => {
+        this.isEditingSummary = false;
+        this.sub.unsubscribe();
+        this.getIssue();
+      });
+  }
+
+  setStatus(status: string): void {
+    // make a copy of the issue
+    const updatedIssue: TrackForeverIssue = JSON.parse(JSON.stringify(this.issue));
+
+    updatedIssue.status = status;
+
+    this.issueService.setIssue(updatedIssue)
+      .subscribe(() => {
+        this.isEditingStatus = false;
+        this.sub.unsubscribe();
+        this.getIssue();
+      });
   }
 
   addComment(content: string, close?: boolean): void {
@@ -89,13 +135,24 @@ export class IssuePageComponent implements OnInit {
       });
   }
 
-  updateComment(index: number, comment: TrackForeverComment) {
-    // TODO add edit functionality to the UI and use this function
+  /**
+   * Start editing a comment but don't yet update it through the issue service
+   * @param {number} index the index of the comment in the issue's comments array
+   */
+  editComment(index: number) {
+    this.editedCommentIndex = index;
+  }
 
+  cancelCommentEdit() {
+    this.editedCommentIndex = -1;
+  }
+
+  updateComment(index: number, content: string) {
     // make a copy of the issue
     const updatedIssue: TrackForeverIssue = JSON.parse(JSON.stringify(this.issue));
 
-    updatedIssue.comments[index] = comment;
+    updatedIssue.comments[index].content = content;
+    this.editedCommentIndex = -1;
 
     this.issueService.setIssue(updatedIssue)
       .subscribe(() => {

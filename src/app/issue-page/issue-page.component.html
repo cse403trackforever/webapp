@@ -9,9 +9,45 @@
       </ol>
     </nav>
   </h2>
-  <h4 [innerHTML]="issue.summary | markdown: {source: source}"></h4>
+
+  <div class="d-flex" *ngIf="!isEditingSummary; else editingSummary">
+    <h4 [innerHTML]="issue.summary | markdown: {source: source}"></h4>
+    <button class="mt-0 mb-auto ml-4 btn btn-sm bg-transparent"
+            (click)="setEditingSummary(true)"><fa-icon [icon]="faEdit"></fa-icon></button>
+  </div>
+  <ng-template #editingSummary>
+    <div class="d-flex">
+      <textarea class="form-control" id="summaryTextarea" #summaryTextarea>{{issue.summary}}</textarea>
+      <div class="mt-0 mb-auto ml-4 d-flex">
+        <button class="btn btn-sm btn-success" (click)="saveSummary(summaryTextarea.value)">Save</button>
+        <button class="btn btn-sm btn-outline-secondary ml-2" (click)="setEditingSummary(false)">Cancel</button>
+      </div>
+    </div>
+  </ng-template>
+
   <div>
-    <span [class]="issue.status === 'closed' ? 'badge badge-danger' : 'badge badge-primary'">{{issue.status}}</span>
+    <div ngbDropdown class="d-inline-block" *ngIf="!isEditingStatus; else editingStatus">
+      <button [ngClass]="issue.status === 'closed' ? 'badge-danger' : 'badge-primary'"
+              id="statusDropdown" ngbDropdownToggle class="badge border-0">{{issue.status}}</button>
+      <div ngbDropdownMenu aria-labelledby="statusDropdown">
+        <button *ngFor="let status of statuses" class="dropdown-item" (click)="setStatus(status)">
+          <div class="d-flex">
+            <span class="flex-grow-1">{{status}}</span>
+            <fa-icon *ngIf="status === issue.status" [icon]="faCheck"></fa-icon>
+          </div>
+        </button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" (click)="isEditingStatus = true">Set a custom status</button>
+      </div>
+    </div>
+    <ng-template #editingStatus>
+      <div class="form-group d-flex col-md-4">
+        <input type="text" class="form-control form-control-sm" placeholder="Status" #customStatus>
+        <button class="btn btn-outline-secondary btn-sm" (click)="isEditingStatus = false">Cancel</button>
+        <button class="btn btn-outline-primary btn-sm" (click)="setStatus(customStatus.value)">Add</button>
+      </div>
+    </ng-template>
+
     <span class="ml-1" *ngIf="issue.timeCreated; else noCreatedDate">
       {{issue.submitterName}} submitted this issue {{issue.timeCreated | amFromUnix | amTimeAgo}}
     </span>
@@ -24,21 +60,37 @@
 
   <div class="row">
     <div class="col">
-      <div class="card mb-1" *ngFor='let comment of issue.comments'>
-        <h6 class="card-header d-flex flex-row">
-          <div class="flex-grow-1">{{ comment.commenterName }} commented</div>
-          <div ngbDropdown>
-            <button id="commentDrop" ngbDropdownToggle class="bg-transparent border border-0">
-              <fa-icon [icon]="faEllipsis" size="xs"></fa-icon>
-            </button>
-            <div ngbDropdownMenu aria-labelledby="commentDrop">
-              <button class="dropdown-item"
-                      (click)="removeComment(issue.comments.indexOf(comment))">Delete
+      <div class="card mb-1" *ngFor='let comment of issue.comments; let i = index' [attr.data-index]="i">
+        <div *ngIf="i !== editedCommentIndex; else commentEditor">
+          <h6 class="card-header d-flex flex-row">
+            <div class="flex-grow-1">{{ comment.commenterName }} commented</div>
+            <div ngbDropdown>
+              <button id="commentDrop" ngbDropdownToggle class="bg-transparent border border-0">
+                <fa-icon [icon]="faEllipsis" size="xs"></fa-icon>
               </button>
+              <div ngbDropdownMenu aria-labelledby="commentDrop">
+                <button class="dropdown-item"
+                        (click)="editComment(i)">Edit</button>
+                <button class="dropdown-item"
+                        (click)="removeComment(i)">Delete</button>
+              </div>
             </div>
-          </div>
-        </h6>
-        <div class="card-body" [innerHTML]="comment.content | markdown: {source: source}"></div>
+          </h6>
+          <div class="card-body" [innerHTML]="comment.content | markdown: {source: source}"></div>
+        </div>
+        <ng-template #commentEditor>
+          <form>
+            <div class="card-body">
+              <textarea #commentEditContent type="text" class="form-control"
+                        placeholder="Leave a comment">{{comment.content}}</textarea>
+            </div>
+            <div class="d-flex flex-row justify-content-end card-footer">
+              <button type="cancel" class="btn btn-secondary mr-1" (click)="cancelCommentEdit()">Cancel</button>
+              <button type="submit" class="btn btn-success"
+                      (click)="updateComment(i, commentEditContent.value)">Submit</button>
+            </div>
+          </form>
+        </ng-template>
       </div>
 
       <hr>
