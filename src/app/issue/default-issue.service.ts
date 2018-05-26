@@ -9,7 +9,7 @@ import 'rxjs/add/observable/throw';
 import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
 import { TrackForeverIssue } from '../import/models/trackforever/trackforever-issue';
 import { SyncService } from '../sync/sync.service';
-import { mergeMap } from 'rxjs/internal/operators';
+import { mergeMap } from 'rxjs/operators';
 
 /**
  * Determines online/offline state and fetches projects from the appropriate source

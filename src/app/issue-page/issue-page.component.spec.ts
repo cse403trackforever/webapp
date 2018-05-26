@@ -2,8 +2,6 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 
 import { IssuePageComponent } from './issue-page.component';
 import { IssueService } from '../issue/issue.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
 import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock-trackforever-project';
 import { MarkdownPipe } from '../shared/pipes/markdown.pipe';
 import { MomentModule } from 'ngx-moment';
@@ -15,6 +13,7 @@ import { TrackForeverIssue } from '../import/models/trackforever/trackforever-is
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLinkStubDirective } from '../shared/router-link-stub.directive';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-issue-details',
@@ -87,7 +86,7 @@ describe('IssuePageComponent', () => {
     fixture = TestBed.createComponent(IssuePageComponent);
     component = fixture.componentInstance;
 
-    issueServiceSpy.getProject.and.returnValue(Observable.of(mockTrackforeverProject));
+    issueServiceSpy.getProject.and.returnValue(of(mockTrackforeverProject));
 
     fixture.detectChanges();
   });
@@ -97,8 +96,8 @@ describe('IssuePageComponent', () => {
   });
 
   it('should add comments', fakeAsync(() => {
-    authServiceSpy.getUser.and.returnValue(Observable.of(mockUser));
-    issueServiceSpy.setIssue.and.returnValue(Observable.of(''));
+    authServiceSpy.getUser.and.returnValue(of(mockUser));
+    issueServiceSpy.setIssue.and.returnValue(of(''));
     const issue = mockTrackforeverProject.issues.get('123');
 
     component.addComment('hello, world!', true);
@@ -121,7 +120,7 @@ describe('IssuePageComponent', () => {
   }));
 
   it('should remove comments', fakeAsync(() => {
-    issueServiceSpy.setIssue.and.returnValue(Observable.of(''));
+    issueServiceSpy.setIssue.and.returnValue(of(''));
     const issue = mockTrackforeverProject.issues.get('123');
 
     component.removeComment(0);

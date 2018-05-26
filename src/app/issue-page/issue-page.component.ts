@@ -5,10 +5,11 @@ import { TrackForeverIssue } from '../import/models/trackforever/trackforever-is
 import { ImportSource } from '../import/models/import-source';
 import { TrackForeverComment } from '../import/models/trackforever/trackforever-comment';
 import { AuthenticationService } from '../authentication/authentication.service';
-import { mergeMap } from 'rxjs/internal/operators';
+import { mergeMap } from 'rxjs/operators';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { AuthUser } from '../shared/models/auth-user';
 
 @Component({
   selector: 'app-issue-page',
@@ -59,7 +60,7 @@ export class IssuePageComponent implements OnInit {
     updatedIssue.timeUpdated = now;
 
     this.authService.getUser().pipe(
-      mergeMap(user => {
+      mergeMap((user: AuthUser) => {
         const comment: TrackForeverComment = {
           commenterName: user.displayName,
           content

@@ -20,7 +20,7 @@ export class ProjectPageComponent implements OnInit {
   faSort = faSort;
   faCheckSquare = faCheckSquare;
   page = 1;
-  pageSize = 10; // number of items per page
+  pageSize = 15; // number of items per page
   queryString = '';
 
   labels = new Set();

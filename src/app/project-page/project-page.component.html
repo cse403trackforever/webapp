@@ -1,41 +1,43 @@
-<div class="container" *ngIf="project">
+<div *ngIf="project">
   <h1>{{project.name}}</h1>
 
   <p [innerHTML]="project.description | markdown: {source: project.source}"></p>
 
-  <form class="float-left">
-    <div class="form-row align-items-center">
-      <div class="col-auto">
-        <input [(ngModel)]="queryString" [ngModelOptions]="{standalone: true}" (keyup)="updateIssues()" class="form-control col-12 col-sm mb-2" type="search"
-                placeholder="Search" aria-label="Search">
-      </div>
-      <div class="col-auto mb-2">
-        <div ngbDropdown>
-          <button class="btn btn-outline-secondary" id="labelFilterDropdown" ngbDropdownToggle>Labels</button>
-          <div ngbDropdownMenu aria-labelledby="labelFilterDropdown">
-            <button *ngFor="let label of labels" class="dropdown-item" (click)="toggleLabelFilter(label)">
-              <span class="badge">
-                <fa-icon *ngIf="labelFilters.has(label)" [icon]="faCheckSquare"></fa-icon>
-                <span *ngIf="!labelFilters.has(label)" class="spacer">&nbsp;</span>
-              </span>
-              {{label}}
-            </button>
+  <div class="row">
+    <form class="col-12 col-sm">
+      <div class="form-row align-items-center">
+        <div class="col col-sm-auto">
+          <input [(ngModel)]="queryString" [ngModelOptions]="{standalone: true}" (keyup)="updateIssues()" class="form-control col-12 col-sm mb-2" type="search"
+                  placeholder="Search" aria-label="Search">
+        </div>
+        <div class="col-auto mb-2">
+          <div ngbDropdown>
+            <button class="btn btn-outline-secondary" id="labelFilterDropdown" ngbDropdownToggle>Labels</button>
+            <div ngbDropdownMenu aria-labelledby="labelFilterDropdown">
+              <button *ngFor="let label of labels" class="dropdown-item" (click)="toggleLabelFilter(label)">
+                <span class="badge">
+                  <fa-icon *ngIf="labelFilters.has(label)" [icon]="faCheckSquare"></fa-icon>
+                  <span *ngIf="!labelFilters.has(label)" class="spacer">&nbsp;</span>
+                </span>
+                {{label}}
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </form>
+    </form>
 
-  <form class="float-right">
-    <div class="form-row align-items-end">
-      <div class="col-auto mb-2">
-        <button class="btn btn-outline-primary" type="button" (click)="export()">Export</button>
+    <form class="col-12 col-sm-auto">
+      <div class="form-row align-items-end">
+        <div class="col col-sm-auto mb-2">
+          <button class="btn btn-outline-primary btn-block" type="button" (click)="export()">Export</button>
+        </div>
+        <div class="col col-sm-auto mb-2">
+          <button class="btn btn-success btn-block" id="newIssue" routerLink="/project/{{project.id}}/new">New issue</button>
+        </div>
       </div>
-      <div class="col-auto mb-2">
-        <button class="btn btn-success" id="newIssue" routerLink="/project/{{project.id}}/new">New issue</button>
-      </div>
-    </div>
-  </form>
+    </form>
+  </div>
 
   <div class="table-responsive" *ngIf="issues.length > 0; else noIssues">
     <table class="table table-hover">
