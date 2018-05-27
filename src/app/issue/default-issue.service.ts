@@ -4,12 +4,11 @@ import { Observable } from 'rxjs/Observable';
 import { IssueService } from './issue.service';
 import { OnlineIssueService } from './online-issue.service';
 import { OfflineIssueService } from './offline-issue.service';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
 import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
 import { TrackForeverIssue } from '../import/models/trackforever/trackforever-issue';
 import { SyncService } from '../sync/sync.service';
-import { mergeMap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
+import { concat, of, throwError } from 'rxjs';
 
 /**
  * Determines online/offline state and fetches projects from the appropriate source
@@ -35,26 +34,27 @@ export class DefaultIssueService implements IssueService {
    */
   private choose<T>(onlineObs: () => Observable<T>, offlineObs: () => Observable<T>): Observable<T> {
     if (this.isOnline()) {
-      return onlineObs().catch((e) => {
-        if (e instanceof HttpErrorResponse) {
-          console.log('api request failed -- defaulting to offline database');
-          console.log(e);
-
-          // remember if the server is down (or doesn't exist), avoid making more HTTP calls to it
-          if (e.status === 0) {
-            this.serverDown = true;
-          }
-
-          return offlineObs();
-        }
-
-        return Observable.throw(e);
-      });
+      return concat(
+        offlineObs(),
+        onlineObs().pipe(
+          catchError((e) => {
+            if (e instanceof HttpErrorResponse) {
+              // remember if the server is down (or doesn't exist), avoid making more HTTP calls to it
+              if (e.status === 0) {
+                console.log('api request failed -- defaulting to offline database');
+                this.serverDown = true;
+              }
+            }
+            return throwError(e);
+          })
+        )
+      );
     }
+
     return offlineObs();
   }
 
-  private isOnline(): boolean {
+  isOnline(): boolean {
     return this.navigator.onLine && !this.serverDown;
   }
 
@@ -81,8 +81,19 @@ export class DefaultIssueService implements IssueService {
 
   private syncIfOnline(obs: Observable<any>): Observable<any> {
     if (this.isOnline()) {
-      return obs.pipe(
-        mergeMap(() => this.syncService.sync())
+      /*
+      First returns the result of the observation, then attempts to sync
+       */
+      return concat(
+        obs,
+        this.syncService.sync().pipe(
+          catchError(err => {
+            // TODO schedule syncing for when we're back online
+            console.log('sync failed!');
+            console.log(err);
+            return of(err);
+          })
+        )
       );
     }
     return obs;
