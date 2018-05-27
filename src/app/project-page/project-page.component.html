@@ -1,7 +1,29 @@
 <div *ngIf="project">
-  <h1>{{project.name}}</h1>
+  <div *ngIf="!isEditingProject; else editingProject">
+    <div class="d-flex">
+      <h1 class="flex-grow-1">{{project.name}}</h1>
+      <button class="btn btn-outline-secondary btn-sm mt-0 mb-auto" (click)="isEditingProject = true">Edit</button>
+    </div>
+    <p [innerHTML]="project.description | markdown: {source: project.source}"></p>
+  </div>
+  <ng-template #editingProject>
+    <form>
+      <div class="form-group">
+        <label for="nameEditor">Project name</label>
+        <input type="text" class="form-control" id="nameEditor" #nameEditor value="{{project.name}}">
+      </div>
+      <div class="form-group">
+        <label for="descEditor">Project description</label>
+        <textarea class="form-control" rows="10" id="descEditor" #descEditor>{{project.description}}</textarea>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-outline-secondary" (click)="isEditingProject = false">Cancel</button>
+        <button class="btn btn-primary ml-2" (click)="editProject(nameEditor.value, descEditor.value)">Submit</button>
+      </div>
+    </form>
+    <hr>
+  </ng-template>
 
-  <p [innerHTML]="project.description | markdown: {source: project.source}"></p>
 
   <div class="row">
     <form class="col-12 col-sm">

@@ -10,6 +10,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock-trackforever-project';
 import { Observable } from 'rxjs/Observable';
+import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
 
 describe('ProjectPageComponent', () => {
   let component: ProjectPageComponent;
@@ -18,7 +19,7 @@ describe('ProjectPageComponent', () => {
   let exportServiceSpy: jasmine.SpyObj<ExportService>;
 
   beforeEach(async(() => {
-    const issueSpy = jasmine.createSpyObj('IssueService', ['getProject']);
+    const issueSpy = jasmine.createSpyObj('IssueService', ['getProject', 'setProject']);
     const exportSpy = jasmine.createSpyObj('ExportService', ['download']);
 
     TestBed.configureTestingModule({
@@ -93,4 +94,21 @@ describe('ProjectPageComponent', () => {
     component.toggleLabelFilter('bug');
     expect(component.issuesForCurrentPage.length).toEqual(1);
   });
+
+  it('should edit project', fakeAsync(() => {
+    issueServiceSpy.setProject.and.returnValue(Observable.of(null));
+    fixture.detectChanges();
+
+    const newName = 'Interesting Project';
+    const newDesc = 'description!';
+    component.editProject(newName, newDesc);
+
+    fixture.detectChanges();
+    tick();
+
+    expect(issueServiceSpy.setProject.calls.count()).toBe(1);
+    const passedProject: TrackForeverProject = issueServiceSpy.setProject.calls.mostRecent().args[0];
+    expect(passedProject.name).toEqual(newName);
+    expect(passedProject.description).toEqual(newDesc);
+  }));
 });

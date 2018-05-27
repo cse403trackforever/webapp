@@ -30,6 +30,7 @@ import { PasswordResetPageComponent } from './password-reset-page/password-reset
 import { SignUpPageComponent } from './sign-up-page/sign-up-page.component';
 import { CreateIssuePageComponent } from './create-issue-page/create-issue-page.component';
 import { IssueDetailsComponent } from './issue-details/issue-details.component';
+import { CreateProjectPageComponent } from './create-project-page/create-project-page.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { IssueDetailsComponent } from './issue-details/issue-details.component';
     SignUpPageComponent,
     CreateIssuePageComponent,
     IssueDetailsComponent,
+    CreateProjectPageComponent,
   ],
   imports: [
     BrowserModule,

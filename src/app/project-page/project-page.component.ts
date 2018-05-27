@@ -5,6 +5,8 @@ import { faSort, faSortUp, faSortDown, faCheckSquare } from '@fortawesome/free-s
 import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
 import { ExportService } from '../export/export.service';
 import { TrackForeverIssue } from '../import/models/trackforever/trackforever-issue';
+import { ImportTrackForeverService } from '../import/import-trackforever/import-trackforever.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-project-page',
@@ -19,12 +21,16 @@ export class ProjectPageComponent implements OnInit {
   faSortDown = faSortDown;
   faSort = faSort;
   faCheckSquare = faCheckSquare;
+
+  projectSub: Subscription;
   page = 1;
   pageSize = 15; // number of items per page
   queryString = '';
 
   labels = new Set();
   labelFilters = new Set();
+
+  isEditingProject = false;
 
   constructor(
     private issueService: IssueService,
@@ -58,7 +64,7 @@ export class ProjectPageComponent implements OnInit {
 
   getProject(): void {
     const projectId = this.route.snapshot.paramMap.get('id');
-    this.issueService.getProject(projectId)
+    this.projectSub = this.issueService.getProject(projectId)
       .subscribe(project => {
         project.issues.forEach(issue => {
           issue.labels.forEach(label => this.labels.add(label));
@@ -79,5 +85,19 @@ export class ProjectPageComponent implements OnInit {
       this.labelFilters.add(label);
     }
     this.updateIssues();
+  }
+
+  editProject(name: string, description: string): void {
+    this.isEditingProject = false;
+
+    const updatedProject = ImportTrackForeverService.fromJson(ImportTrackForeverService.toJson(this.project));
+    updatedProject.name = name;
+    updatedProject.description = description;
+
+    this.issueService.setProject(updatedProject)
+      .subscribe(() => {
+        this.projectSub.unsubscribe();
+        this.getProject();
+      });
   }
 }

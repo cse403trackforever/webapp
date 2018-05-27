@@ -1,0 +1,23 @@
+<div class="mt-2" *ngIf="!isBusy; else loading">
+  <form #projectForm="ngForm" (ngSubmit)="createProject()">
+    <div class="form-group">
+      <label for="nameEditor">Project name</label>
+      <input type="text" class="form-control" placeholder="Enter a project name"
+             required
+             id="nameEditor" name="nameEditor" [(ngModel)]="project.name">
+    </div>
+    <div class="form-group">
+      <label for="descEditor">Project description</label>
+      <textarea class="form-control" rows="10" placeholder="Enter a project description"
+                required
+                id="descEditor" name="descEditor" [(ngModel)]="project.description"></textarea>
+    </div>
+    <div class="form-group">
+      <button class="btn btn-success ml-2" type="submit" [disabled]="!projectForm.valid">Submit</button>
+    </div>
+  </form>
+</div>
+
+<ng-template #loading>
+  <div class="loader mx-auto m-5"></div>
+</ng-template>
