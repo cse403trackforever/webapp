@@ -24,28 +24,78 @@
     <hr>
   </ng-template>
 
-
+  <!-- filter section -->
   <div class="row">
     <form class="col-12 col-sm">
       <div class="form-row align-items-center">
         <div class="col col-sm-auto">
-          <input [(ngModel)]="queryString" [ngModelOptions]="{standalone: true}" (keyup)="updateIssues()" class="form-control col-12 col-sm mb-2" type="search"
-                  placeholder="Search" aria-label="Search">
+          <input [(ngModel)]="queryString" [ngModelOptions]="{standalone: true}" (keyup)="updateIssues()" class="form-control col-12 col-sm mb-2"
+            type="search" placeholder="Search" aria-label="Search">
         </div>
+
         <div class="col-auto mb-2">
           <div ngbDropdown>
-            <button class="btn btn-outline-secondary" id="labelFilterDropdown" ngbDropdownToggle>Labels</button>
+            <button class="btn btn-outline-secondary btn-sm" id="statusFilterDropdown" ngbDropdownToggle>Status</button>
+            <div ngbDropdownMenu aria-labelledby="statusFilterDropdown">
+              <button *ngFor="let status of statuses" class="dropdown-item" (click)="toggleStatusFilter(status)">
+                <span class="badge">
+                  <fa-icon *ngIf="statusFilters.has(status)" [icon]="faCheckSquare"></fa-icon>
+                  <span *ngIf="!statusFilters.has(status)" class="spacer">[ ]</span>
+                </span>
+                {{status}}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter by labels -->
+        <div class="col-auto mb-2">
+          <div ngbDropdown>
+            <button class="btn btn-outline-secondary btn-sm" id="labelFilterDropdown" ngbDropdownToggle>Labels</button>
             <div ngbDropdownMenu aria-labelledby="labelFilterDropdown">
               <button *ngFor="let label of labels" class="dropdown-item" (click)="toggleLabelFilter(label)">
                 <span class="badge">
                   <fa-icon *ngIf="labelFilters.has(label)" [icon]="faCheckSquare"></fa-icon>
-                  <span *ngIf="!labelFilters.has(label)" class="spacer">&nbsp;</span>
+                  <span *ngIf="!labelFilters.has(label)" class="spacer">[ ]</span>
                 </span>
                 {{label}}
               </button>
             </div>
           </div>
         </div>
+
+        <!-- Filter by assignee -->
+        <div class="col-auto mb-2">
+          <div ngbDropdown>
+            <button class="btn btn-outline-secondary btn-sm" id="assigneeFilterDropdown" ngbDropdownToggle>Assignee</button>
+            <div ngbDropdownMenu aria-labelledby="assigneeFilterDropdown">
+              <button *ngFor="let assignee of assignees" class="dropdown-item" (click)="toggleAssigneeFilter(assignee)">
+                <span class="badge">
+                  <fa-icon *ngIf="assigneeFilters.has(assignee)" [icon]="faCheckSquare"></fa-icon>
+                  <span *ngIf="!assigneeFilters.has(assignee)" class="spacer">[ ]</span>
+                </span>
+                {{assignee}}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter by submitter -->
+        <div class="col-auto mb-2">
+          <div ngbDropdown>
+            <button class="btn btn-outline-secondary btn-sm" id="submitterFilterDropdown" ngbDropdownToggle>Submitter</button>
+            <div ngbDropdownMenu aria-labelledby="submitterFilterDropdown">
+              <button *ngFor="let submitter of submitters" class="dropdown-item" (click)="toggleSubmitterFilter(submitter)">
+                <span class="badge">
+                  <fa-icon *ngIf="submitterFilter === submitter" [icon]="faCheckSquare"></fa-icon>
+                  <span *ngIf="!(submitterFilter === submitter)" class="spacer">[ ]</span>
+                </span>
+                {{submitter}}
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </form>
 
@@ -65,15 +115,33 @@
     <table class="table table-hover">
       <thead class="thead-light">
         <tr class="text-nowrap">
-          <th scope="col">ID # <fa-icon [icon]="faSortUp"></fa-icon></th>
-          <th scope="col">Summary</th>
+          <th scope="col">Issue</th>
+          <th scope="col">Status</th>
+          <th scope="col">Labels</th>
+          <th scope="col">Assignee</th>
         </tr>
       </thead>
+
       <tbody>
-        <tr routerLink="/project/{{project.id}}/issue/{{issue.id}}"
-            *ngFor="let issue of getIssuesForCurrentPage()">
-          <th scope="row">{{issue.id}}</th>
-          <td>{{issue.summary}}</td>
+        <tr routerLink="/project/{{project.id}}/issue/{{issue.id}}" *ngFor="let issue of getIssuesForCurrentPage()">
+          <td scope="row">
+            <span class="issue-summary">
+              {{issue.summary && issue.summary.length > 75 ? (issue.summary | slice:0:72) + '...' : issue.summary}}
+            </span>
+            <br />
+            <span>#{{issue.id}} opened by {{issue.submitterName}}</span>
+          </td>
+          <th scope="row">
+            <!-- red badges only support closed and Done -->
+            <span class="badge badge-primary" *ngIf="issue.status != 'closed' && issue.status != 'Done'">{{issue.status}}</span>
+            <span class="badge badge-danger" *ngIf="issue.status === 'closed' || issue.status === 'Done'">{{issue.status}}</span>
+          </th>
+          <td scope="row" class="labels-row">
+            <span class="badge badge-secondary" *ngFor="let label of issue.labels">{{label}} </span>
+          </td>
+          <td scope="row">
+            <span *ngFor="let assignee of issue.assignees">{{assignee}}&nbsp;&nbsp;</span>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -82,13 +150,6 @@
     No issues found
   </ng-template>
 
-  <ngb-pagination *ngIf="issues.length > pageSize"
-                  [pageSize]="pageSize"
-                  [collectionSize]="issues.length"
-                  [(page)]="page"
-                  [boundaryLinks]="true"
-                  [maxSize]="10"
-                  [rotate]="true"
-                  [ellipses]="false"
-                  class="d-flex justify-content-center"></ngb-pagination>
+  <ngb-pagination *ngIf="issues.length > pageSize" [pageSize]="pageSize" [collectionSize]="issues.length" [(page)]="page" [boundaryLinks]="true"
+    [maxSize]="10" [rotate]="true" [ellipses]="false" class="d-flex justify-content-center"></ngb-pagination>
 </div>

@@ -25,10 +25,20 @@ export class ProjectPageComponent implements OnInit {
   projectSub: Subscription;
   page = 1;
   pageSize = 15; // number of items per page
+
   queryString = '';
 
   labels = new Set();
   labelFilters = new Set();
+
+  assignees = new Set();
+  assigneeFilters = new Set();
+
+  submitters = new Set();
+  submitterFilter = '';
+
+  statuses = new Set();
+  statusFilters = new Set();
 
   isEditingProject = false;
 
@@ -42,6 +52,7 @@ export class ProjectPageComponent implements OnInit {
     this.getProject();
   }
 
+  // update list of issus displayed based on set filters
   updateIssues(): void {
     const query = this.queryString.toLowerCase();
     this.page = 1;
@@ -52,7 +63,16 @@ export class ProjectPageComponent implements OnInit {
       .filter(i => i.id.includes(query) || i.summary.toLowerCase().includes(query))
 
       // filter based on labels
-      .filter(i => Array.from(this.labelFilters).every(l => i.labels.includes(l)));
+      .filter(i => Array.from(this.labelFilters).every(l => i.labels.includes(l)))
+
+      // filter based on assignee
+      .filter(i => Array.from(this.assigneeFilters).every(a => i.assignees.includes(a)))
+
+      // filter based on submitter, if there is no filter set we show all issues
+      .filter(i => (i.submitterName === this.submitterFilter) || (this.submitterFilter === ''))
+
+      // filter by status
+      .filter(i => this.statusFilters.has(i.status));
 
     this.issuesForCurrentPage = this.getIssuesForCurrentPage();
   }
@@ -68,6 +88,10 @@ export class ProjectPageComponent implements OnInit {
       .subscribe(project => {
         project.issues.forEach(issue => {
           issue.labels.forEach(label => this.labels.add(label));
+          issue.assignees.forEach(assignee => this.assignees.add(assignee));
+          this.submitters.add(issue.submitterName);
+          this.statuses.add(issue.status);
+          this.statusFilters.add(issue.status);
         });
         this.project = project;
         this.updateIssues();
@@ -79,11 +103,24 @@ export class ProjectPageComponent implements OnInit {
   }
 
   toggleLabelFilter(label: string): void {
-    if (this.labelFilters.has(label)) {
-      this.labelFilters.delete(label);
+    this.toggleFilter(this.labelFilters, label);
+  }
+
+  toggleAssigneeFilter(assignee: string): void {
+    this.toggleFilter(this.assigneeFilters, assignee);
+  }
+
+  toggleStatusFilter(status: string): void {
+    this.toggleFilter(this.statusFilters, status);
+  }
+
+  toggleSubmitterFilter(submitter: string): void {
+    if (this.submitterFilter === submitter) {
+      this.submitterFilter = '';
     } else {
-      this.labelFilters.add(label);
+      this.submitterFilter = submitter;
     }
+
     this.updateIssues();
   }
 
@@ -99,5 +136,14 @@ export class ProjectPageComponent implements OnInit {
         this.projectSub.unsubscribe();
         this.getProject();
       });
+  }
+
+  private toggleFilter(filterType: Set<any>, filter: string): void {
+    if (filterType.has(filter)) {
+      filterType.delete(filter);
+    } else {
+      filterType.add(filter);
+    }
+    this.updateIssues();
   }
 }

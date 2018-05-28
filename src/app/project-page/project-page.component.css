@@ -1,3 +1,16 @@
 .spacer {
   margin-right: 10px;
 }
+
+.issue-summary {
+  font-size: 12pt;
+  font-weight: bold;
+}
+
+.badge {
+  margin-right: 2px;
+}
+
+.labels-row {
+  max-width: 150px;
+}

@@ -95,6 +95,42 @@ describe('ProjectPageComponent', () => {
     expect(component.issuesForCurrentPage.length).toEqual(1);
   });
 
+  it('should toggle assignee filters', () => {
+    fixture.detectChanges();
+
+    expect(component.assignees).toEqual(new Set(['denvercoder9']));
+    expect(component.assigneeFilters).toEqual(new Set());
+    component.toggleAssigneeFilter('denvercoder9');
+    expect(component.assigneeFilters).toEqual(new Set(['denvercoder9']));
+
+    component.toggleAssigneeFilter('denvercoder9');
+    expect(component.assigneeFilters).toEqual(new Set());
+  });
+
+  it('should use assignee filters', () => {
+    fixture.detectChanges();
+    component.toggleAssigneeFilter('denvercoder9');
+    expect(component.issuesForCurrentPage.length).toEqual(1);
+  });
+
+  it('should toggle submitter filter', () => {
+    fixture.detectChanges();
+
+    expect(component.submitters).toEqual(new Set(['denvercoder9', 'David Dupre']));
+    expect(component.submitterFilter).toEqual('');
+    component.toggleSubmitterFilter('denvercoder9');
+    expect(component.submitterFilter).toEqual('denvercoder9');
+
+    component.toggleSubmitterFilter('denvercoder9');
+    expect(component.submitterFilter).toEqual('');
+  });
+
+  it('should use submitter filter', () => {
+    fixture.detectChanges();
+    component.toggleSubmitterFilter('denvercoder9');
+    expect(component.issuesForCurrentPage.length).toEqual(1);
+  });
+
   it('should edit project', fakeAsync(() => {
     issueServiceSpy.setProject.and.returnValue(of(null));
     fixture.detectChanges();
