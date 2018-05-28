@@ -1,7 +1,7 @@
-import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
 import { TrackForeverIssue } from '../import/models/trackforever/trackforever-issue';
+import { Observable } from 'rxjs';
 
 /**
  * The IssueService fetches issues and project information for viewing.

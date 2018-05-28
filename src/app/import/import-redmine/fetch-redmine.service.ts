@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { RedmineProject } from './models/redmine-project';
 import { RedmineIssue } from './models/redmine-issue';
 import { RedmineIssueArray } from './models/redmine-issueArray';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class FetchRedmineService {
@@ -13,7 +14,7 @@ export class FetchRedmineService {
 
   fetchProject(projectName: string): Observable<RedmineProject> {
     return this.http.get<{project: RedmineProject}>(`${this.baseUrl}/projects/${projectName}.json`)
-      .map(obj => obj.project);
+      .pipe(map(obj => obj.project));
   }
 
   fetchIssues(projectName: string, projectID: number, limit: number, offset: number): Observable<RedmineIssueArray> {
@@ -23,7 +24,7 @@ export class FetchRedmineService {
 
   fetchIssue(projectID: number, issueID: number): Observable<RedmineIssue> {
     return this.http.get<{issue: RedmineIssue}>(`${this.baseUrl}/issues/${issueID}.json?project_id=${projectID}`)
-      .map(obj => obj.issue);
+      .pipe(map(obj => obj.issue));
   }
 
   setBaseUrl(newUrl: string) { // Projects are probably not hosted on www.redmine.org

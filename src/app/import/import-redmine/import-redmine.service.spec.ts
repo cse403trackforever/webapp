@@ -2,14 +2,13 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { FetchRedmineService } from './fetch-redmine.service';
 import { ImportRedmineService } from './import-redmine.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
 import { RedmineProject } from './models/redmine-project';
 import { mockRedmineProject } from './models/mock/mock-redmine-project';
 import { RedmineIssueArray } from './models/redmine-issueArray';
 import { mockRedmineIssueArray } from './models/mock/mock-redmine-issueArray';
 import { RedmineIssue } from './models/redmine-issue';
 import { mockRedmineTrackForeverProject } from './models/mock/mock-redmine-trackforever-project';
+import { Observable, of } from 'rxjs';
 
 describe('ImportRedmineService', () => {
   let fetchServiceStub: Partial<FetchRedmineService>;
@@ -17,13 +16,13 @@ describe('ImportRedmineService', () => {
   beforeEach(() => {
     fetchServiceStub = {
       fetchProject(projectName: string): Observable<RedmineProject> {
-        return Observable.of(mockRedmineProject);
+        return of(mockRedmineProject);
       },
       fetchIssues(projectName: string, projectID: number, limit: number, offset: number): Observable<RedmineIssueArray> {
-        return Observable.of(mockRedmineIssueArray);
+        return of(mockRedmineIssueArray);
       },
       fetchIssue(projectID: number, issueID: number): Observable<RedmineIssue> {
-        return Observable.of(mockRedmineIssueArray.issues.find(issue => issue.id === issueID));
+        return of(mockRedmineIssueArray.issues.find(issue => issue.id === issueID));
       },
       setBaseUrl(url: string) {}
     };

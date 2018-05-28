@@ -5,9 +5,9 @@ import { TrackForeverProject } from '../import/models/trackforever/trackforever-
 import { ActivatedRoute, Router } from '@angular/router';
 import { TrackForeverIssue } from '../import/models/trackforever/trackforever-issue';
 import { forkJoin } from 'rxjs';
-import { first } from 'rxjs/internal/operators';
 import { AuthUser } from '../shared/models/auth-user';
 import * as moment from 'moment';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-issue-page',

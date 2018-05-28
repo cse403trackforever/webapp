@@ -3,7 +3,7 @@ import { TestBed, async } from '@angular/core/testing';
 import { AuthGuard } from './auth.guard';
 import { Router, RouterStateSnapshot } from '@angular/router';
 import { AuthenticationService } from '../../authentication/authentication.service';
-import { Observable } from 'rxjs';
+import { of } from 'rxjs';
 
 describe('AuthGuard', () => {
   let guard: AuthGuard;
@@ -39,7 +39,7 @@ describe('AuthGuard', () => {
 
   it('should redirect if not logged in', async(() => {
     const redirectUrl = '/redirect_to_here';
-    authServiceSpy.isLoggedIn.and.returnValue(Observable.of(false));
+    authServiceSpy.isLoggedIn.and.returnValue(of(false));
     routerSpy.navigate.and.callFake(() => {});
 
     guard.canActivate(null, <RouterStateSnapshot> { url: redirectUrl })
@@ -52,7 +52,7 @@ describe('AuthGuard', () => {
   }));
 
   it('should activate if logged in', async(() => {
-    authServiceSpy.isLoggedIn.and.returnValue(Observable.of(true));
+    authServiceSpy.isLoggedIn.and.returnValue(of(true));
 
     guard.canActivate(null, null)
       .subscribe(canActivate => expect(canActivate).toBeTruthy());

@@ -1,12 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/observable/merge';
 import { TrackForeverProject } from '../models/trackforever/trackforever-project';
 import { ConvertService } from '../convert.service';
 import { TrackForeverIssue } from '../models/trackforever/trackforever-issue';
+import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class ImportTrackForeverService implements ConvertService {
@@ -102,7 +98,7 @@ export class ImportTrackForeverService implements ConvertService {
     if (!ImportTrackForeverService.instanceOfProject(project)) {
       throw new Error('There are missing fields in the given object.');
     }
-    return Observable.of(project);
+    return of(project);
   }
 
 }

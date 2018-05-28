@@ -2,8 +2,6 @@ import { TestBed, async } from '@angular/core/testing';
 
 import { ImportGithubService } from './import-github.service';
 import { FetchGithubService } from './fetch-github.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
 import { GitHubProject } from './models/github-project';
 import * as mockGithubProject from './models/mock/mockGithubProject.json';
 import * as mockGithubIssues from './models/mock/mockGithubIssues.json';
@@ -15,6 +13,7 @@ import { TrackForeverIssue } from '../models/trackforever/trackforever-issue';
 import { TrackForeverComment } from '../models/trackforever/trackforever-comment';
 import { SyncService } from '../../sync/sync.service';
 import { HttpResponse, HttpHeaders } from '@angular/common/http';
+import { of } from 'rxjs';
 
 describe('ImportGithubService', () => {
   let service: ImportGithubService;
@@ -52,9 +51,9 @@ describe('ImportGithubService', () => {
     const ownerName = testProject.owner.login;
     const projectName = testProject.name;
 
-    fetchServiceSpy.fetchProject.and.returnValue(Observable.of(testProject));
-    fetchServiceSpy.fetchIssues.and.returnValue(Observable.of(response));
-    fetchServiceSpy.fetchComments.and.returnValue(Observable.of(testComments));
+    fetchServiceSpy.fetchProject.and.returnValue(of(testProject));
+    fetchServiceSpy.fetchIssues.and.returnValue(of(response));
+    fetchServiceSpy.fetchComments.and.returnValue(of(testComments));
 
     service.importProject({ownerName, projectName})
       .subscribe((p: TrackForeverProject) => {
@@ -81,9 +80,9 @@ describe('ImportGithubService', () => {
     const ownerName = testProject.owner.login;
     const projectName = testProject.name;
 
-    fetchServiceSpy.fetchProject.and.returnValue(Observable.of(testProject));
-    fetchServiceSpy.fetchIssues.and.returnValue(Observable.of(response));
-    fetchServiceSpy.fetchComments.and.returnValue(Observable.of(testComments));
+    fetchServiceSpy.fetchProject.and.returnValue(of(testProject));
+    fetchServiceSpy.fetchIssues.and.returnValue(of(response));
+    fetchServiceSpy.fetchComments.and.returnValue(of(testComments));
 
     service.importProject({ownerName, projectName})
       .subscribe((p: TrackForeverProject) => {

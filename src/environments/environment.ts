@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:8080/trackforever', // TODO replace with local API
+  apiUrl: 'http://localhost:8080', // TODO replace with local API
   mockBackend: false,
   firebaseConfig: {
     apiKey: 'AIzaSyBA71GS_jZvo9N2Qk3deEw89i1XxYLRZHs',

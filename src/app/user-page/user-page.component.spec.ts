@@ -3,8 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserPageComponent } from './user-page.component';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { AuthUser } from '../shared/models/auth-user';
-import { Observable } from 'rxjs/Observable';
 import { mockUser } from '../shared/models/mock/mock-user';
+import { Observable, of } from 'rxjs';
 
 describe('UserPageComponent', () => {
   let component: UserPageComponent;
@@ -15,7 +15,7 @@ describe('UserPageComponent', () => {
     // stub auth service
     authServiceStub = {
       getUser(): Observable<AuthUser> {
-        return Observable.of(mockUser);
+        return of(mockUser);
       }
     };
 

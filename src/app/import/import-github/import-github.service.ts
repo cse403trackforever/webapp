@@ -1,9 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/observable/forkJoin';
 import { FetchGithubService } from './fetch-github.service';
 import { GitHubProject } from './models/github-project';
 import { GitHubIssue } from './models/github-issue';
@@ -16,6 +11,8 @@ import { TrackForeverComment } from '../models/trackforever/trackforever-comment
 import { ConvertService } from '../convert.service';
 import { SyncService } from '../../sync/sync.service';
 import { HttpResponse } from '@angular/common/http';
+import { Observable, forkJoin, of } from 'rxjs';
+import { flatMap, map, merge } from 'rxjs/operators';
 
 export interface ImportGithubArgs {
   ownerName: string;
@@ -90,10 +87,10 @@ export class ImportGithubService implements ConvertService {
     const projectName = args.projectName;
     const regex = /\<\S*page=(\d+)\>; rel="last"/gm;
     // fetch project and issues in parallel
-    return Observable.forkJoin(
+    return forkJoin(
       this.fetchService.fetchProject(ownerName, projectName),
       this.fetchService.fetchIssues(ownerName, projectName, 1)
-        .flatMap((response: HttpResponse<GitHubIssue[]>): Observable<[GitHubIssue, GitHubComment[]][]> => {
+        .pipe(flatMap((response: HttpResponse<GitHubIssue[]>): Observable<[GitHubIssue, GitHubComment[]][]> => {
           const link = response.headers.get('link');
           // Assume only one page unless link header is set
           let lastIndex = 1;
@@ -101,21 +98,21 @@ export class ImportGithubService implements ConvertService {
             const matches = regex.exec(link);
             lastIndex = Number.parseInt(matches[1]);
           }
-          let pages = Observable.of(response);
 
+          let pages = of(response.body);
           for (let i = 2; i <= lastIndex; i++) {
-            pages = Observable.merge(pages, this.fetchService.fetchIssues(ownerName, projectName, i));
+            pages = pages.pipe(merge(this.fetchService.fetchIssues(ownerName, projectName, i).pipe(map(p => p.body))));
           }
 
           // fetch the comments in parallel
-          return pages.flatMap(resp =>
-            Observable.forkJoin(
-                resp.body.map(issue => this.fetchService.fetchComments(issue.comments_url)
-              .map((comments: GitHubComment[]): [GitHubIssue, GitHubComment[]] => [issue, comments]))
+          return pages.pipe(flatMap(resp =>
+            forkJoin(
+                resp.map(issue => this.fetchService.fetchComments(issue.comments_url)
+                  .pipe(map((comments: GitHubComment[]): [GitHubIssue, GitHubComment[]] => [issue, comments])))
             )
-          );
-        })
-    ).map((data: [GitHubProject, [GitHubIssue, GitHubComment[]][]]): TrackForeverProject => {
+          ));
+        }))
+    ).pipe(map((data: [GitHubProject, [GitHubIssue, GitHubComment[]][]]): TrackForeverProject => {
       const githubProject: GitHubProject = data[0];
       const githubIssuesAndComments: [GitHubIssue, GitHubComment[]][] = data[1];
 
@@ -131,7 +128,7 @@ export class ImportGithubService implements ConvertService {
       }).filter(e => e).forEach(issue => project.issues.set(issue.id, issue));
 
       return project;
-    });
+    }));
   }
 
 }

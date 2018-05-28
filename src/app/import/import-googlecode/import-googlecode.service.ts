@@ -1,10 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/reduce';
 import { TrackForeverProject } from '../models/trackforever/trackforever-project';
 import { TrackForeverIssue } from '../models/trackforever/trackforever-issue';
 import { TrackForeverComment } from '../models/trackforever/trackforever-comment';
@@ -17,6 +11,8 @@ import { GoogleCodeIssueSummary } from './models/googlecode-issuesummary';
 import { ConvertService } from '../convert.service';
 import { SyncService } from '../../sync/sync.service';
 import * as Chance from 'chance';
+import { Observable, forkJoin, of } from 'rxjs';
+import { merge, flatMap, reduce, map } from 'rxjs/operators';
 
 @Injectable()
 export class ImportGoogleCodeService implements ConvertService {
@@ -120,22 +116,25 @@ export class ImportGoogleCodeService implements ConvertService {
   importProject(args: ImportGooglecodeArgs): Observable<TrackForeverProject> {
     const projectName = args.projectName;
 
-    return Observable.forkJoin(
+    return forkJoin(
       this.fetchService.fetchProject(projectName),
       this.fetchService.fetchIssuePage(projectName, 1)
-        .flatMap((issuePage: GoogleCodeIssuePage) => {
-          let pages: Observable<GoogleCodeIssuePage> = Observable.of(issuePage);
+        .pipe(flatMap((issuePage: GoogleCodeIssuePage) => {
+          let pages: Observable<GoogleCodeIssuePage> = of(issuePage);
           // Get each issue page 2 -> totalPages
           for (let i = 2; i <= issuePage.totalPages; i++) {
-            pages = Observable.merge(pages, this.fetchService.fetchIssuePage(projectName, i));
+            pages = pages.pipe(merge(this.fetchService.fetchIssuePage(projectName, i)));
           }
 
           // Map each page to an array of issues
-          return pages.flatMap((page: GoogleCodeIssuePage) => Observable.forkJoin(
-            page.issues.map((issue: GoogleCodeIssueSummary) => this.fetchService.fetchIssue(projectName, issue.id))
-          )).reduce((acc, curr) => acc.concat(curr));
-        })
-    ).map((data: [GoogleCodeProject, GoogleCodeIssue[]]) => {
+          return pages.pipe(
+            flatMap((page: GoogleCodeIssuePage) => forkJoin(
+              page.issues.map((issue: GoogleCodeIssueSummary) => this.fetchService.fetchIssue(projectName, issue.id))
+            )),
+            reduce((acc, curr) => acc.concat(curr))
+          );
+        }))
+    ).pipe(map((data: [GoogleCodeProject, GoogleCodeIssue[]]) => {
       const project = ImportGoogleCodeService.convertProjectToTrackForever(data[0]);
       data[1]
         .map((issue: GoogleCodeIssue) => ImportGoogleCodeService.convertIssueToTrackForever(issue, data[0].name))
@@ -146,7 +145,7 @@ export class ImportGoogleCodeService implements ConvertService {
       }
 
       return project;
-    });
+    }));
   }
 
 }

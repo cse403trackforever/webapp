@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-import { Observable } from 'rxjs/Observable';
 import { AuthUser } from '../shared/models/auth-user';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class AuthenticationService {
@@ -11,7 +12,7 @@ export class AuthenticationService {
   redirectUrl: string;
 
   constructor(public afAuth: AngularFireAuth) {
-    this.user = afAuth.authState.map((user: firebase.UserInfo) => {
+    this.user = afAuth.authState.pipe(map((user: firebase.UserInfo) => {
       if (user) {
         return {
           displayName: user.displayName,
@@ -23,7 +24,7 @@ export class AuthenticationService {
       } else {
         return null;
       }
-    });
+    }));
   }
 
   getUser(): Observable<AuthUser> {
@@ -31,7 +32,7 @@ export class AuthenticationService {
   }
 
   isLoggedIn(): Observable<boolean> {
-    return this.user.map(user => user != null);
+    return this.user.pipe(map(user => user != null));
   }
 
   private signIn(p: Promise<any>): Promise<any> {

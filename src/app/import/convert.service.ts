@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TrackForeverProject } from './models/trackforever/trackforever-project';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export abstract class ConvertService {

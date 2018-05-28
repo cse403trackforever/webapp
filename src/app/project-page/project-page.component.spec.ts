@@ -9,7 +9,7 @@ import { MarkdownPipe } from '../shared/pipes/markdown.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock-trackforever-project';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs';
 import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
 
 describe('ProjectPageComponent', () => {
@@ -46,7 +46,7 @@ describe('ProjectPageComponent', () => {
     issueServiceSpy = TestBed.get(IssueService);
     exportServiceSpy = TestBed.get(ExportService);
 
-    issueServiceSpy.getProject.and.returnValue(Observable.of(mockTrackforeverProject));
+    issueServiceSpy.getProject.and.returnValue(of(mockTrackforeverProject));
   }));
 
   beforeEach(() => {
@@ -96,7 +96,7 @@ describe('ProjectPageComponent', () => {
   });
 
   it('should edit project', fakeAsync(() => {
-    issueServiceSpy.setProject.and.returnValue(Observable.of(null));
+    issueServiceSpy.setProject.and.returnValue(of(null));
     fixture.detectChanges();
 
     const newName = 'Interesting Project';

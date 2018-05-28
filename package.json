@@ -50,7 +50,6 @@
     "npm": "^6.1.0",
     "popper.js": "^1.14.3",
     "rxjs": "^6.2.0",
-    "rxjs-compat": "^6.2.0",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {

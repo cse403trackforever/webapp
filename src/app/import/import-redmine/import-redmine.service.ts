@@ -1,9 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/observable/merge';
 import { TrackForeverProject } from '../models/trackforever/trackforever-project';
 import { TrackForeverIssue } from '../models/trackforever/trackforever-issue';
 import { FetchRedmineService } from './fetch-redmine.service';
@@ -11,6 +6,8 @@ import { RedmineIssue } from './models/redmine-issue';
 import { RedmineProject } from './models/redmine-project';
 import { RedmineIssueArray } from './models/redmine-issueArray';
 import { SyncService } from '../../sync/sync.service';
+import { Observable, forkJoin, of } from 'rxjs';
+import { merge, flatMap, map } from 'rxjs/operators';
 
 export interface ImportRedmineArgs {
   projectName: string;
@@ -63,33 +60,35 @@ export class ImportRedmineService {
     this.fetchService.setBaseUrl(args.serverUrl);
     const projectName = args.projectName;
     const projectID = args.projectID;
-    return Observable.forkJoin(
+    return forkJoin(
       this.fetchService.fetchProject(projectName),
-      this.fetchService.fetchIssues(projectName, projectID, 100, 0).flatMap((issuePage: RedmineIssueArray) => {
-        let pages: Observable<RedmineIssueArray> = Observable.of(issuePage);
+      this.fetchService.fetchIssues(projectName, projectID, 100, 0).pipe(
+        flatMap((issuePage: RedmineIssueArray) => {
+          const pages: Observable<RedmineIssueArray> = of(issuePage);
 
-        for (let i = 1; i < Math.round(issuePage.total_count.valueOf() / 100.0); i++) {
-          pages = Observable.merge(pages, this.fetchService.fetchIssues(projectName, projectID, 100, 100 * i));
-        }
+          for (let i = 1; i < Math.round(issuePage.total_count.valueOf() / 100.0); i++) {
+            pages.pipe(merge(this.fetchService.fetchIssues(projectName, projectID, 100, 100 * i)));
+          }
 
-        return Observable.forkJoin(
-          pages.flatMap((page: RedmineIssueArray) => {
-            return Observable.forkJoin(
-              page.issues.map((issue: RedmineIssue) => {
-                return this.fetchService.fetchIssue(projectID, issue.id);
-              })
-            );
-          })
-        );
-      })
-    ).map((data: [RedmineProject, RedmineIssue[][]]) => {
+          return forkJoin(
+            pages.pipe(flatMap((page: RedmineIssueArray) => {
+              return forkJoin(
+                page.issues.map((issue: RedmineIssue) => {
+                  return this.fetchService.fetchIssue(projectID, issue.id);
+                })
+              );
+            }))
+          );
+        })
+      )
+    ).pipe(map((data: [RedmineProject, RedmineIssue[][]]) => {
       const project = ImportRedmineService.convertProjectToTrackForever(data[0]);
       data[1].reduce((a, b) => a.concat(b), [])
         .map((issue: RedmineIssue) => ImportRedmineService.convertIssueToTrackForever(issue))
         .forEach(issue => project.issues.set(issue.id, issue));
 
       return project;
-    });
+    }));
   }
 
 }

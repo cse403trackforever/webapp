@@ -4,7 +4,8 @@ import { ImportService } from './import.service';
 import { ConvertService } from './convert.service';
 import { DataService } from '../database/data.service';
 import { mockTrackforeverProject } from './models/trackforever/mock/mock-trackforever-project';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 describe('ImportService', () => {
   let service: ImportService;
@@ -43,7 +44,7 @@ describe('ImportService', () => {
     const testKey = 'key!';
     const testProject = mockTrackforeverProject;
 
-    convertServiceSpy.importProject.and.returnValue(Observable.of(testProject));
+    convertServiceSpy.importProject.and.returnValue(of(testProject));
     dataServiceSpy.addProject.and.returnValue(new Promise((resolve) => resolve(testKey)));
 
     service.importProject(args)
@@ -60,12 +61,11 @@ describe('ImportService', () => {
     const args = 'my-project';
     const errorMsg = 'error!';
 
-    convertServiceSpy.importProject.and.returnValue(Observable.of(errorCall).map(e => e(errorMsg)));
+    convertServiceSpy.importProject.and.returnValue(of(errorCall).pipe(map(e => e(errorMsg))));
 
     service.importProject(args)
       .then(() => expect(true).toBeFalsy('should error'))
       .catch((error) => {
-        console.log('got here!');
         expect(error).toEqual(errorMsg);
       });
   }));

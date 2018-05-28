@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomePageComponent } from './home-page.component';
-import { Observable } from 'rxjs/Observable';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { mockUser } from '../shared/models/mock/mock-user';
 import { AuthUser } from '../shared/models/auth-user';
 import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
 
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
@@ -16,7 +16,7 @@ describe('HomePageComponent', () => {
     // stub auth service
     authServiceStub = {
       getUser(): Observable<AuthUser> {
-        return Observable.of(mockUser);
+        return of(mockUser);
       }
     };
 

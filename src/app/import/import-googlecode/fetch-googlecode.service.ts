@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { GoogleCodeProject } from './models/googlecode-project';
 import { GoogleCodeIssue } from './models/googlecode-issue';
 import { GoogleCodeIssuePage } from './models/googlecode-issuepage';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class FetchGoogleCodeService {

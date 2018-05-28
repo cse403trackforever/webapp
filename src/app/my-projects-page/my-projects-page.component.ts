@@ -20,7 +20,9 @@ export class MyProjectsPageComponent implements OnInit {
 
   getProjects(): void {
     this.issueService.getProjects()
-      .subscribe(projects => this.projects = projects);
+      .subscribe(projects => {
+        this.projects = projects;
+      });
   }
 
   getProjectsForCurrentPage(): TrackForeverProject[] {

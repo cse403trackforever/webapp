@@ -5,7 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MomentModule } from 'ngx-moment';
 import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock-trackforever-project';
-import { first } from 'rxjs/internal/operators';
+import { first } from 'rxjs/operators';
 
 describe('IssueDetailsComponent', () => {
   let component: IssueDetailsComponent;

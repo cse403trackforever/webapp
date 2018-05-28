@@ -10,12 +10,12 @@ import * as mockGoogleCodeIssues1 from './models/mock/issues-1.json';
 import * as mockGoogleCodeIssues2 from './models/mock/issues-2.json';
 import * as mockGoogleCodeIssues3 from './models/mock/issues-3.json';
 import { GoogleCodeIssue } from './models/googlecode-issue';
-import { Observable } from 'rxjs/Observable';
 import { GoogleCodeProject } from './models/googlecode-project';
 import { GoogleCodeIssuePage } from './models/googlecode-issuepage';
 import { TrackForeverIssue } from '../models/trackforever/trackforever-issue';
 import { TrackForeverComment } from '../models/trackforever/trackforever-comment';
 import { GoogleCodeComment } from './models/googlecode-comment';
+import { of } from 'rxjs';
 
 describe('ImportGoogleCodeService', () => {
   let service: ImportGoogleCodeService;
@@ -49,13 +49,13 @@ describe('ImportGoogleCodeService', () => {
     const mockIssues: GoogleCodeIssue[] = (<any> [mockGoogleCodeIssues1, mockGoogleCodeIssues2, mockGoogleCodeIssues3])
       .reduce((acc, v) => acc.concat(v));
 
-    fetchServiceSpy.fetchProject.and.returnValue(Observable.of(mockProject));
+    fetchServiceSpy.fetchProject.and.returnValue(of(mockProject));
 
     let pageIndex = 0;
-    fetchServiceSpy.fetchIssuePage.and.callFake(() => Observable.of(mockIssuePages[pageIndex++]));
+    fetchServiceSpy.fetchIssuePage.and.callFake(() => of(mockIssuePages[pageIndex++]));
 
     let issueIndex = 0;
-    fetchServiceSpy.fetchIssue.and.callFake(() => Observable.of(mockIssues[issueIndex++]));
+    fetchServiceSpy.fetchIssue.and.callFake(() => of(mockIssues[issueIndex++]));
 
     service.importProject({projectName, useRandomNames: true})
       .subscribe(project => {

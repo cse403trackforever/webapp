@@ -2,12 +2,12 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 
 import { SigninPageComponent } from './signin-page.component';
 import { AuthenticationService } from '../authentication/authentication.service';
-import { Observable } from 'rxjs/Observable';
 import { mockUser } from '../shared/models/mock/mock-user';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
 import { AuthUser } from '../shared/models/auth-user';
+import { Observable, of } from 'rxjs';
 
 describe('SigninPageComponent', () => {
   let component: SigninPageComponent;
@@ -21,7 +21,7 @@ describe('SigninPageComponent', () => {
     // stub auth service
     authServiceStub = {
       getUser(): Observable<AuthUser> {
-        return Observable.of(null);
+        return of(null);
       },
       emailSignIn(value): any {
         console.log('stub');

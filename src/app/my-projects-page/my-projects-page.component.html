@@ -23,7 +23,7 @@
       <tbody>
         <tr routerLink="/project/{{project.id}}" *ngFor="let project of getProjectsForCurrentPage()">
           <td>{{project.name}}</td>
-          <td>{{project.description.length > 50
+          <td>{{project.description && project.description.length > 50
               ? (project.description | slice:0:47) + '...'
               : project.description}}</td>
           <td>{{project.source}}</td>

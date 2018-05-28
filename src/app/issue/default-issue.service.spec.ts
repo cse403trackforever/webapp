@@ -3,11 +3,10 @@ import { TestBed, async } from '@angular/core/testing';
 import { DefaultIssueService } from './default-issue.service';
 import { OnlineIssueService } from './online-issue.service';
 import { OfflineIssueService } from './offline-issue.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock-trackforever-project';
 import { SyncService } from '../sync/sync.service';
 import { of, throwError } from 'rxjs';
-import { last, catchError } from 'rxjs/operators';
+import { catchError, last } from 'rxjs/operators';
 
 describe('DefaultIssueService', () => {
   let service: DefaultIssueService;
@@ -70,58 +69,17 @@ describe('DefaultIssueService', () => {
     const issueId = '123';
     const testIssue = mockTrackforeverProject.issues[0];
 
-    offlineSpy.getIssue.and.returnValue(of(null));
-    onlineSpy.getIssue.and.returnValue(of(testIssue));
+    offlineSpy.getIssue.and.returnValue(of(testIssue));
 
     service.getIssue(projectKey, issueId).pipe(last())
       .subscribe(issue => {
         expect(issue).toEqual(testIssue);
-        expect(onlineSpy.getIssue.calls.count()).toBe(1);
+        expect(onlineSpy.getIssue.calls.count()).toBe(0);
         expect(offlineSpy.getIssue.calls.count()).toBe(1);
       });
   }));
 
-  it('should default to offline if the server is down', async(() => {
-    setupTest(true);
-
-    const projectKey = 'my-project';
-    const issueId = '123';
-    const testIssue = mockTrackforeverProject.issues[0];
-
-    onlineSpy.getIssue.and.returnValue(throwError(new HttpErrorResponse({status: 0})));
-    offlineSpy.getIssue.and.returnValue(of(testIssue));
-
-    service.getIssue(projectKey, issueId)
-      .subscribe(issue => {
-        expect(issue).toEqual(testIssue);
-        expect(onlineSpy.getIssue.calls.count()).toBe(1);
-        expect(offlineSpy.getIssue.calls.count()).toBe(1);
-      }, () => {
-        expect(service.isOnline()).toBeFalsy();
-      });
-  }));
-
-  it('should not stick offline if the server is only temporarily in error', async(() => {
-    setupTest(true);
-
-    const projectKey = 'my-project';
-    const issueId = '123';
-    const testIssue = mockTrackforeverProject.issues[0];
-
-    onlineSpy.getIssue.and.returnValue(throwError(new HttpErrorResponse({status: 500})));
-    offlineSpy.getIssue.and.returnValue(of(testIssue));
-
-    service.getIssue(projectKey, issueId)
-      .subscribe(issue => {
-        expect(issue).toEqual(testIssue);
-        expect(onlineSpy.getIssue.calls.count()).toBe(1);
-        expect(offlineSpy.getIssue.calls.count()).toBe(1);
-      }, () => {
-        expect(service.isOnline()).toBeTruthy();
-      });
-  }));
-
-  it('should let other online errors bubble up', async(() => {
+  it('should let other online errors bubble up', (done) => {
     setupTest(true);
 
     const projectKey = 'my-project';
@@ -137,8 +95,8 @@ describe('DefaultIssueService', () => {
         expect(error).toEqual(testError);
         return of(error);
       })
-    ).subscribe();
-  }));
+    ).subscribe(() => done());
+  });
 
   it('should get an issue offline', async(() => {
     setupTest(false);
@@ -164,12 +122,12 @@ describe('DefaultIssueService', () => {
     const testProject = mockTrackforeverProject;
 
     onlineSpy.getProject.and.returnValue(of(testProject));
-    offlineSpy.getProject.and.returnValue(of(null));
+    offlineSpy.getProject.and.returnValue(of(testProject));
 
     service.getProject(projectKey).pipe(last())
       .subscribe(project => {
         expect(project).toEqual(testProject);
-        expect(onlineSpy.getProject.calls.count()).toBe(1);
+        expect(onlineSpy.getProject.calls.count()).toBe(0);
         expect(offlineSpy.getProject.calls.count()).toBe(1);
       });
   }));
@@ -195,14 +153,16 @@ describe('DefaultIssueService', () => {
 
     const testProjects = [mockTrackforeverProject];
 
-    onlineSpy.getProjects.and.returnValue(of(testProjects));
-    offlineSpy.getProjects.and.returnValue(of([]));
+    onlineSpy.getProjects.and.returnValue(of([]));
+    offlineSpy.getProjects.and.returnValue(of(testProjects));
+    syncServiceSpy.sync.and.returnValue(of(null));
 
     service.getProjects().pipe(last())
       .subscribe(projects => {
         expect(projects).toEqual(testProjects);
-        expect(onlineSpy.getProjects.calls.count()).toBe(1);
+        expect(onlineSpy.getProjects.calls.count()).toBe(0);
         expect(offlineSpy.getProjects.calls.count()).toBe(1);
+        expect(syncServiceSpy.sync.calls.count()).toBe(1);
       });
   }));
 

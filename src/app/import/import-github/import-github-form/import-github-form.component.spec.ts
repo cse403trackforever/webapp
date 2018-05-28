@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ImportGithubFormComponent } from './import-github-form.component';
 import { FormsModule } from '@angular/forms';
-import 'rxjs/add/observable/of';
 import { ImportService } from '../../import.service';
 
 describe('ImportGithubFormComponent', () => {

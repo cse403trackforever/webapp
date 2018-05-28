@@ -42,7 +42,7 @@ describe('OnlineIssueService', () => {
     expect(req.request.method).toEqual('GET');
 
     // response with mock data
-    req.flush(ImportTrackForeverService.toJson(testIssue));
+    req.flush(testIssue);
   }));
 
   it('should set some issues', async(() => {

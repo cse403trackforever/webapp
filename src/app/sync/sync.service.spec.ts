@@ -1,10 +1,11 @@
+import { catchError } from 'rxjs/operators';
 import { SyncService } from './sync.service';
 import { TestBed, async } from '@angular/core/testing';
 import { OnlineIssueService } from '../issue/online-issue.service';
 import { OfflineIssueService } from '../issue/offline-issue.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { mockRedmineTrackForeverProject } from '../import/import-redmine/models/mock/mock-redmine-trackforever-project';
-import { Observable } from 'rxjs/Observable';
+import { of, throwError } from 'rxjs';
 
 
 describe('SyncService', () => {
@@ -64,18 +65,32 @@ describe('SyncService', () => {
     expect(SyncService.hasChanged(project)).toEqual(false);
   });
 
+  it('bubbles up errors', (done) => {
+    const message = 'error test!';
+    offlineSpy.getProjects.and.returnValue(throwError(new Error(message)));
+
+    service.sync().pipe(
+      catchError(error => {
+        expect(error.message).toEqual(message);
+        return of(error);
+      })
+    ).subscribe(() => done());
+  });
+
   it('doesn\'t crash', async(() => {
     const map = new Map();
     Array.from(mockRedmineTrackForeverProject.issues).forEach(e => {
       map.set(e[0], e[1].hash);
     });
 
-    offlineSpy.getProjects.and.returnValue(Observable.of([mockRedmineTrackForeverProject]));
-    onlineSpy.getHashes.and.returnValue(Observable.of(map));
-    onlineSpy.getRequestedProjects.and.returnValue(Observable.of([]));
-    onlineSpy.getRequestedIssues.and.returnValue(Observable.of([]));
-
-    // TODO mock every other method of offline and online services which are called in sync
+    offlineSpy.getProjects.and.returnValue(of([mockRedmineTrackForeverProject]));
+    onlineSpy.getHashes.and.returnValue(of(map));
+    onlineSpy.getRequestedProjects.and.returnValue(of([]));
+    onlineSpy.getRequestedIssues.and.returnValue(of([]));
+    onlineSpy.setProjects.and.callFake(() => of(null));
+    onlineSpy.setIssues.and.callFake(() => of(null));
+    onlineSpy.getIssue.and.returnValue(of(mockRedmineTrackForeverProject.issues.get('5')));
+    offlineSpy.setIssues.and.returnValue(of(null));
 
     service.sync().subscribe(r => expect(r).toBeTruthy());
   }));
