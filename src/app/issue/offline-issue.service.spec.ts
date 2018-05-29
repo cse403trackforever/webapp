@@ -5,13 +5,18 @@ import { DataService } from '../database/data.service';
 import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock-trackforever-project';
 import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
 import { TrackForeverIssue } from '../import/models/trackforever/trackforever-issue';
+import { AuthenticationService } from '../authentication/authentication.service';
+import { mockUser } from '../shared/models/mock/mock-user';
+import { of } from 'rxjs';
 
 describe('OfflineIssueService', () => {
   let service: OfflineIssueService;
   let dataServiceSpy: jasmine.SpyObj<DataService>;
+  let authServiceSpy: jasmine.SpyObj<AuthenticationService>;
 
   beforeEach(() => {
-    const spy = jasmine.createSpyObj('DataService', ['getProject', 'getKeys', 'addProject']);
+    const spy = jasmine.createSpyObj('DataService', ['getProject', 'getKeys', 'addProject', 'getProjects']);
+    const authSpy = jasmine.createSpyObj('AuthenticationService', ['getUser']);
 
     TestBed.configureTestingModule({
       providers: [
@@ -19,12 +24,19 @@ describe('OfflineIssueService', () => {
         {
           provide: DataService,
           useValue: spy
+        },
+        {
+          provide: AuthenticationService,
+          useValue: authSpy
         }
       ]
     });
 
     service = TestBed.get(OfflineIssueService);
     dataServiceSpy = TestBed.get(DataService);
+    authServiceSpy = TestBed.get(AuthenticationService);
+
+    authServiceSpy.getUser.and.returnValue(of(mockUser));
   });
 
   it('should be created', () => {
@@ -54,11 +66,9 @@ describe('OfflineIssueService', () => {
   }));
 
   it('should get project summaries', async(() => {
-    const projectKey = 'my-project';
     const p = mockTrackforeverProject;
 
-    dataServiceSpy.getProject.and.returnValue(new Promise((resolve) => resolve(p)));
-    dataServiceSpy.getKeys.and.returnValue(new Promise((resolve) => resolve([projectKey])));
+    dataServiceSpy.getProjects.and.returnValue(of([p]));
 
     service.getProjects()
       .subscribe(projects => expect(projects).toEqual([p]));
@@ -78,23 +88,5 @@ describe('OfflineIssueService', () => {
     service.setProject(mockTrackforeverProject).subscribe(r => {
       expect(r).toEqual(mockTrackforeverProject.id);
     });
-  }));
-
-  it('should not complete getProjects prematurely', async(() => {
-    const projectKey = 'my-project';
-    const p = mockTrackforeverProject;
-
-    dataServiceSpy.getProject.and.returnValue(new Promise((resolve) => setTimeout(() => resolve(p), 300)));
-    dataServiceSpy.getKeys.and.returnValue(new Promise((resolve) => resolve([projectKey])));
-
-    let nexted = false;
-    service.getProjects()
-      .subscribe(projects => {
-          nexted = true;
-          expect(projects).toEqual([p]);
-        },
-        error => fail(),
-        () => expect(nexted).toBeTruthy()
-      );
   }));
 });

@@ -17,7 +17,7 @@ import { merge, flatMap, reduce, map, catchError } from 'rxjs/operators';
 
 export interface ImportGooglecodeArgs {
   projectName: string;
-  userRandomNames?: boolean;
+  useRandomNames?: boolean;
 }
 
 @Injectable()
@@ -47,6 +47,8 @@ export class ConvertGooglecodeService implements ConvertService {
     } catch (e) {
       // can get a range error if there aren't enough animals for the number of IDs
       // give up and use default IDs
+      console.log('failed to assign random names');
+      console.log(e);
       return;
     }
 
@@ -121,7 +123,7 @@ export class ConvertGooglecodeService implements ConvertService {
   // Import Google Code Project into TrackForever format
   importProject(args: ImportGooglecodeArgs): Observable<TrackForeverProject> {
     const projectName = args.projectName;
-    const useRandomNames = args.userRandomNames;
+    const useRandomNames = args.useRandomNames;
     return forkJoin(
       this.fetchService.fetchProject(projectName),
       this.fetchService.fetchIssuePage(projectName, 1)

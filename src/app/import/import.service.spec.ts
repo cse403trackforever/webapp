@@ -6,15 +6,19 @@ import { DataService } from '../database/data.service';
 import { mockTrackforeverProject } from './models/trackforever/mock/mock-trackforever-project';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AuthenticationService } from '../authentication/authentication.service';
+import { mockUser } from '../shared/models/mock/mock-user';
 
 describe('ImportService', () => {
   let service: ImportService;
   let convertServiceSpy: jasmine.SpyObj<ConvertService>;
   let dataServiceSpy: jasmine.SpyObj<DataService>;
+  let authServiceSpy: jasmine.SpyObj<AuthenticationService>;
 
   beforeEach(() => {
     const convertSpy = jasmine.createSpyObj('ConvertService', ['importProject']);
     const dataSpy = jasmine.createSpyObj('DataService', ['addProject']);
+    const authSpy = jasmine.createSpyObj('AuthenticationService', ['getUser']);
 
     TestBed.configureTestingModule({
       providers: [
@@ -27,12 +31,19 @@ describe('ImportService', () => {
           provide: DataService,
           useValue: dataSpy
         },
+        {
+          provide: AuthenticationService,
+          useValue: authSpy
+        }
       ]
     });
 
     service = TestBed.get(ImportService);
     convertServiceSpy = TestBed.get(ConvertService);
     dataServiceSpy = TestBed.get(DataService);
+    authServiceSpy = TestBed.get(AuthenticationService);
+
+    authServiceSpy.getUser.and.returnValue(of(mockUser));
   });
 
   it('should be created', () => {
