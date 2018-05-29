@@ -13,7 +13,7 @@ import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock
 import { of } from 'rxjs';
 import { mockUser } from '../shared/models/mock/mock-user';
 import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
-import { ImportTrackForeverService } from '../import/import-trackforever/import-trackforever.service';
+import { ConvertTrackforeverService } from '../import/import-trackforever/convert-trackforever.service';
 
 @Component({
   selector: 'app-issue-details',
@@ -177,5 +177,5 @@ describe('CreateIssuePageComponent', () => {
 });
 
 function copyProject(p: TrackForeverProject): TrackForeverProject {
-  return ImportTrackForeverService.fromJson(ImportTrackForeverService.toJson(p));
+  return ConvertTrackforeverService.fromJson(ConvertTrackforeverService.toJson(p));
 }

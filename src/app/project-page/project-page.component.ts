@@ -5,7 +5,7 @@ import { faSort, faSortUp, faSortDown, faCheckSquare } from '@fortawesome/free-s
 import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
 import { ExportService } from '../export/export.service';
 import { TrackForeverIssue } from '../import/models/trackforever/trackforever-issue';
-import { ImportTrackForeverService } from '../import/import-trackforever/import-trackforever.service';
+import { ConvertTrackforeverService } from '../import/import-trackforever/convert-trackforever.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -127,7 +127,7 @@ export class ProjectPageComponent implements OnInit {
   editProject(name: string, description: string): void {
     this.isEditingProject = false;
 
-    const updatedProject = ImportTrackForeverService.fromJson(ImportTrackForeverService.toJson(this.project));
+    const updatedProject = ConvertTrackforeverService.fromJson(ConvertTrackforeverService.toJson(this.project));
     updatedProject.name = name;
     updatedProject.description = description;
 

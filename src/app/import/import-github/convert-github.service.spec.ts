@@ -1,6 +1,6 @@
 import { TestBed, async } from '@angular/core/testing';
 
-import { ImportGithubService } from './import-github.service';
+import { ConvertGithubService } from './convert-github.service';
 import { FetchGithubService } from './fetch-github.service';
 import { GitHubProject } from './models/github-project';
 import * as mockGithubProject from './models/mock/mockGithubProject.json';
@@ -15,8 +15,8 @@ import { SyncService } from '../../sync/sync.service';
 import { HttpResponse, HttpHeaders } from '@angular/common/http';
 import { of } from 'rxjs';
 
-describe('ImportGithubService', () => {
-  let service: ImportGithubService;
+describe('ConvertGithubService', () => {
+  let service: ConvertGithubService;
   let fetchServiceSpy: jasmine.SpyObj<FetchGithubService>;
 
   beforeEach(() => {
@@ -24,7 +24,7 @@ describe('ImportGithubService', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        ImportGithubService,
+        ConvertGithubService,
         {
           provide: FetchGithubService,
           useValue: fetchSpy
@@ -32,7 +32,7 @@ describe('ImportGithubService', () => {
       ],
     });
 
-    service = TestBed.get(ImportGithubService);
+    service = TestBed.get(ConvertGithubService);
     fetchServiceSpy = TestBed.get(FetchGithubService);
   });
 
@@ -55,7 +55,7 @@ describe('ImportGithubService', () => {
     fetchServiceSpy.fetchIssues.and.returnValue(of(response));
     fetchServiceSpy.fetchComments.and.returnValue(of(testComments));
 
-    service.importProject({ownerName, projectName})
+    service.importProject(ownerName, projectName)
       .subscribe((p: TrackForeverProject) => {
         expect(p.hash).toEqual('190998f576c5c6fc354e29cb8fb9a914e84b6adb3cae2f205b09' +
         'f2dcd29504794b43c3e1a034b4fecb022bc61c00b09255504111eceb27530ee250daa154b374');
@@ -84,7 +84,7 @@ describe('ImportGithubService', () => {
     fetchServiceSpy.fetchIssues.and.returnValue(of(response));
     fetchServiceSpy.fetchComments.and.returnValue(of(testComments));
 
-    service.importProject({ownerName, projectName})
+    service.importProject(ownerName, projectName)
       .subscribe((p: TrackForeverProject) => {
         expect(p.hash).toEqual('190998f576c5c6fc354e29cb8fb9a914e84b6adb3cae2f205b09' +
         'f2dcd29504794b43c3e1a034b4fecb022bc61c00b09255504111eceb27530ee250daa154b374');

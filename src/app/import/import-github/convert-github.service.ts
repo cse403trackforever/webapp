@@ -14,13 +14,8 @@ import { HttpResponse } from '@angular/common/http';
 import { Observable, forkJoin, of } from 'rxjs';
 import { flatMap, map, merge } from 'rxjs/operators';
 
-export interface ImportGithubArgs {
-  ownerName: string;
-  projectName: string;
-}
-
 @Injectable()
-export class ImportGithubService implements ConvertService {
+export class ConvertGithubService implements ConvertService {
 
   constructor(private fetchService: FetchGithubService) {
   }
@@ -38,7 +33,7 @@ export class ImportGithubService implements ConvertService {
         commenterName: issue.user.login
       });
     }
-    comments = comments.concat(ghComments.map(ImportGithubService.convertCommentToTrackForever));
+    comments = comments.concat(ghComments.map(ConvertGithubService.convertCommentToTrackForever));
 
     const newIssue = {
       hash: '',
@@ -82,9 +77,7 @@ export class ImportGithubService implements ConvertService {
   }
 
   // Import GitHub Project into TrackForever format
-  importProject(args: ImportGithubArgs): Observable<TrackForeverProject> {
-    const ownerName = args.ownerName;
-    const projectName = args.projectName;
+  importProject(ownerName: string, projectName: string): Observable<TrackForeverProject> {
     const regex = /\<\S*page=(\d+)\>; rel="last"/gm;
     // fetch project and issues in parallel
     return forkJoin(
@@ -117,14 +110,14 @@ export class ImportGithubService implements ConvertService {
       const githubIssuesAndComments: [GitHubIssue, GitHubComment[]][] = data[1];
 
       // convert project
-      const project: TrackForeverProject = ImportGithubService.convertProjectToTrackForever(data[0], projectName);
+      const project: TrackForeverProject = ConvertGithubService.convertProjectToTrackForever(data[0], projectName);
 
       // convert issues
       githubIssuesAndComments.map((githubIssueAndComment: [GitHubIssue, GitHubComment[]]): TrackForeverIssue => {
         const githubIssue: GitHubIssue = githubIssueAndComment[0];
         const githubComments: GitHubComment[] = githubIssueAndComment[1];
 
-        return ImportGithubService.convertIssueToTrackForever(githubIssue, githubProject.id, githubComments);
+        return ConvertGithubService.convertIssueToTrackForever(githubIssue, githubProject.id, githubComments);
       }).filter(e => e).forEach(issue => project.issues.set(issue.id, issue));
 
       return project;

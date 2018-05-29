@@ -9,14 +9,8 @@ import { SyncService } from '../../sync/sync.service';
 import { Observable, forkJoin, of } from 'rxjs';
 import { merge, flatMap, map } from 'rxjs/operators';
 
-export interface ImportRedmineArgs {
-  projectName: string;
-  projectID: number;
-  serverUrl: string;
-}
-
 @Injectable()
-export class ImportRedmineService {
+export class ConvertRedmineService {
 
   constructor(private fetchService: FetchRedmineService) {
   }
@@ -56,10 +50,8 @@ export class ImportRedmineService {
     return newProject;
   }
 
-  importProject(args: ImportRedmineArgs): Observable<TrackForeverProject> {
-    this.fetchService.setBaseUrl(args.serverUrl);
-    const projectName = args.projectName;
-    const projectID = args.projectID;
+  importProject(projectName: string, projectID: number, serverUrl: string): Observable<TrackForeverProject> {
+    this.fetchService.setBaseUrl(serverUrl);
     return forkJoin(
       this.fetchService.fetchProject(projectName),
       this.fetchService.fetchIssues(projectName, projectID, 100, 0).pipe(
@@ -82,9 +74,9 @@ export class ImportRedmineService {
         })
       )
     ).pipe(map((data: [RedmineProject, RedmineIssue[][]]) => {
-      const project = ImportRedmineService.convertProjectToTrackForever(data[0]);
+      const project = ConvertRedmineService.convertProjectToTrackForever(data[0]);
       data[1].reduce((a, b) => a.concat(b), [])
-        .map((issue: RedmineIssue) => ImportRedmineService.convertIssueToTrackForever(issue))
+        .map((issue: RedmineIssue) => ConvertRedmineService.convertIssueToTrackForever(issue))
         .forEach(issue => project.issues.set(issue.id, issue));
 
       return project;

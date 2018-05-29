@@ -1,7 +1,7 @@
 import { TestBed, async } from '@angular/core/testing';
 
 import { FetchGoogleCodeService } from './fetch-googlecode.service';
-import { ImportGoogleCodeService } from './import-googlecode.service';
+import { ConvertGooglecodeService } from './convert-googlecode.service';
 import * as mockGoogleCodeProject from './models/mock/project.json';
 import * as mockGoogleCodeIssuePage1 from './models/mock/issues-page-1.json';
 import * as mockGoogleCodeIssuePage2 from './models/mock/issues-page-2.json';
@@ -17,8 +17,8 @@ import { TrackForeverComment } from '../models/trackforever/trackforever-comment
 import { GoogleCodeComment } from './models/googlecode-comment';
 import { of } from 'rxjs';
 
-describe('ImportGoogleCodeService', () => {
-  let service: ImportGoogleCodeService;
+describe('ConvertGooglecodeService', () => {
+  let service: ConvertGooglecodeService;
   let fetchServiceSpy: jasmine.SpyObj<FetchGoogleCodeService>;
 
   beforeEach(() => {
@@ -26,7 +26,7 @@ describe('ImportGoogleCodeService', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        ImportGoogleCodeService,
+        ConvertGooglecodeService,
         {
           provide: FetchGoogleCodeService,
           useValue: spy
@@ -34,7 +34,7 @@ describe('ImportGoogleCodeService', () => {
       ],
     });
 
-    service = TestBed.get(ImportGoogleCodeService);
+    service = TestBed.get(ConvertGooglecodeService);
     fetchServiceSpy = TestBed.get(FetchGoogleCodeService);
   });
 
@@ -57,7 +57,7 @@ describe('ImportGoogleCodeService', () => {
     let issueIndex = 0;
     fetchServiceSpy.fetchIssue.and.callFake(() => of(mockIssues[issueIndex++]));
 
-    service.importProject({projectName, useRandomNames: true})
+    service.importProject(projectName, true)
       .subscribe(project => {
         console.log(project);
 

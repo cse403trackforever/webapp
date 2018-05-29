@@ -1,4 +1,4 @@
-import { ImportTrackForeverService } from './../import/import-trackforever/import-trackforever.service';
+import { ConvertTrackforeverService } from '../import/import-trackforever/convert-trackforever.service';
 import { TestBed, async } from '@angular/core/testing';
 
 import { OnlineIssueService } from './online-issue.service';
@@ -81,7 +81,7 @@ describe('OnlineIssueService', () => {
     const req = httpTestingController.expectOne(`${environment.apiUrl}/projects/${projectKey}`);
     expect(req.request.method).toEqual('GET');
 
-    req.flush(ImportTrackForeverService.toJson(testProject));
+    req.flush(ConvertTrackforeverService.toJson(testProject));
   }));
 
   it('should set data for projects', async(() => {
@@ -89,7 +89,7 @@ describe('OnlineIssueService', () => {
 
     const req = httpTestingController.expectOne(`${environment.apiUrl}/projects`);
     expect(req.request.method).toEqual('PUT');
-    expect(req.request.body).toEqual(ImportTrackForeverService.toJson([mockTrackforeverProject]));
+    expect(req.request.body).toEqual(ConvertTrackforeverService.toJson([mockTrackforeverProject]));
 
     req.flush(null);
   }));
@@ -103,7 +103,7 @@ describe('OnlineIssueService', () => {
     const req = httpTestingController.expectOne(`${environment.apiUrl}/projects`);
     expect(req.request.method).toEqual('GET');
 
-    const json = testProjects.reduce((s, v) => s + ImportTrackForeverService.toJson(v), '[') + ']';
+    const json = testProjects.reduce((s, v) => s + ConvertTrackforeverService.toJson(v), '[') + ']';
     console.log(json);
 
     req.flush(json);

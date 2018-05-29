@@ -15,7 +15,7 @@ import { Observable, forkJoin, of } from 'rxjs';
 import { merge, flatMap, reduce, map } from 'rxjs/operators';
 
 @Injectable()
-export class ImportGoogleCodeService implements ConvertService {
+export class ConvertGooglecodeService implements ConvertService {
 
   constructor(private fetchService: FetchGoogleCodeService) {
   }
@@ -65,7 +65,7 @@ export class ImportGoogleCodeService implements ConvertService {
     Therefore the timestamp and commenter ID for the first comment represent the issue's timeCreated and submitter ID.
      */
     const timeCreated = issue.comments[0].timestamp;
-    const submitterName = ImportGoogleCodeService.formatUserId(issue.comments[0].commenterId);
+    const submitterName = ConvertGooglecodeService.formatUserId(issue.comments[0].commenterId);
 
     const newIssue = {
       hash: '',
@@ -92,7 +92,7 @@ export class ImportGoogleCodeService implements ConvertService {
     }
 
     return {
-      commenterName: ImportGoogleCodeService.formatUserId(comment.commenterId),
+      commenterName: ConvertGooglecodeService.formatUserId(comment.commenterId),
       content: comment.content
     };
   }
@@ -113,9 +113,7 @@ export class ImportGoogleCodeService implements ConvertService {
   }
 
   // Import Google Code Project into TrackForever format
-  importProject(args: ImportGooglecodeArgs): Observable<TrackForeverProject> {
-    const projectName = args.projectName;
-
+  importProject(projectName: string, useRandomNames?: boolean): Observable<TrackForeverProject> {
     return forkJoin(
       this.fetchService.fetchProject(projectName),
       this.fetchService.fetchIssuePage(projectName, 1)
@@ -135,22 +133,17 @@ export class ImportGoogleCodeService implements ConvertService {
           );
         }))
     ).pipe(map((data: [GoogleCodeProject, GoogleCodeIssue[]]) => {
-      const project = ImportGoogleCodeService.convertProjectToTrackForever(data[0]);
+      const project = ConvertGooglecodeService.convertProjectToTrackForever(data[0]);
       data[1]
-        .map((issue: GoogleCodeIssue) => ImportGoogleCodeService.convertIssueToTrackForever(issue, data[0].name))
+        .map((issue: GoogleCodeIssue) => ConvertGooglecodeService.convertIssueToTrackForever(issue, data[0].name))
         .forEach(issue => project.issues.set(issue.id, issue));
 
-      if (args.useRandomNames) {
-        ImportGoogleCodeService.insertSillyNames(project);
+      if (useRandomNames) {
+        ConvertGooglecodeService.insertSillyNames(project);
       }
 
       return project;
     }));
   }
 
-}
-
-export interface ImportGooglecodeArgs {
-  projectName: string;
-  useRandomNames?: boolean;
 }

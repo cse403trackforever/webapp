@@ -3,7 +3,7 @@ import { ConvertService } from '../../convert.service';
 import { ImportService } from '../../import.service';
 import { ImportComponent } from '../../import.component';
 import { FetchRedmineService } from '../fetch-redmine.service';
-import { ImportRedmineService } from '../import-redmine.service';
+import { ConvertRedmineService } from '../convert-redmine.service';
 
 @Component({
   selector: 'app-import-redmine',
@@ -14,7 +14,7 @@ import { ImportRedmineService } from '../import-redmine.service';
     FetchRedmineService,
     {
       provide: ConvertService,
-      useClass: ImportRedmineService
+      useClass: ConvertRedmineService
     }
   ]
 })
@@ -28,11 +28,6 @@ export class ImportRedmineFormComponent extends ImportComponent {
   }
 
   onSubmit(): void {
-    this.importProject({
-        serverUrl: this.serverUrl,
-        projectName: this.projectName,
-        projectID: this.projectID
-      }
-    );
+    this.importProject(this.projectName, this.projectID, this.serverUrl);
   }
 }

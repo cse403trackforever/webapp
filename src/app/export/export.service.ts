@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
 import * as FileSaver from 'file-saver';
-import { ImportTrackForeverService } from '../import/import-trackforever/import-trackforever.service';
+import { ConvertTrackforeverService } from '../import/import-trackforever/convert-trackforever.service';
 
 @Injectable()
 export class ExportService {
@@ -9,7 +9,7 @@ export class ExportService {
   constructor() { }
 
   exportProject(project: TrackForeverProject): string {
-    return ImportTrackForeverService.toJson(project);
+    return ConvertTrackforeverService.toJson(project);
   }
 
   download(project: TrackForeverProject): void {

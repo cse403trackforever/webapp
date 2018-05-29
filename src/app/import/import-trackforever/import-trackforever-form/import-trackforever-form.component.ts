@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ImportTrackForeverService } from '../import-trackforever.service';
+import { ConvertTrackforeverService } from '../convert-trackforever.service';
 import { ConvertService } from '../../convert.service';
 import { ImportService } from '../../import.service';
 import { ImportComponent } from '../../import.component';
@@ -12,7 +12,7 @@ import { ImportComponent } from '../../import.component';
     ImportService,
     {
       provide: ConvertService,
-      useClass: ImportTrackForeverService
+      useClass: ConvertTrackforeverService
     }
   ]
 })

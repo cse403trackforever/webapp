@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ImportComponent } from '../../import.component';
 import { ImportService } from '../../import.service';
 import { ConvertService } from '../../convert.service';
-import { ImportGithubService } from '../import-github.service';
+import { ConvertGithubService } from '../convert-github.service';
 import { FetchGithubService } from '../fetch-github.service';
 
 @Component({
@@ -14,7 +14,7 @@ import { FetchGithubService } from '../fetch-github.service';
     FetchGithubService,
     {
       provide: ConvertService,
-      useClass: ImportGithubService
+      useClass: ConvertGithubService
     }
   ]
 })
@@ -27,9 +27,6 @@ export class ImportGithubFormComponent extends ImportComponent {
   }
 
   onSubmit(): void {
-    this.importProject({
-      ownerName: this.ownerName,
-      projectName: this.projectName
-    });
+    this.importProject(this.ownerName, this.projectName);
   }
 }

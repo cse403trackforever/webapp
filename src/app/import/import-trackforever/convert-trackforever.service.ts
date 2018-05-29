@@ -5,7 +5,7 @@ import { TrackForeverIssue } from '../models/trackforever/trackforever-issue';
 import { Observable, of } from 'rxjs';
 
 @Injectable()
-export class ImportTrackForeverService implements ConvertService {
+export class ConvertTrackforeverService implements ConvertService {
 
   /**
    * Takes a given TrackForever object and encodes to json
@@ -91,11 +91,11 @@ export class ImportTrackForeverService implements ConvertService {
   importProject(json: string): Observable<TrackForeverProject> {
     let project: TrackForeverProject;
     try {
-      project = ImportTrackForeverService.fromJson(json);
+      project = ConvertTrackforeverService.fromJson(json);
     } catch (e) {
       throw new Error('Incorrect file format. The file must be a Track Forever project json file.');
     }
-    if (!ImportTrackForeverService.instanceOfProject(project)) {
+    if (!ConvertTrackforeverService.instanceOfProject(project)) {
       throw new Error('There are missing fields in the given object.');
     }
     return of(project);

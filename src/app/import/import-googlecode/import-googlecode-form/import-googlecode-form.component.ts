@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ImportGooglecodeArgs, ImportGoogleCodeService } from '../import-googlecode.service';
+import { ConvertGooglecodeService } from '../convert-googlecode.service';
 import { ConvertService } from '../../convert.service';
 import { ImportService } from '../../import.service';
 import { FetchGoogleCodeService } from '../fetch-googlecode.service';
@@ -14,7 +14,7 @@ import { ImportComponent } from '../../import.component';
     FetchGoogleCodeService,
     {
       provide: ConvertService,
-      useClass: ImportGoogleCodeService
+      useClass: ConvertGooglecodeService
     }
   ]
 })
@@ -27,10 +27,6 @@ export class ImportGooglecodeFormComponent extends ImportComponent {
   }
 
   onSubmit(): void {
-    const args: ImportGooglecodeArgs = {
-      projectName: this.projectName,
-      useRandomNames: this.useRandom,
-    };
-    this.importProject(args);
+    this.importProject(this.projectName, this.useRandom);
   }
 }

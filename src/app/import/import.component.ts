@@ -11,7 +11,7 @@ export abstract class ImportComponent {
 
   protected constructor(private importService: ImportService) { }
 
-  protected importProject(args: any): void {
+  protected importProject(...args: any[]): void {
     this.working.emit(true);
     this.importService.importProject(args)
       .catch(error => this.error.emit(error))

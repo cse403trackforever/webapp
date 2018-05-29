@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { FetchRedmineService } from './fetch-redmine.service';
-import { ImportRedmineService } from './import-redmine.service';
+import { ConvertRedmineService } from './convert-redmine.service';
 import { RedmineProject } from './models/redmine-project';
 import { mockRedmineProject } from './models/mock/mock-redmine-project';
 import { RedmineIssueArray } from './models/redmine-issueArray';
@@ -10,7 +10,7 @@ import { RedmineIssue } from './models/redmine-issue';
 import { mockRedmineTrackForeverProject } from './models/mock/mock-redmine-trackforever-project';
 import { Observable, of } from 'rxjs';
 
-describe('ImportRedmineService', () => {
+describe('ConvertRedmineService', () => {
   let fetchServiceStub: Partial<FetchRedmineService>;
 
   beforeEach(() => {
@@ -29,7 +29,7 @@ describe('ImportRedmineService', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        ImportRedmineService,
+        ConvertRedmineService,
         {
           provide: FetchRedmineService,
           useValue: fetchServiceStub
@@ -38,23 +38,16 @@ describe('ImportRedmineService', () => {
     });
   });
 
-  it('should be created', inject([ImportRedmineService], (service: ImportRedmineService) => {
+  it('should be created', inject([ConvertRedmineService], (service: ConvertRedmineService) => {
     expect(service).toBeTruthy();
   }));
-  it('should not crash', inject([ImportRedmineService], (service: ImportRedmineService) => {
-    service.importProject({
-      projectName: '',
-      projectID: 5,
-      serverUrl: ''
-    });
+  it('should not crash', inject([ConvertRedmineService], (service: ConvertRedmineService) => {
+    service.importProject('', 5, '');
   }));
-  it('should be correct', inject([ImportRedmineService], (service: ImportRedmineService) => {
-    service.importProject({
-      projectName: '',
-      projectID: 5,
-      serverUrl: ''
-    }).subscribe(r => {
-      expect(r).toEqual(mockRedmineTrackForeverProject);
-    });
+  it('should be correct', inject([ConvertRedmineService], (service: ConvertRedmineService) => {
+    service.importProject('', 5, '')
+      .subscribe(r => {
+        expect(r).toEqual(mockRedmineTrackForeverProject);
+      });
   }));
 });

@@ -1,7 +1,7 @@
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ImportTrackForeverService } from './../import/import-trackforever/import-trackforever.service';
+import { ConvertTrackforeverService } from '../import/import-trackforever/convert-trackforever.service';
 import { TrackForeverProject } from './../import/models/trackforever/trackforever-project';
 import { HashResponse } from './../sync/hash-response';
 import { IssueService } from './issue.service';
@@ -54,30 +54,30 @@ export class OnlineIssueService implements IssueService {
 
   getProject(projectKey: string): Observable<TrackForeverProject> {
     return this.http.get(`${environment.apiUrl}/projects/${projectKey}`, {responseType: 'text'})
-      .pipe(map(e => ImportTrackForeverService.fromJson(e)));
+      .pipe(map(e => ConvertTrackforeverService.fromJson(e)));
   }
 
   getProjects(): Observable<Array<TrackForeverProject>> {
     return this.http.get(`${environment.apiUrl}/projects`, {responseType: 'text'})
-      .pipe(map(e => ImportTrackForeverService.fromJsonArray(e)));
+      .pipe(map(e => ConvertTrackforeverService.fromJsonArray(e)));
   }
 
   setProjects(projects: Array<TrackForeverProject>): Observable<object> {
     console.log('update projects');
     console.log(projects);
-    return this.http.put(`${environment.apiUrl}/projects`, ImportTrackForeverService.toJson(projects),
+    return this.http.put(`${environment.apiUrl}/projects`, ConvertTrackforeverService.toJson(projects),
     {headers: {'Content-Type': 'application/json; charset=utf-8'}});
   }
 
   setProject(project: TrackForeverProject): Observable<object> {
-    return this.http.put(`${environment.apiUrl}/project`, ImportTrackForeverService.toJson(project),
+    return this.http.put(`${environment.apiUrl}/project`, ConvertTrackforeverService.toJson(project),
     {headers: {'Content-Type': 'application/json; charset=utf-8'}});
   }
 
   getRequestedProjects(projectIds: Array<string>): Observable<Array<TrackForeverProject>> {
     return this.http.post(`${environment.apiUrl}/projects`, projectIds,
     {responseType: 'text', headers: {'Content-Type': 'application/json; charset=utf-8'}})
-      .pipe(map(e => ImportTrackForeverService.fromJsonArray(e)));
+      .pipe(map(e => ConvertTrackforeverService.fromJsonArray(e)));
   }
 
   getHashes(): Observable<Map<string, HashResponse>> {
