@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TrackForeverProject } from '../models/trackforever/trackforever-project';
 import { TrackForeverIssue } from '../models/trackforever/trackforever-issue';
@@ -11,8 +12,8 @@ import { GoogleCodeIssueSummary } from './models/googlecode-issuesummary';
 import { ConvertService } from '../convert.service';
 import { SyncService } from '../../sync/sync.service';
 import * as Chance from 'chance';
-import { Observable, forkJoin, of } from 'rxjs';
-import { merge, flatMap, reduce, map } from 'rxjs/operators';
+import { Observable, forkJoin, of, throwError } from 'rxjs';
+import { merge, flatMap, reduce, map, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class ConvertGooglecodeService implements ConvertService {
@@ -132,18 +133,25 @@ export class ConvertGooglecodeService implements ConvertService {
             reduce((acc, curr) => acc.concat(curr))
           );
         }))
-    ).pipe(map((data: [GoogleCodeProject, GoogleCodeIssue[]]) => {
-      const project = ConvertGooglecodeService.convertProjectToTrackForever(data[0]);
-      data[1]
-        .map((issue: GoogleCodeIssue) => ConvertGooglecodeService.convertIssueToTrackForever(issue, data[0].name))
-        .forEach(issue => project.issues.set(issue.id, issue));
+    ).pipe(
+      map((data: [GoogleCodeProject, GoogleCodeIssue[]]) => {
+        const project = ConvertGooglecodeService.convertProjectToTrackForever(data[0]);
+        data[1]
+          .map((issue: GoogleCodeIssue) => ConvertGooglecodeService.convertIssueToTrackForever(issue, data[0].name))
+          .forEach(issue => project.issues.set(issue.id, issue));
 
-      if (useRandomNames) {
-        ConvertGooglecodeService.insertSillyNames(project);
-      }
+        if (useRandomNames) {
+          ConvertGooglecodeService.insertSillyNames(project);
+        }
 
-      return project;
-    }));
+        return project;
+      }),
+      catchError((e) => {
+        if (e instanceof HttpErrorResponse && e.status === 403) {
+          return throwError(new Error('You do not have access to the issues for this project.'));
+        }
+        return throwError(e);
+      })
+    );
   }
-
 }

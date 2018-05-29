@@ -10,9 +10,9 @@ import { TrackForeverIssue } from '../models/trackforever/trackforever-issue';
 import { TrackForeverComment } from '../models/trackforever/trackforever-comment';
 import { ConvertService } from '../convert.service';
 import { SyncService } from '../../sync/sync.service';
-import { HttpResponse } from '@angular/common/http';
-import { Observable, forkJoin, of } from 'rxjs';
-import { flatMap, map, merge } from 'rxjs/operators';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { Observable, forkJoin, of, throwError } from 'rxjs';
+import { flatMap, map, merge, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class ConvertGithubService implements ConvertService {
@@ -105,23 +105,31 @@ export class ConvertGithubService implements ConvertService {
             )
           ));
         }))
-    ).pipe(map((data: [GitHubProject, [GitHubIssue, GitHubComment[]][]]): TrackForeverProject => {
-      const githubProject: GitHubProject = data[0];
-      const githubIssuesAndComments: [GitHubIssue, GitHubComment[]][] = data[1];
+    ).pipe(
+      map((data: [GitHubProject, [GitHubIssue, GitHubComment[]][]]): TrackForeverProject => {
+        const githubProject: GitHubProject = data[0];
+        const githubIssuesAndComments: [GitHubIssue, GitHubComment[]][] = data[1];
 
-      // convert project
-      const project: TrackForeverProject = ConvertGithubService.convertProjectToTrackForever(data[0], projectName);
+        // convert project
+        const project: TrackForeverProject = ConvertGithubService.convertProjectToTrackForever(data[0], projectName);
 
-      // convert issues
-      githubIssuesAndComments.map((githubIssueAndComment: [GitHubIssue, GitHubComment[]]): TrackForeverIssue => {
-        const githubIssue: GitHubIssue = githubIssueAndComment[0];
-        const githubComments: GitHubComment[] = githubIssueAndComment[1];
+        // convert issues
+        githubIssuesAndComments.map((githubIssueAndComment: [GitHubIssue, GitHubComment[]]): TrackForeverIssue => {
+          const githubIssue: GitHubIssue = githubIssueAndComment[0];
+          const githubComments: GitHubComment[] = githubIssueAndComment[1];
 
-        return ConvertGithubService.convertIssueToTrackForever(githubIssue, githubProject.id, githubComments);
-      }).filter(e => e).forEach(issue => project.issues.set(issue.id, issue));
+          return ConvertGithubService.convertIssueToTrackForever(githubIssue, githubProject.id, githubComments);
+        }).filter(e => e).forEach(issue => project.issues.set(issue.id, issue));
 
-      return project;
-    }));
+        return project;
+      }),
+      catchError((e) => {
+        if (e instanceof HttpErrorResponse && e.status === 403) {
+          return throwError(new Error('You either do not have access to the issues for this project or have been rate limited by GitHub.'));
+        }
+        return throwError(e);
+      })
+    );
   }
 
 }
