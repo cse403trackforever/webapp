@@ -42,10 +42,10 @@ describe('ConvertRedmineService', () => {
     expect(service).toBeTruthy();
   }));
   it('should not crash', inject([ConvertRedmineService], (service: ConvertRedmineService) => {
-    service.importProject('', 5, '');
+    service.importProject({ projectName: '',  projectID: 5, serverUrl: '' });
   }));
   it('should be correct', inject([ConvertRedmineService], (service: ConvertRedmineService) => {
-    service.importProject('', 5, '')
+    service.importProject({ projectName: '',  projectID: 5, serverUrl: '' })
       .subscribe(r => {
         expect(r).toEqual(mockRedmineTrackForeverProject);
       });

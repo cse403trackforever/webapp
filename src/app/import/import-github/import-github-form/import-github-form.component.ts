@@ -27,6 +27,6 @@ export class ImportGithubFormComponent extends ImportComponent {
   }
 
   onSubmit(): void {
-    this.importProject(this.ownerName, this.projectName);
+    this.importProject({ ownerName: this.ownerName, projectName: this.projectName });
   }
 }

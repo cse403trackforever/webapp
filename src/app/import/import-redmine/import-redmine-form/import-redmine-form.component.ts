@@ -28,6 +28,6 @@ export class ImportRedmineFormComponent extends ImportComponent {
   }
 
   onSubmit(): void {
-    this.importProject(this.projectName, this.projectID, this.serverUrl);
+    this.importProject({ projectName: this.projectName, projectID: this.projectID, serverUrl: this.serverUrl });
   }
 }

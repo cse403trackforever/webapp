@@ -14,6 +14,11 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable, forkJoin, of, throwError } from 'rxjs';
 import { flatMap, map, merge, catchError } from 'rxjs/operators';
 
+export interface ImportGithubArgs {
+  ownerName: string;
+  projectName: string;
+}
+
 @Injectable()
 export class ConvertGithubService implements ConvertService {
 
@@ -77,7 +82,10 @@ export class ConvertGithubService implements ConvertService {
   }
 
   // Import GitHub Project into TrackForever format
-  importProject(ownerName: string, projectName: string): Observable<TrackForeverProject> {
+  importProject(args: ImportGithubArgs): Observable<TrackForeverProject> {
+    const ownerName = args.ownerName;
+    const projectName = args.projectName;
+
     const regex = /\<\S*page=(\d+)\>; rel="last"/gm;
     // fetch project and issues in parallel
     return forkJoin(

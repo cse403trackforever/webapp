@@ -7,5 +7,5 @@ export abstract class ConvertService {
 
   protected constructor() { }
 
-  abstract importProject(...args: any[]): Observable<TrackForeverProject>;
+  abstract importProject(args: any): Observable<TrackForeverProject>;
 }

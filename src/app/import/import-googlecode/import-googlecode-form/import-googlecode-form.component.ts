@@ -27,6 +27,6 @@ export class ImportGooglecodeFormComponent extends ImportComponent {
   }
 
   onSubmit(): void {
-    this.importProject(this.projectName, this.useRandom);
+    this.importProject({ projectName: this.projectName, useRandomNames: this.useRandom });
   }
 }

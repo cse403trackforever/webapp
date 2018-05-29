@@ -55,7 +55,7 @@ describe('ConvertGithubService', () => {
     fetchServiceSpy.fetchIssues.and.returnValue(of(response));
     fetchServiceSpy.fetchComments.and.returnValue(of(testComments));
 
-    service.importProject(ownerName, projectName)
+    service.importProject({ ownerName, projectName })
       .subscribe((p: TrackForeverProject) => {
         expect(p.hash).toEqual('190998f576c5c6fc354e29cb8fb9a914e84b6adb3cae2f205b09' +
         'f2dcd29504794b43c3e1a034b4fecb022bc61c00b09255504111eceb27530ee250daa154b374');
@@ -84,7 +84,7 @@ describe('ConvertGithubService', () => {
     fetchServiceSpy.fetchIssues.and.returnValue(of(response));
     fetchServiceSpy.fetchComments.and.returnValue(of(testComments));
 
-    service.importProject(ownerName, projectName)
+    service.importProject({ ownerName, projectName })
       .subscribe((p: TrackForeverProject) => {
         expect(p.hash).toEqual('190998f576c5c6fc354e29cb8fb9a914e84b6adb3cae2f205b09' +
         'f2dcd29504794b43c3e1a034b4fecb022bc61c00b09255504111eceb27530ee250daa154b374');

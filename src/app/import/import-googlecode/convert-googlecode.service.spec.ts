@@ -57,7 +57,7 @@ describe('ConvertGooglecodeService', () => {
     let issueIndex = 0;
     fetchServiceSpy.fetchIssue.and.callFake(() => of(mockIssues[issueIndex++]));
 
-    service.importProject(projectName, true)
+    service.importProject({ projectName, userRandomNames: true })
       .subscribe(project => {
         console.log(project);
 

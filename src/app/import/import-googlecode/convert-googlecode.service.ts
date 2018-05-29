@@ -15,6 +15,11 @@ import * as Chance from 'chance';
 import { Observable, forkJoin, of, throwError } from 'rxjs';
 import { merge, flatMap, reduce, map, catchError } from 'rxjs/operators';
 
+export interface ImportGooglecodeArgs {
+  projectName: string;
+  userRandomNames?: boolean;
+}
+
 @Injectable()
 export class ConvertGooglecodeService implements ConvertService {
 
@@ -114,7 +119,9 @@ export class ConvertGooglecodeService implements ConvertService {
   }
 
   // Import Google Code Project into TrackForever format
-  importProject(projectName: string, useRandomNames?: boolean): Observable<TrackForeverProject> {
+  importProject(args: ImportGooglecodeArgs): Observable<TrackForeverProject> {
+    const projectName = args.projectName;
+    const useRandomNames = args.userRandomNames;
     return forkJoin(
       this.fetchService.fetchProject(projectName),
       this.fetchService.fetchIssuePage(projectName, 1)

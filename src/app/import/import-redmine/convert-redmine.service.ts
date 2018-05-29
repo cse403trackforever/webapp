@@ -9,6 +9,12 @@ import { SyncService } from '../../sync/sync.service';
 import { Observable, forkJoin, of } from 'rxjs';
 import { merge, flatMap, map } from 'rxjs/operators';
 
+export interface ImportRedmineArgs {
+  projectName: string;
+  projectID: number;
+  serverUrl: string;
+}
+
 @Injectable()
 export class ConvertRedmineService {
 
@@ -50,7 +56,10 @@ export class ConvertRedmineService {
     return newProject;
   }
 
-  importProject(projectName: string, projectID: number, serverUrl: string): Observable<TrackForeverProject> {
+  importProject(args: ImportRedmineArgs): Observable<TrackForeverProject> {
+    const projectName = args.projectName;
+    const projectID = args.projectID;
+    const serverUrl = args.serverUrl;
     this.fetchService.setBaseUrl(serverUrl);
     return forkJoin(
       this.fetchService.fetchProject(projectName),
