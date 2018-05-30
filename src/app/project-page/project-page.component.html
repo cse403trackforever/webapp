@@ -2,7 +2,7 @@
   <div *ngIf="!isEditingProject; else editingProject">
     <div class="d-flex">
       <h1 class="flex-grow-1">{{project.name}}</h1>
-      <button class="btn btn-outline-secondary btn-sm mt-0 mb-auto" (click)="isEditingProject = true">Edit</button>
+      <button class="btn btn-outline-secondary btn-sm my-auto" (click)="isEditingProject = true">Edit</button>
     </div>
     <p [innerHTML]="project.description | markdown: {source: project.source}"></p>
   </div>
@@ -16,19 +16,23 @@
         <label for="descEditor">Project description</label>
         <textarea class="form-control" rows="10" id="descEditor" #descEditor>{{project.description}}</textarea>
       </div>
-      <div class="form-group">
-        <button class="btn btn-outline-secondary" (click)="isEditingProject = false">Cancel</button>
-        <button class="btn btn-primary ml-2" (click)="editProject(nameEditor.value, descEditor.value)">Submit</button>
+      <div class="form-row">
+        <div class="col col-md-auto mb-2">
+          <button class="btn btn-outline-secondary btn-block" (click)="isEditingProject = false">Cancel</button>
+        </div>
+        <div class="col col-md-auto mb-2">
+          <button class="btn btn-primary ml-md-2 btn-block" (click)="editProject(nameEditor.value, descEditor.value)">Submit</button>
+        </div>
       </div>
     </form>
     <hr>
   </ng-template>
 
-  <!-- filter section -->
   <div class="row">
-    <form class="col-12 col-sm">
+    <!-- filter section -->
+    <form class="col-12 col-lg">
       <div class="form-row align-items-center">
-        <div class="col col-sm-auto">
+        <div class="col-12 col-md-auto">
           <input [(ngModel)]="queryString" [ngModelOptions]="{standalone: true}" (keyup)="updateIssues()" class="form-control col-12 col-sm mb-2"
             type="search" placeholder="Search" aria-label="Search">
         </div>
@@ -99,12 +103,12 @@
       </div>
     </form>
 
-    <form class="col-12 col-sm-auto">
-      <div class="form-row align-items-end">
-        <div class="col col-sm-auto mb-2">
+    <form class="col-12 col-lg-auto">
+      <div class="form-row justify-content-end">
+        <div class="col col-md-auto mb-2">
           <button class="btn btn-outline-primary btn-block" type="button" (click)="export()">Export</button>
         </div>
-        <div class="col col-sm-auto mb-2">
+        <div class="col col-md-auto mb-2">
           <button class="btn btn-success btn-block" id="newIssue" routerLink="/project/{{project.id}}/new">New issue</button>
         </div>
       </div>
