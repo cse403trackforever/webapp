@@ -1,6 +1,6 @@
 {
-  "name": "trackforever-web",
-  "short_name": "trackforever-web",
+  "name": "Track Forver Web",
+  "short_name": "TrackForever",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
