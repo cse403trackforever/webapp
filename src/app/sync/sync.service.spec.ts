@@ -1,10 +1,11 @@
+import { HashResponse } from './hash-response';
+import { mockRedmineTrackForeverProject } from './../import/import-redmine/models/mock/mock-redmine-trackforever-project';
 import { catchError } from 'rxjs/operators';
 import { SyncService } from './sync.service';
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { OnlineIssueService } from '../issue/online-issue.service';
 import { OfflineIssueService } from '../issue/offline-issue.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { mockRedmineTrackForeverProject } from '../import/import-redmine/models/mock/mock-redmine-trackforever-project';
 import { of, throwError } from 'rxjs';
 
 
@@ -17,8 +18,10 @@ describe('SyncService', () => {
     const offSpy = jasmine.createSpyObj('OfflineIssueService', ['getProjects', 'setIssues', 'setProject']);
     const onSpy = jasmine.createSpyObj('OnlineIssueService', [
       'getProject',
+      'getProjects',
       'setProjects',
       'getIssue',
+      'setIssue',
       'setIssues',
       'getRequestedProjects',
       'getRequestedIssues',
@@ -77,21 +80,33 @@ describe('SyncService', () => {
     ).subscribe(() => done());
   });
 
-  it('doesn\'t crash', async(() => {
-    const map = new Map();
+  it('doesn\'t crash', (done) => {
+    const map = new Map<string, string>();
     Array.from(mockRedmineTrackForeverProject.issues).forEach(e => {
-      map.set(e[0], e[1].hash);
+      map.set(e[1].id, e[1].hash);
     });
+    const projectMap = new Map<string, HashResponse>();
+    projectMap.set(mockRedmineTrackForeverProject.id, {project: mockRedmineTrackForeverProject.hash, issues: map});
 
     offlineSpy.getProjects.and.returnValue(of([mockRedmineTrackForeverProject]));
-    onlineSpy.getHashes.and.returnValue(of(map));
-    onlineSpy.getRequestedProjects.and.returnValue(of([]));
-    onlineSpy.getRequestedIssues.and.returnValue(of([]));
-    onlineSpy.setProjects.and.callFake(() => of(null));
-    onlineSpy.setIssues.and.callFake(() => of(null));
-    onlineSpy.getIssue.and.returnValue(of(mockRedmineTrackForeverProject.issues.get('5')));
+    offlineSpy.setProject.and.returnValue(of(null));
     offlineSpy.setIssues.and.returnValue(of(null));
 
-    service.sync().subscribe(r => expect(r).toBeTruthy());
-  }));
+    onlineSpy.getHashes.and.returnValue(of(projectMap));
+    onlineSpy.getRequestedProjects.and.returnValue(of([]));
+    onlineSpy.getRequestedIssues.and.returnValue(of([]));
+    onlineSpy.setProjects.and.returnValue(of(null));
+    onlineSpy.setIssues.and.returnValue(of(null));
+    onlineSpy.setIssues.and.returnValue(of(null));
+    onlineSpy.getIssue.and.callFake((k, i) => of(mockRedmineTrackForeverProject.issues.get(i)));
+    onlineSpy.getProject.and.returnValue(of(mockRedmineTrackForeverProject));
+    onlineSpy.getProjects.and.returnValue(of([mockRedmineTrackForeverProject]));
+
+    service.sync().pipe(
+      catchError(e => {
+        console.log(e);
+        return of(e);
+      })
+    ).subscribe(() => done());
+  });
 });

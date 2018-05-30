@@ -5,7 +5,7 @@ import { TrackForeverIssue } from '../import/models/trackforever/trackforever-is
 import { OfflineIssueService } from '../issue/offline-issue.service';
 import { OnlineIssueService } from '../issue/online-issue.service';
 import { HashResponse } from './hash-response';
-import { Observable, forkJoin, throwError, from } from 'rxjs';
+import { Observable, forkJoin, throwError, from, concat } from 'rxjs';
 import { mergeMap, mergeAll, map, catchError, last, concatAll } from 'rxjs/operators';
 
 /**
@@ -100,6 +100,10 @@ export class SyncService {
 
       // Check each issue
       project.issues.forEach(issue => {
+        // Skip hashes with no issues
+        if (!(hash.issues instanceof Map)) {
+          return;
+        }
         const issueHash = hash.issues.get(issue.id);
         // Catch case where remote doesn't have this issue yet
         if (!issueHash) {
@@ -114,7 +118,9 @@ export class SyncService {
       });
 
       // Add remaining items as new issues to get
-      task.issuesToFetch.set(project.id, Array.from(hash.issues.keys()));
+      if (hash.issues instanceof Map) {
+        task.issuesToFetch.set(project.id, Array.from(hash.issues.keys()));
+      }
       remoteHashes.delete(project.id);
     });
 
@@ -167,7 +173,7 @@ export class SyncService {
 
     console.log('do fork join');
     // do it all in parallel
-    return forkJoin(
+    return concat(
       reqProjects,
       reqIssues,
       sendProjects,
