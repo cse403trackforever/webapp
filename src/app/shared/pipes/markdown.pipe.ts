@@ -10,15 +10,6 @@ export class MarkdownPipe implements PipeTransform {
     if (markdown == null) {
       return '';
     }
-    if (options) {
-      if (options.source === ImportSource.GoogleCode) {
-        // turn off GitHub flavored markdown (gfm) for Google Code projects
-        if (!options.markedOptions) {
-          options.markedOptions = {};
-        }
-        options.markedOptions.gfm = false;
-      }
-    }
 
     return marked(markdown, options ? options.markedOptions : null);
   }
