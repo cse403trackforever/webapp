@@ -5,7 +5,7 @@ import { TrackForeverIssue } from '../import/models/trackforever/trackforever-is
 import { TrackForeverProject } from '../import/models/trackforever/trackforever-project';
 import { Observable, from } from 'rxjs';
 import { AuthenticationService } from '../authentication/authentication.service';
-import { map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap, first } from 'rxjs/operators';
 
 /**
  * Fetches issues from an offline database
@@ -21,7 +21,8 @@ export class OfflineIssueService implements IssueService {
   getIssue(projectKey: string, issueId: string): Observable<TrackForeverIssue> {
     return this.authService.getUser().pipe(
       mergeMap(user => from(this.dataService.getProject(projectKey, user.uid))),
-      map(project => project.issues.get(issueId))
+      map(project => project.issues.get(issueId)),
+      first()
     );
   }
 
@@ -32,7 +33,8 @@ export class OfflineIssueService implements IssueService {
           project.issues.set(issue.id, issue);
           return this.dataService.addProject(project, user.uid);
         }));
-      })
+      }),
+      first()
     );
   }
 
@@ -46,24 +48,28 @@ export class OfflineIssueService implements IssueService {
           }
         ));
       }),
+      first()
     );
   }
 
   getProject(projectKey: string): Observable<TrackForeverProject> {
     return this.authService.getUser().pipe(
-      mergeMap(user => from(this.dataService.getProject(projectKey, user.uid)))
+      mergeMap(user => from(this.dataService.getProject(projectKey, user.uid))),
+      first()
     );
   }
 
   setProject(project: TrackForeverProject): Observable<string> {
     return this.authService.getUser().pipe(
-      mergeMap(user => from(this.dataService.addProject(project, user.uid)))
+      mergeMap(user => from(this.dataService.addProject(project, user.uid))),
+      first()
     );
   }
 
   getProjects(): Observable<TrackForeverProject[]> {
     return this.authService.getUser().pipe(
-      mergeMap(user => this.dataService.getProjects(user.uid))
+      mergeMap(user => this.dataService.getProjects(user.uid)),
+      first()
     );
   }
 }
