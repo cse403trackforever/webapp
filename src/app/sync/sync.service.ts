@@ -114,12 +114,12 @@ export class SyncService {
       });
 
       // Add remaining items as new issues to get
-      task.issuesToFetch.set(project.id, Array.from(hash.issues.values()));
+      task.issuesToFetch.set(project.id, Array.from(hash.issues.keys()));
       remoteHashes.delete(project.id);
     });
 
     // Add remaining items as new projects to get
-    remoteHashes.forEach(projectHash => task.projToFetch.push(projectHash.project));
+    remoteHashes.forEach((_, key) => task.projToFetch.push(key));
 
     return task;
   }
