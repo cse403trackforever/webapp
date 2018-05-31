@@ -2,8 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomePageComponent } from './home-page.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthenticationService } from '../authentication/authentication.service';
-import { mockUser } from '../shared/models/mock/mock-user';
-import { AuthUser } from '../shared/models/auth-user';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 
@@ -15,8 +13,8 @@ describe('HomePageComponent', () => {
   beforeEach(async(() => {
     // stub auth service
     authServiceStub = {
-      getUser(): Observable<AuthUser> {
-        return of(mockUser);
+      isLoggedIn(): Observable<boolean> {
+        return of(true);
       }
     };
 

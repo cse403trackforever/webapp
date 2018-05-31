@@ -1,10 +1,7 @@
 <section class="jumbotron jumbotron-fluid text-center bg-white mb-0">
   <div class="container">
     <h1 class="jumbotron-heading">Track Forever</h1>
-    <p class="lead text-muted">Dolor ipsum nostrud commodo dolore magna dolore veniam irure. Laboris incididunt et veniam veniam do aliqua dolor.
-      Consequat laboris aute dolor commodo. Aute adipisicing aliqua laboris cupidatat ipsum. Ad cillum incididunt ullamco
-      mollit consectetur elit do et aliqua amet non velit. Commodo cillum adipisicing ea ad occaecat. Lorem eiusmod
-      cillum esse magna anim.</p>
+    <p class="lead text-muted">Track Forever is an open-source, offline-first issue tracker.</p>
     <p>
       <button class="btn btn-primary btn-small" routerLink="/signin">Sign In</button>
     </p>
@@ -14,53 +11,14 @@
 <div class="pt-4 bg-light">
   <div class="text-center"><h1>Features</h1></div>
   <div class="container pt-2">
-
     <div class="row">
-
-      <div class="col-md-4">
+      <div class="col-md-4" *ngFor="let feature of features">
         <div class="card mb-4 box-shadow">
           <div class="card-body">
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            <p class="card-text">{{feature}}</p>
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card mb-4 box-shadow">
-          <div class="card-body">
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card mb-4 box-shadow">
-          <div class="card-body">
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-          <div class="card mb-4 box-shadow">
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card mb-4 box-shadow">
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card mb-4 box-shadow">
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            </div>
-          </div>
-        </div>
-
     </div>
   </div>
 </div>
