@@ -9,7 +9,6 @@ import { GitHubProject } from './models/github-project';
 import { GitHubIssue } from './models/github-issue';
 import { GitHubComment } from './models/github-comment';
 import { AuthenticationService } from '../../authentication/authentication.service';
-import { Observable, of } from 'rxjs';
 
 describe('FetchGithubService', () => {
   let service: FetchGithubService;
@@ -20,8 +19,8 @@ describe('FetchGithubService', () => {
   beforeEach(() => {
     // stub auth service
     authServiceStub = {
-      getToken(): Observable<string> {
-        return of('mock_token');
+      getToken(): string {
+        return 'mock_token';
       }
     };
 

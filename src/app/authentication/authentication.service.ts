@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class AuthenticationService {
   private user: Observable<AuthUser>;
-  private authToken: Observable<string>;
+  private authToken: string;
 
   redirectUrl: string;
 
@@ -29,7 +29,7 @@ export class AuthenticationService {
 
   }
 
-  getToken(): Observable<string> {
+  getToken(): string {
     return this.authToken;
   }
 
