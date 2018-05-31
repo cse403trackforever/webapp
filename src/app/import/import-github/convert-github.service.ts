@@ -11,8 +11,8 @@ import { TrackForeverComment } from '../models/trackforever/trackforever-comment
 import { ConvertService } from '../convert.service';
 import { SyncService } from '../../sync/sync.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { Observable, forkJoin, of, throwError } from 'rxjs';
-import { flatMap, map, merge, catchError } from 'rxjs/operators';
+import { Observable, forkJoin, of, throwError, merge } from 'rxjs';
+import { flatMap, map, catchError, reduce } from 'rxjs/operators';
 
 export interface ImportGithubArgs {
   ownerName: string;
@@ -91,28 +91,36 @@ export class ConvertGithubService implements ConvertService {
     return forkJoin(
       this.fetchService.fetchProject(ownerName, projectName),
       this.fetchService.fetchIssues(ownerName, projectName, 1)
-        .pipe(flatMap((response: HttpResponse<GitHubIssue[]>): Observable<[GitHubIssue, GitHubComment[]][]> => {
-          const link = response.headers.get('link');
-          // Assume only one page unless link header is set
-          let lastIndex = 1;
-          if (link) {
-            const matches = regex.exec(link);
-            lastIndex = Number.parseInt(matches[1]);
-          }
+        .pipe(
+          flatMap((response: HttpResponse<GitHubIssue[]>): Observable<[GitHubIssue, GitHubComment[]][]> => {
+            const link = response.headers.get('link');
+            // Assume only one page unless link header is set
+            let lastIndex = 1;
+            if (link) {
+              const matches = regex.exec(link);
+              lastIndex = Number.parseInt(matches[1]);
+            }
 
-          let pages = of(response.body);
-          for (let i = 2; i <= lastIndex; i++) {
-            pages = pages.pipe(merge(this.fetchService.fetchIssues(ownerName, projectName, i).pipe(map(p => p.body))));
-          }
+            let pages = of(response.body);
+            for (let i = 2; i <= lastIndex; i++) {
+              pages = merge(pages, this.fetchService.fetchIssues(ownerName, projectName, i).pipe(map(p => p.body)));
+            }
 
-          // fetch the comments in parallel
-          return pages.pipe(flatMap(resp =>
-            forkJoin(
-                resp.map(issue => this.fetchService.fetchComments(issue.comments_url)
-                  .pipe(map((comments: GitHubComment[]): [GitHubIssue, GitHubComment[]] => [issue, comments])))
-            )
-          ));
-        }))
+            // fetch the comments in parallel
+            return pages.pipe(
+              flatMap(resp =>
+                forkJoin(
+                  resp.map(issue => this.fetchService.fetchComments(issue.comments_url).pipe(
+                    map((comments: GitHubComment[]): [GitHubIssue, GitHubComment[]] => [issue, comments]))
+                  )
+                )
+              )
+            );
+          }),
+          reduce((acc: [GitHubIssue, GitHubComment[]][], val: [GitHubIssue, GitHubComment[]][]) => {
+            return acc.concat(val);
+          })
+        )
     ).pipe(
       map((data: [GitHubProject, [GitHubIssue, GitHubComment[]][]]): TrackForeverProject => {
         const githubProject: GitHubProject = data[0];
