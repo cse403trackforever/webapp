@@ -7,7 +7,8 @@ import { TrackForeverProject } from '../import/models/trackforever/trackforever-
 import { TrackForeverIssue } from '../import/models/trackforever/trackforever-issue';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { mockUser } from '../shared/models/mock/mock-user';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { reduce } from 'rxjs/operators';
 
 describe('OfflineIssueService', () => {
   let service: OfflineIssueService;
@@ -72,6 +73,30 @@ describe('OfflineIssueService', () => {
 
     service.getProjects()
       .subscribe(projects => expect(projects).toEqual([p]));
+  }));
+
+  it('should get empty projects', async(() => {
+    dataServiceSpy.getProjects.and.returnValue(of([]));
+
+    service.getProjects()
+      .subscribe(projects => expect(projects).toEqual([]));
+  }));
+
+  it('should get multiple projects over time', async(() => {
+    const p = mockTrackforeverProject;
+
+    dataServiceSpy.getProjects.and.returnValue(new Observable(observer => {
+      observer.next([]);
+      observer.next([p]);
+      observer.next([p, p]);
+      observer.complete();
+    }));
+
+    service.getProjects().pipe(
+      reduce((acc, val) => acc.concat(val))
+    ).subscribe((projectsOverTime: TrackForeverProject[]) => {
+      expect(projectsOverTime).toEqual([p, p, p]);
+    });
   }));
 
   it('should set issues', async(() => {

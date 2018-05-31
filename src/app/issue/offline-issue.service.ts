@@ -68,8 +68,8 @@ export class OfflineIssueService implements IssueService {
 
   getProjects(): Observable<TrackForeverProject[]> {
     return this.authService.getUser().pipe(
-      mergeMap(user => this.dataService.getProjects(user.uid)),
-      first()
+      first(),
+      mergeMap(user => this.dataService.getProjects(user.uid))
     );
   }
 }
