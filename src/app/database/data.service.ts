@@ -39,6 +39,7 @@ export class DataService {
   getProjects(uid: string): Observable<TrackForeverProject[]> {
     return new Observable((observer) => {
       const projects: Array<TrackForeverProject> = [];
+      observer.next([]);
       this.getKeys(uid).then((keys: Array<string>) => {
         Promise.all(keys.map((key) => {
           return this.getProject(key, uid).then((project: TrackForeverProject) => {
