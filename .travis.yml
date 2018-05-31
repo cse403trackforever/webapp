@@ -10,10 +10,6 @@ branches:
   except:
     - gh-pages # don't try to build the deploy branch
 
-cache:
-  directories:
-    - node_modules
-
 addons:
   chrome: stable
 
