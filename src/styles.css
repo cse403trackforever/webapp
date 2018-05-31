@@ -17,3 +17,8 @@ body {
   /* footer height */
   margin-bottom: 120px;
 }
+
+img {
+  max-width: 100%;
+  box-sizing: content-box;
+}
