@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class AuthenticationService {
   private user: Observable<AuthUser>;
+  private authToken: Observable<string>;
 
   redirectUrl: string;
 
@@ -25,6 +26,11 @@ export class AuthenticationService {
         return null;
       }
     }));
+
+  }
+
+  getToken(): Observable<string> {
+    return this.authToken;
   }
 
   getUser(): Observable<AuthUser> {
@@ -38,6 +44,7 @@ export class AuthenticationService {
   private signIn(p: Promise<any>): Promise<any> {
     return p
       .then(res => {
+        this.authToken = res.credential.accessToken;
         return res;
       })
       .catch(err => console.log(err));
@@ -47,8 +54,14 @@ export class AuthenticationService {
     return this.signIn(this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider()));
   }
 
-  githubSignIn() {
+  githubSignIn(): Promise<any> {
     return this.signIn(this.afAuth.auth.signInWithPopup(new firebase.auth.GithubAuthProvider()));
+    // return this.afAuth.auth.signInWithPopup(new firebase.auth.GithubAuthProvider()).then(result => {
+    //   if (result.credential) {
+    //     // This gives you a GitHub Access Token.
+    //     alert(result.credential.accessToken);
+    //   }
+    //  });
   }
 
   emailSignIn(value) {
