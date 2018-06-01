@@ -15,16 +15,15 @@ describe('ConvertRedmineService', () => {
 
   beforeEach(() => {
     fetchServiceStub = {
-      fetchProject(projectName: string): Observable<RedmineProject> {
+      fetchProject(baseUrl: string, projectName: string): Observable<RedmineProject> {
         return of(mockRedmineProject);
       },
-      fetchIssues(projectName: string, projectID: number, limit: number, offset: number): Observable<RedmineIssueArray> {
+      fetchIssues(baseUrl: string, projectName: string, projectID: number, limit: number, offset: number): Observable<RedmineIssueArray> {
         return of(mockRedmineIssueArray);
       },
-      fetchIssue(projectID: number, issueID: number): Observable<RedmineIssue> {
+      fetchIssue(baseUrl: string, projectID: number, issueID: number): Observable<RedmineIssue> {
         return of(mockRedmineIssueArray.issues.find(issue => issue.id === issueID));
       },
-      setBaseUrl(url: string) {}
     };
 
     TestBed.configureTestingModule({

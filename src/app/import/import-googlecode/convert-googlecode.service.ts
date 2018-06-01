@@ -10,7 +10,6 @@ import { GoogleCodeProject } from './models/googlecode-project';
 import { GoogleCodeIssuePage } from './models/googlecode-issuepage';
 import { GoogleCodeIssueSummary } from './models/googlecode-issuesummary';
 import { ConvertService } from '../convert.service';
-import { SyncService } from '../../sync/sync.service';
 import * as Chance from 'chance';
 import { Observable, forkJoin, of, throwError, merge } from 'rxjs';
 import { flatMap, reduce, map, catchError } from 'rxjs/operators';
@@ -189,9 +188,6 @@ export class ConvertGooglecodeService implements ConvertService {
         if (useRandomNames) {
           ConvertGooglecodeService.insertSillyNames(project);
         }
-
-        project.issues.forEach(v => v.hash = SyncService.getHash(v, false));
-        project.hash = SyncService.getHash(project, false);
 
         return project;
       }),

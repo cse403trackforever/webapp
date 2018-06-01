@@ -1,5 +1,4 @@
 import { HashResponse } from './hash-response';
-import { mockRedmineTrackForeverProject } from './../import/import-redmine/models/mock/mock-redmine-trackforever-project';
 import { catchError } from 'rxjs/operators';
 import { SyncService } from './sync.service';
 import { TestBed } from '@angular/core/testing';
@@ -7,12 +6,14 @@ import { OnlineIssueService } from '../issue/online-issue.service';
 import { OfflineIssueService } from '../issue/offline-issue.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of, throwError } from 'rxjs';
+import { mockTrackforeverProject } from '../import/models/trackforever/mock/mock-trackforever-project';
 
 
 describe('SyncService', () => {
   let service: SyncService;
   let offlineSpy: jasmine.SpyObj<OfflineIssueService>;
   let onlineSpy: jasmine.SpyObj<OnlineIssueService>;
+  const mockProject = mockTrackforeverProject;
 
   beforeEach(() => {
     const offSpy = jasmine.createSpyObj('OfflineIssueService', ['getProjects', 'setIssues', 'setProject']);
@@ -53,19 +54,17 @@ describe('SyncService', () => {
   });
 
   it('generate a correct hash', () => {
-    const project = mockRedmineTrackForeverProject;
-    expect(SyncService.getHash(project, false)).toEqual(project.hash);
-    const issue = mockRedmineTrackForeverProject.issues.entries().next().value[1];
+    expect(SyncService.getHash(mockProject, false)).toEqual(mockProject.hash);
+    const issue = mockTrackforeverProject.issues.entries().next().value[1];
     expect(SyncService.getHash(issue, false)).toEqual(issue.hash);
   });
 
   it('finds changes', () => {
-    const project = mockRedmineTrackForeverProject;
-    const prev = project.name;
-    project.name = 'test';
-    expect(SyncService.hasChanged(project)).toEqual(true);
-    project.name = prev;
-    expect(SyncService.hasChanged(project)).toEqual(false);
+    const prev = mockProject.name;
+    mockProject.name = 'test';
+    expect(SyncService.hasChanged(mockProject)).toEqual(true);
+    mockProject.name = prev;
+    expect(SyncService.hasChanged(mockProject)).toEqual(false);
   });
 
   it('bubbles up errors', (done) => {
@@ -82,13 +81,13 @@ describe('SyncService', () => {
 
   it('doesn\'t crash', (done) => {
     const map = new Map<string, string>();
-    Array.from(mockRedmineTrackForeverProject.issues).forEach(e => {
+    Array.from(mockProject.issues).forEach(e => {
       map.set(e[1].id, e[1].hash);
     });
     const projectMap = new Map<string, HashResponse>();
-    projectMap.set(mockRedmineTrackForeverProject.id, {project: mockRedmineTrackForeverProject.hash, issues: map});
+    projectMap.set(mockProject.id, {project: mockProject.hash, issues: map});
 
-    offlineSpy.getProjects.and.returnValue(of([mockRedmineTrackForeverProject]));
+    offlineSpy.getProjects.and.returnValue(of([mockProject]));
     offlineSpy.setProject.and.returnValue(of(null));
     offlineSpy.setIssues.and.returnValue(of(null));
 
@@ -98,9 +97,9 @@ describe('SyncService', () => {
     onlineSpy.setProjects.and.returnValue(of(null));
     onlineSpy.setIssues.and.returnValue(of(null));
     onlineSpy.setIssues.and.returnValue(of(null));
-    onlineSpy.getIssue.and.callFake((k, i) => of(mockRedmineTrackForeverProject.issues.get(i)));
-    onlineSpy.getProject.and.returnValue(of(mockRedmineTrackForeverProject));
-    onlineSpy.getProjects.and.returnValue(of([mockRedmineTrackForeverProject]));
+    onlineSpy.getIssue.and.callFake((k, i) => of(mockProject.issues.get(i)));
+    onlineSpy.getProject.and.returnValue(of(mockProject));
+    onlineSpy.getProjects.and.returnValue(of([mockProject]));
 
     service.sync().pipe(
       catchError(e => {

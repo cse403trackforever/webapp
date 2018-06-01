@@ -11,7 +11,6 @@ import { GitHubComment } from './models/github-comment';
 import { TrackForeverProject } from '../models/trackforever/trackforever-project';
 import { TrackForeverIssue } from '../models/trackforever/trackforever-issue';
 import { TrackForeverComment } from '../models/trackforever/trackforever-comment';
-import { SyncService } from '../../sync/sync.service';
 import { HttpResponse, HttpHeaders } from '@angular/common/http';
 import { of } from 'rxjs';
 
@@ -57,8 +56,7 @@ describe('ConvertGithubService', () => {
 
     service.importProject({ ownerName, projectName })
       .subscribe((p: TrackForeverProject) => {
-        expect(p.hash).toEqual('190998f576c5c6fc354e29cb8fb9a914e84b6adb3cae2f205b09' +
-        'f2dcd29504794b43c3e1a034b4fecb022bc61c00b09255504111eceb27530ee250daa154b374');
+        expect(p.hash).toEqual('');
         expect(p.prevHash).toEqual('');
         expect(p.id).toEqual(`GitHub:${testProject.id}`);
         expect(p.ownerName).toEqual(testProject.owner.login);
@@ -86,8 +84,7 @@ describe('ConvertGithubService', () => {
 
     service.importProject({ ownerName, projectName })
       .subscribe((p: TrackForeverProject) => {
-        expect(p.hash).toEqual('190998f576c5c6fc354e29cb8fb9a914e84b6adb3cae2f205b09' +
-        'f2dcd29504794b43c3e1a034b4fecb022bc61c00b09255504111eceb27530ee250daa154b374');
+        expect(p.hash).toEqual('');
         expect(p.prevHash).toEqual('');
         expect(p.id).toEqual(`GitHub:${testProject.id}`);
         expect(p.ownerName).toEqual(testProject.owner.login);
@@ -103,7 +100,7 @@ describe('ConvertGithubService', () => {
     converted.forEach(issue => {
       const gh = source.find(it => it.number.toString() === issue.id);
       expect(gh).toBeTruthy('should match an issue');
-      expect(issue.hash).toEqual(SyncService.getHash(issue, false));
+      expect(issue.hash).toEqual('');
       expect(issue.prevHash).toEqual('');
       expect(issue.id).toEqual(gh.number.toString());
       expect(issue.projectId).toEqual(projectId);
