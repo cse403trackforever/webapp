@@ -75,7 +75,7 @@ export class ConvertGooglecodeService implements ConvertService {
     const timeCreated = issue.comments[0].timestamp;
     const submitterName = ConvertGooglecodeService.formatUserId(issue.comments[0].commenterId);
 
-    const newIssue = {
+    return {
       hash: '',
       prevHash: '',
       id: issue.id.toString(),
@@ -90,8 +90,6 @@ export class ConvertGooglecodeService implements ConvertService {
       timeUpdated: null,
       timeClosed: null
     };
-    newIssue.hash = SyncService.getHash(newIssue, false);
-    return newIssue;
   }
 
   private static convertCommentToTrackForever(comment: GoogleCodeComment): TrackForeverComment {
@@ -106,7 +104,7 @@ export class ConvertGooglecodeService implements ConvertService {
   }
 
   private static convertProjectToTrackForever(project: GoogleCodeProject): TrackForeverProject {
-    const newProject = {
+    return {
       hash: '',
       prevHash: '',
       id: `GoogleCode:${project.name}`,
@@ -116,8 +114,6 @@ export class ConvertGooglecodeService implements ConvertService {
       source: 'Google Code',
       issues: new Map()
     };
-    newProject.hash = SyncService.getHash(newProject, false);
-    return newProject;
   }
 
   // Import Google Code Project into TrackForever format
@@ -152,6 +148,9 @@ export class ConvertGooglecodeService implements ConvertService {
         if (useRandomNames) {
           ConvertGooglecodeService.insertSillyNames(project);
         }
+
+        project.issues.forEach(v => v.hash = SyncService.getHash(v, false));
+        project.hash = SyncService.getHash(project, false);
 
         return project;
       }),

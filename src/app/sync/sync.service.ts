@@ -44,9 +44,11 @@ export class SyncService {
   private updateProject(updatedProject: TrackForeverProject): Observable<string> {
     let o: Observable<TrackForeverProject>;
     if (SyncService.hasChanged(updatedProject)) {
+      console.log('merge project');
       // TODO: merge here!
       // set o to a Observable<TrackForeverProject>
     } else {
+      console.log('update via remote project');
       // Make sure not to delete existing issues attached to the project
       o = this.onlineIssueService.getProject(updatedProject.id);
     }
@@ -60,9 +62,11 @@ export class SyncService {
   private updateIssue(updatedIssue: TrackForeverIssue, projectId: string): Observable<string> {
     let o: Observable<TrackForeverIssue>;
     if (SyncService.hasChanged(updatedIssue)) {
+      console.log('merge issue');
       // TODO: merge here!
       // set o to a Observable<TrackForeverIssue>
     } else {
+      console.log('update via remote issue');
       // Update locally unmodified issues
       o = this.onlineIssueService.getIssue(projectId, updatedIssue.id);
     }
@@ -84,47 +88,73 @@ export class SyncService {
 
     // Check each project
     projects.forEach(project => {
+      console.log(project);
       const hash = remoteHashes.get(project.id);
       // Catch case where remote doesn't have this project yet
       if (!hash) {
         // Mark to be sent
         task.projToSend.push(project);
+        console.log('send proj');
+        remoteHashes.delete(project.id);
         return;
       } else if (project.hash !== remoteHashes.get(project.id).project) {
         // Mark to be fetched
         task.projToUpdate.push(project);
+        console.log('update proj');
+      } else if (SyncService.hasChanged(project)) {
+        // Mark to update
+        task.projToSend.push(project);
+        console.log('update proj');
       }
-
-      task.issuesToSend.set(project.id, []);
-      task.issuesToUpdate.set(project.id, []);
 
       // Check each issue
       project.issues.forEach(issue => {
-        // Skip hashes with no issues
-        if (!(hash.issues instanceof Map)) {
-          return;
-        }
+        console.log(issue);
         const issueHash = hash.issues.get(issue.id);
+
         // Catch case where remote doesn't have this issue yet
         if (!issueHash) {
           // Mark to be sent
-          task.issuesToSend.get(project.id).push(issue);
+          if (task.issuesToSend.has(project.id)) {
+            task.issuesToSend.get(project.id).push(issue);
+          } else {
+            task.issuesToSend.set(project.id, [issue]);
+          }
+          console.log('send issue');
         } else if (issue.hash !== issueHash) {
           // Mark to be fetched
-          task.issuesToUpdate.get(project.id).push(issue);
+          if (task.issuesToUpdate.has(project.id)) {
+            task.issuesToUpdate.get(project.id).push(issue);
+          } else {
+            task.issuesToUpdate.set(project.id, [issue]);
+          }
+          console.log('fetch issue');
+        } else if (SyncService.hasChanged(issue)) {
+          // Mark to be updated
+          if (task.issuesToSend.has(project.id)) {
+            task.issuesToSend.get(project.id).push(issue);
+          } else {
+            task.issuesToSend.set(project.id, [issue]);
+          }
+          console.log('update issue');
         }
+
         // We're done with this issue, so remove
         hash.issues.delete(issue.id);
       });
 
       // Add remaining items as new issues to get
-      if (hash.issues instanceof Map) {
+      if (hash.issues.size > 0) {
         task.issuesToFetch.set(project.id, Array.from(hash.issues.keys()));
+        console.log('remaining issues', hash.issues);
       }
+
+      // We're done with this project so remove
       remoteHashes.delete(project.id);
     });
 
     // Add remaining items as new projects to get
+    console.log('remaining proj', remoteHashes);
     remoteHashes.forEach((_, key) => task.projToFetch.push(key));
 
     return task;

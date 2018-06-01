@@ -1,4 +1,4 @@
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ConvertTrackforeverService } from '../import/import-trackforever/convert-trackforever.service';
@@ -81,7 +81,18 @@ export class OnlineIssueService implements IssueService {
   }
 
   getHashes(): Observable<Map<string, HashResponse>> {
-    return this.http.get<string>(`${environment.apiUrl}/hashes`)
-      .pipe(map(e => OnlineIssueService.objectToMap<HashResponse>(e)));
+    // Get and map {projId: {project: projectHash, issues: {issueId, issueHash}}} to Map<string, HashResponse>
+    return this.http.get(`${environment.apiUrl}/hashes`)
+      .pipe(
+        tap(e => console.log('getHashes', e)),
+        // map from {projectId: {project: projectHash, issues: {issueId: issueHash}}} to Map<string, HashResponse>
+        map(e => {
+          const responseMap = new Map<string, HashResponse>();
+          Object.entries(e).forEach((a: [string, {project: string, issues: {}}]) => {
+            responseMap.set(a[0], {project: a[1].project, issues: OnlineIssueService.objectToMap(a[1].issues)});
+          });
+          return responseMap;
+        })
+      );
   }
 }
