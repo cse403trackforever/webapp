@@ -1,18 +1,19 @@
+import { AuthUser } from './../shared/models/auth-user';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-import { AuthUser } from '../shared/models/auth-user';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, from } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 @Injectable()
 export class AuthenticationService {
   private user: Observable<AuthUser>;
-  private authToken: string;
+  private authToken: Observable<any>;
 
   redirectUrl: string;
 
-  constructor(public afAuth: AngularFireAuth) {
+  constructor(public afAuth: AngularFireAuth, public db: AngularFireDatabase) {
     this.user = afAuth.authState.pipe(map((user: firebase.UserInfo) => {
       if (user) {
         return {
@@ -26,11 +27,15 @@ export class AuthenticationService {
         return null;
       }
     }));
-
   }
 
-  getToken(): string {
-    return this.authToken;
+  getToken(): Observable<string> {
+    // We need the uid before we can access the database
+    return this.user.pipe(mergeMap((user: AuthUser) => {
+      return from(this.db.database.ref('Users/' + user.uid).once('value').then(snapshot => {
+        return snapshot.val().accessToken as string; // this is the auth token
+      }));
+    }));
   }
 
   getUser(): Observable<AuthUser> {
@@ -41,10 +46,22 @@ export class AuthenticationService {
     return this.user.pipe(map(user => user != null));
   }
 
+  private writeUserData(uid, accessToken): void {
+    const user = {
+      uid: uid,
+      accessToken: accessToken
+    };
+
+    this.db.database.ref('Users/' + uid).set(user);
+  }
+
   private signIn(p: Promise<any>): Promise<any> {
     return p
       .then(res => {
+        console.log(JSON.parse(JSON.stringify(res)));
         this.authToken = res.credential.accessToken;
+        console.log('GH auth token: ' + this.authToken);
+        this.writeUserData(res.user.uid, res.credential.accessToken);
         return res;
       })
       .catch(err => console.log(err));
