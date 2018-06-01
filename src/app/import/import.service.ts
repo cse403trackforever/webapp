@@ -4,12 +4,14 @@ import { ConvertService } from './convert.service';
 import { DataService } from '../database/data.service';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { forkJoin, from, throwError } from 'rxjs';
-import { mergeMap, catchError, first } from 'rxjs/operators';
+import { mergeMap, catchError, first, tap } from 'rxjs/operators';
 import { TrackForeverProject } from './models/trackforever/trackforever-project';
 import { AuthUser } from '../shared/models/auth-user';
+import { SyncService } from '../sync/sync.service';
 
 /**
  * A service to import projects, convert them, and store them locally.
+ * Also sets hashes of the imported project and issues.
  * To import from a supported issue tracker, provide the corresponding ConvertService implementation.
  */
 @Injectable()
@@ -38,6 +40,12 @@ export class ImportService {
             return throwError(new Error('The requested project could not be found'));
           }
           return throwError(e);
+        }),
+
+        // set the project's hashes
+        tap(project => {
+          project.issues.forEach(v => v.hash = SyncService.getHash(v, v.prevHash !== ''));
+          project.hash = SyncService.getHash(project, project.prevHash !== '');
         })
       )
     ).pipe(

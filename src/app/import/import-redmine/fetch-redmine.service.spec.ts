@@ -31,9 +31,10 @@ describe('FetchRedmineService', () => {
 
   it('should fetch a project', async(() => {
     const projectName = 'my-project';
+    const baseUrl = 'https://www.redmine.org';
     const p: RedmineProject = <any> mockRedmineProject;
 
-    service.fetchProject(projectName)
+    service.fetchProject(baseUrl, projectName)
       .subscribe(project => expect(project).toEqual(p));
 
     const req = httpTestingController.expectOne(r => r.url.endsWith(`/projects/${projectName}.json`));
@@ -44,12 +45,13 @@ describe('FetchRedmineService', () => {
 
   it('should fetch issues', async(() => {
     const projectName = 'my-project';
+    const baseUrl = 'https://www.redmine.org';
     const projectID = 123;
     const limit = 10;
     const offset = 2;
     const arr: RedmineIssueArray = <any> mockRedmineIssueArray;
 
-    service.fetchIssues(projectName, projectID, limit, offset)
+    service.fetchIssues(baseUrl, projectName, projectID, limit, offset)
       .subscribe(issueArray => expect(issueArray).toEqual(arr));
 
     const req = httpTestingController
@@ -60,11 +62,12 @@ describe('FetchRedmineService', () => {
   }));
 
   it('should fetch an issue', async(() => {
+    const baseUrl = 'https://www.redmine.org';
     const projectID = 123;
     const issueID = 456;
     const i: RedmineIssue = mockRedmineIssueArray.issues[0];
 
-    service.fetchIssue(projectID, issueID)
+    service.fetchIssue(baseUrl, projectID, issueID)
       .subscribe(issue => expect(issue).toEqual(i));
 
     const req = httpTestingController.expectOne(r => r.url.endsWith(`/issues/${issueID}.json?project_id=${projectID}`));

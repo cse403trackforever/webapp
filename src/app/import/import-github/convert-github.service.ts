@@ -9,7 +9,6 @@ import { TrackForeverProject } from '../models/trackforever/trackforever-project
 import { TrackForeverIssue } from '../models/trackforever/trackforever-issue';
 import { TrackForeverComment } from '../models/trackforever/trackforever-comment';
 import { ConvertService } from '../convert.service';
-import { SyncService } from '../../sync/sync.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable, forkJoin, of, throwError, merge } from 'rxjs';
 import { flatMap, map, catchError, reduce } from 'rxjs/operators';
@@ -59,7 +58,7 @@ export class ConvertGithubService implements ConvertService {
     }
     comments = comments.concat(ghComments.map(ConvertGithubService.convertCommentToTrackForever));
 
-    const newIssue = {
+    return {
       hash: '',
       prevHash: '',
       id: issue.number.toString(),
@@ -74,8 +73,6 @@ export class ConvertGithubService implements ConvertService {
       timeUpdated: (issue.updated_at) ? Math.floor(Date.parse(issue.updated_at) / 1000) : null,
       timeClosed: (issue.closed_at) ? Math.floor(Date.parse(issue.closed_at) / 1000) : null
     };
-    newIssue.hash = SyncService.getHash(newIssue, false);
-    return newIssue;
   }
 
   private static convertCommentToTrackForever(comment: GitHubComment): TrackForeverComment {
@@ -86,7 +83,7 @@ export class ConvertGithubService implements ConvertService {
   }
 
   private static convertProjectToTrackForever(project: GitHubProject, projectName: string): TrackForeverProject {
-    const newProject = {
+    return {
       hash: '',
       prevHash: '',
       id: `GitHub:${project.id}`,
@@ -96,8 +93,6 @@ export class ConvertGithubService implements ConvertService {
       source: 'GitHub',
       issues: new Map()
     };
-    newProject.hash = SyncService.getHash(newProject, false);
-    return newProject;
   }
 
   /**
@@ -173,12 +168,19 @@ export class ConvertGithubService implements ConvertService {
         const project: TrackForeverProject = ConvertGithubService.convertProjectToTrackForever(data[0], projectName);
 
         // convert issues
-        githubIssuesAndComments.map((githubIssueAndComment: [GitHubIssue, GitHubComment[]]): TrackForeverIssue => {
-          const githubIssue: GitHubIssue = githubIssueAndComment[0];
-          const githubComments: GitHubComment[] = githubIssueAndComment[1];
+        githubIssuesAndComments
+          .map((githubIssueAndComment: [GitHubIssue, GitHubComment[]]): TrackForeverIssue => {
+            const githubIssue: GitHubIssue = githubIssueAndComment[0];
+            const githubComments: GitHubComment[] = githubIssueAndComment[1];
 
-          return ConvertGithubService.convertIssueToTrackForever(githubIssue, githubProject.id, githubComments);
-        }).filter(e => e).forEach(issue => project.issues.set(issue.id, issue));
+            return ConvertGithubService.convertIssueToTrackForever(githubIssue, githubProject.id, githubComments);
+          })
+
+          // filter out pull requests which were set to null
+          .filter(e => e)
+
+          // set the project's issues
+          .forEach(issue => project.issues.set(issue.id, issue));
 
         return project;
       }),

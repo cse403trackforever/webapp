@@ -1,7 +1,7 @@
 import { TrackForeverProject } from '../../../models/trackforever/trackforever-project';
 
 export const mockRedmineTrackForeverProject: TrackForeverProject = {
-  hash: '2b93695f92bbdbd45d6fa30dd07e89d29baa1434d27d1171b527ba3f7d43c6460afd6a426b8809f0990fcb6cbb0c9fa4a338efcfe45c048b6122fa0accacc337',
+  hash: '',
   prevHash: '',
   id: 'Redmine:1',
   ownerName: '',
@@ -19,8 +19,7 @@ export const mockRedmineTrackForeverProject: TrackForeverProject = {
     [
       '5',
       {
-        hash: '06c1035a4ef2ed12ae3d46aea1103ca814eb70201f729aa8819c61f5d2b0d4e65f' +
-        '5e215b45a351260a05b2976deec6ecb8f2c3d3f2654a95f4bbe1b72e1d4719',
+        hash: '',
         prevHash: '',
         id: '5',
         projectId: 'Redmine:my-project',
@@ -38,8 +37,7 @@ export const mockRedmineTrackForeverProject: TrackForeverProject = {
     [
       '123',
       {
-        hash: '942b40a7e4b1896128dbe96686c55e8d35d756f18c057164bd0ffcbfd7962933c83' +
-        '3b4d916a9c19ed957a0c11819b4fe8370a501874dd338d0180d8a144c5c35',
+        hash: '',
         prevHash: '',
         id: '123',
         projectId: 'Redmine:my-project',

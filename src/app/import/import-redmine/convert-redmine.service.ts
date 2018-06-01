@@ -5,7 +5,6 @@ import { FetchRedmineService } from './fetch-redmine.service';
 import { RedmineIssue } from './models/redmine-issue';
 import { RedmineProject } from './models/redmine-project';
 import { RedmineIssueArray } from './models/redmine-issueArray';
-import { SyncService } from '../../sync/sync.service';
 import { Observable, forkJoin, of, merge } from 'rxjs';
 import { flatMap, map, reduce } from 'rxjs/operators';
 
@@ -36,7 +35,7 @@ export class ConvertRedmineService {
   }
 
   private static convertIssueToTrackForever(issue: RedmineIssue): TrackForeverIssue {
-    const newIssue = {
+    return {
       hash: '',
       prevHash: '',
       id: issue.id.toString(),
@@ -51,12 +50,10 @@ export class ConvertRedmineService {
       timeUpdated: Math.floor(Date.parse(issue.updated_on) / 1000),
       timeClosed: (issue.closed_on) ? Math.floor(Date.parse(issue.closed_on) / 1000) : null
     };
-    newIssue.hash = SyncService.getHash(newIssue, false);
-    return newIssue;
   }
 
   private static convertProjectToTrackForever(project: RedmineProject): TrackForeverProject {
-    const newProject = {
+    return {
       hash: '',
       prevHash: '',
       id: `Redmine:${project.id}`,
@@ -66,20 +63,17 @@ export class ConvertRedmineService {
       source: 'Redmine',
       issues: new Map()
     };
-    newProject.hash = SyncService.getHash(newProject, false);
-    return newProject;
   }
 
   private fetchProject(projectName: string, projectID: number, serverUrl: string): Observable<[RedmineProject, RedmineIssue[][]]> {
-    this.fetchService.setBaseUrl(serverUrl);
     return forkJoin(
-      this.fetchService.fetchProject(projectName),
-      this.fetchService.fetchIssues(projectName, projectID, 100, 0).pipe(
+      this.fetchService.fetchProject(serverUrl, projectName),
+      this.fetchService.fetchIssues(serverUrl, projectName, projectID, 100, 0).pipe(
         flatMap((issuePage: RedmineIssueArray) => {
           let pages: Observable<RedmineIssueArray> = of(issuePage);
 
           for (let i = 1; i < Math.round(issuePage.total_count.valueOf() / 100.0); i++) {
-            pages = merge(pages, this.fetchService.fetchIssues(projectName, projectID, 100, 100 * i));
+            pages = merge(pages, this.fetchService.fetchIssues(serverUrl, projectName, projectID, 100, 100 * i));
           }
 
           return forkJoin(
@@ -87,7 +81,7 @@ export class ConvertRedmineService {
               flatMap((page: RedmineIssueArray) => {
                 return forkJoin(
                   page.issues.map((issue: RedmineIssue) => {
-                    return this.fetchService.fetchIssue(projectID, issue.id);
+                    return this.fetchService.fetchIssue(serverUrl, projectID, issue.id);
                   })
                 );
               }),
