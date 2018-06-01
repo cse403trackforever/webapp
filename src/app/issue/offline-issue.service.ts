@@ -18,58 +18,66 @@ export class OfflineIssueService implements IssueService {
     private authService: AuthenticationService,
   ) { }
 
-  getIssue(projectKey: string, issueId: string): Observable<TrackForeverIssue> {
+  /**
+   * Helper method to get a user ID to open the user's database and do something with it
+   *
+   * @param {(uid: string) => Observable<T>} fn
+   * @returns {Observable<T>}
+   */
+  private withUserId<T>(fn: (uid: string) => Observable<T>): Observable<T> {
+    // first get the user to access their database
     return this.authService.getUser().pipe(
-      mergeMap(user => from(this.dataService.getProject(projectKey, user.uid))),
-      map(project => project.issues.get(issueId)),
-      first()
+      // the getUser() observable doesn't complete, so get only the first emission
+      first(),
+
+      // pick out just the uid
+      map(user => user.uid),
+
+      // map the uid to another observable with the input function
+      mergeMap(fn)
+    );
+  }
+
+  getIssue(projectKey: string, issueId: string): Observable<TrackForeverIssue> {
+    // use the user uid to get the project from the database
+    return this.withUserId(uid => from(this.dataService.getProject(projectKey, uid))).pipe(
+
+      // find the issue in the project
+      map(project => project.issues.get(issueId))
     );
   }
 
   setIssue(issue: TrackForeverIssue): Observable<string> {
-    return this.authService.getUser().pipe(
-      mergeMap(user => {
-        return from(this.dataService.getProject(issue.projectId, user.uid).then(project => {
-          project.issues.set(issue.id, issue);
-          return this.dataService.addProject(project, user.uid);
-        }));
-      }),
-      first()
-    );
+    return this.withUserId(uid => from(
+      // fetch the project to modify the issue
+      this.dataService.getProject(issue.projectId, uid).then(project => {
+        project.issues.set(issue.id, issue);
+        return this.dataService.addProject(project, uid);
+      })
+    ));
   }
 
   setIssues(projectKey: string, issues: Array<TrackForeverIssue>): Observable<string> {
-    return this.authService.getUser().pipe(
-      mergeMap(user => {
-        return from(this.dataService.getProject(projectKey, user.uid).then(
-          project => {
-            issues.forEach(issue => project.issues.set(issue.id, issue));
-            return this.dataService.addProject(project, user.uid);
-          }
-        ));
-      }),
-      first()
-    );
+    return this.withUserId(uid => from(
+      // fetch th project to modify all its issues
+      this.dataService.getProject(projectKey, uid).then(
+        project => {
+          issues.forEach(issue => project.issues.set(issue.id, issue));
+          return this.dataService.addProject(project, uid);
+        }
+      )
+    ));
   }
 
   getProject(projectKey: string): Observable<TrackForeverProject> {
-    return this.authService.getUser().pipe(
-      mergeMap(user => from(this.dataService.getProject(projectKey, user.uid))),
-      first()
-    );
+    return this.withUserId(uid => from(this.dataService.getProject(projectKey, uid)));
   }
 
   setProject(project: TrackForeverProject): Observable<string> {
-    return this.authService.getUser().pipe(
-      mergeMap(user => from(this.dataService.addProject(project, user.uid))),
-      first()
-    );
+    return this.withUserId(uid => from(this.dataService.addProject(project, uid)));
   }
 
   getProjects(): Observable<TrackForeverProject[]> {
-    return this.authService.getUser().pipe(
-      first(),
-      mergeMap(user => this.dataService.getProjects(user.uid))
-    );
+    return this.withUserId(uid => this.dataService.getProjects(uid));
   }
 }

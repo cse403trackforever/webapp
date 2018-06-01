@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 /**
- * The ImportModule is a *domain* module that declares the import page.
+ * The ImportModule is a domain module that declares the import page.
  * Add tracker-specific modules as they are implemented.
  */
 @NgModule({

@@ -12,11 +12,22 @@ import { GoogleCodeIssueSummary } from './models/googlecode-issuesummary';
 import { ConvertService } from '../convert.service';
 import { SyncService } from '../../sync/sync.service';
 import * as Chance from 'chance';
-import { Observable, forkJoin, of, throwError } from 'rxjs';
-import { merge, flatMap, reduce, map, catchError } from 'rxjs/operators';
+import { Observable, forkJoin, of, throwError, merge } from 'rxjs';
+import { flatMap, reduce, map, catchError } from 'rxjs/operators';
 
+/**
+ * The argument passed into importProject.
+ */
 export interface ImportGooglecodeArgs {
+  /**
+   * The unique project name
+   */
   projectName: string;
+
+  /**
+   * An option to replace user IDs with random animal names. Google Code identifies users by an assigned ID number that is consistent for
+   * each issue in a project. Substituting the long ID number for a unique name can improve readability.
+   */
   useRandomNames?: boolean;
 }
 
@@ -26,6 +37,10 @@ export class ConvertGooglecodeService implements ConvertService {
   constructor(private fetchService: FetchGoogleCodeService) {
   }
 
+  /**
+   * Replaces the submitterName and commenterName fields in the project with random but consistent animal names.
+   * @param {TrackForeverProject} project the project to replace names in
+   */
   private static insertSillyNames(project: TrackForeverProject): void {
     // find number of unique ids
     const idMap = new Map();
@@ -61,6 +76,12 @@ export class ConvertGooglecodeService implements ConvertService {
     });
   }
 
+  /**
+   * Format user ID numbers into more readable display names for the case that random names are not used.
+   *
+   * @param {number} id
+   * @returns {string}
+   */
   private static formatUserId(id: number): string {
     return `User #${id}`;
   }
@@ -116,18 +137,23 @@ export class ConvertGooglecodeService implements ConvertService {
     };
   }
 
-  // Import Google Code Project into TrackForever format
-  importProject(args: ImportGooglecodeArgs): Observable<TrackForeverProject> {
-    const projectName = args.projectName;
-    const useRandomNames = args.useRandomNames;
+  /**
+   * Fetch the Google Code project in its entirety using the FetchGoogleCodeService
+   * @param {string} projectName
+   * @returns {Observable<[GoogleCodeProject , GoogleCodeIssue[]]>} an observable that emits the project once then completes
+   */
+  private fetchProject(projectName: string): Observable<[GoogleCodeProject, GoogleCodeIssue[]]> {
+    // fetch the project and issues in parallel
     return forkJoin(
       this.fetchService.fetchProject(projectName),
-      this.fetchService.fetchIssuePage(projectName, 1)
-        .pipe(flatMap((issuePage: GoogleCodeIssuePage) => {
+      this.fetchService.fetchIssuePage(projectName, 1).pipe(
+
+        // start with the first issue page to determine how many there are, then get the rest
+        flatMap((issuePage: GoogleCodeIssuePage) => {
           let pages: Observable<GoogleCodeIssuePage> = of(issuePage);
           // Get each issue page 2 -> totalPages
           for (let i = 2; i <= issuePage.totalPages; i++) {
-            pages = pages.pipe(merge(this.fetchService.fetchIssuePage(projectName, i)));
+            pages = merge(pages, this.fetchService.fetchIssuePage(projectName, i));
           }
 
           // Map each page to an array of issues
@@ -135,10 +161,25 @@ export class ConvertGooglecodeService implements ConvertService {
             flatMap((page: GoogleCodeIssuePage) => forkJoin(
               page.issues.map((issue: GoogleCodeIssueSummary) => this.fetchService.fetchIssue(projectName, issue.id))
             )),
+
+            // as pages are emitted, reduce them into one issue array
             reduce((acc, curr) => acc.concat(curr))
           );
-        }))
-    ).pipe(
+        })
+      )
+    );
+  }
+
+  /**
+   * Import Google Code Project into TrackForever format
+   *
+   * @param {ImportGooglecodeArgs} args
+   * @returns {Observable<TrackForeverProject>} an observable that emits the converted project then completes
+   */
+  importProject(args: ImportGooglecodeArgs): Observable<TrackForeverProject> {
+    const projectName = args.projectName;
+    const useRandomNames = args.useRandomNames;
+    return this.fetchProject(projectName).pipe(
       map((data: [GoogleCodeProject, GoogleCodeIssue[]]) => {
         const project = ConvertGooglecodeService.convertProjectToTrackForever(data[0]);
         data[1]

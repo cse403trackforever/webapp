@@ -6,6 +6,10 @@ import { GitHubIssue } from './models/github-issue';
 import { GitHubComment } from './models/github-comment';
 import { Observable } from 'rxjs';
 
+/**
+ * Fetches data from the GitHub API for use in project import
+ * See <https://developer.github.com/v3/>
+ */
 @Injectable()
 export class FetchGithubService {
   private baseUrl = 'https://api.github.com/repos';

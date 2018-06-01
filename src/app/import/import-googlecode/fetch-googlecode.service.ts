@@ -5,8 +5,13 @@ import { GoogleCodeIssue } from './models/googlecode-issue';
 import { GoogleCodeIssuePage } from './models/googlecode-issuepage';
 import { Observable } from 'rxjs';
 
+/**
+ * Fetches data from the Google Code archive for use in project import.
+ * See <https://code.google.com/archive/schema>
+ */
 @Injectable()
 export class FetchGoogleCodeService {
+  // use a proxy server to allow CORS
   private baseUrl = 'https://cors-anywhere.herokuapp.com/https://storage.googleapis.com/google-code-archive/v2/code.google.com';
 
   constructor(private http: HttpClient) { }

@@ -6,6 +6,10 @@ import { RedmineIssueArray } from './models/redmine-issueArray';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+/**
+ * Fetches data from the Redmine API for use in project import.
+ * See <http://www.redmine.org/projects/redmine/wiki/Rest_api>
+ */
 @Injectable()
 export class FetchRedmineService {
   private corsUrl = 'https://cors-anywhere.herokuapp.com/';

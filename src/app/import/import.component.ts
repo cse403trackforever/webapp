@@ -1,6 +1,9 @@
 import { EventEmitter, Output } from '@angular/core';
 import { ImportService } from './import.service';
 
+/**
+ * A Component to interface with an import service
+ */
 export abstract class ImportComponent {
   // Emits the project ID after importing
   @Output() complete = new EventEmitter<string>();
@@ -11,6 +14,11 @@ export abstract class ImportComponent {
 
   protected constructor(private importService: ImportService) { }
 
+  /**
+   * Import a project and set component outputs based on how it performs
+   *
+   * @param args the arguments to be passed into the import service
+   */
   protected importProject(args: any): void {
     this.working.emit(true);
     this.importService.importProject(args)

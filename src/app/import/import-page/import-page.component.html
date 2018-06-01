@@ -16,6 +16,7 @@
     <div style="height: 4rem;" *ngIf="working"></div>
     <div class="loader mx-auto" *ngIf="working"></div>
 
+    <!-- Add import components to this switch as they are implemented -->
     <div [ngSwitch]="selectedItem" [hidden]="working" #switch>
       <app-import-github *ngSwitchCase="options.GitHub" (working)="onWorking($event)" (complete)="onComplete($event)" (error)="onError($event)"></app-import-github>
       <app-import-googlecode *ngSwitchCase="options.GoogleCode" (working)="onWorking($event)" (complete)="onComplete($event)" (error)="onError($event)"></app-import-googlecode>

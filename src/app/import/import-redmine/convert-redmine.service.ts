@@ -6,12 +6,26 @@ import { RedmineIssue } from './models/redmine-issue';
 import { RedmineProject } from './models/redmine-project';
 import { RedmineIssueArray } from './models/redmine-issueArray';
 import { SyncService } from '../../sync/sync.service';
-import { Observable, forkJoin, of } from 'rxjs';
-import { merge, flatMap, map } from 'rxjs/operators';
+import { Observable, forkJoin, of, merge } from 'rxjs';
+import { flatMap, map, reduce } from 'rxjs/operators';
 
+/**
+ * The type of argument passed into importProject
+ */
 export interface ImportRedmineArgs {
+  /**
+   * The name of the Redmine project
+   */
   projectName: string;
+
+  /**
+   * The Redmine project's ID
+   */
   projectID: number;
+
+  /**
+   * The URL of where the Redmine project is hosted
+   */
   serverUrl: string;
 }
 
@@ -56,40 +70,59 @@ export class ConvertRedmineService {
     return newProject;
   }
 
-  importProject(args: ImportRedmineArgs): Observable<TrackForeverProject> {
-    const projectName = args.projectName;
-    const projectID = args.projectID;
-    const serverUrl = args.serverUrl;
+  private fetchProject(projectName: string, projectID: number, serverUrl: string): Observable<[RedmineProject, RedmineIssue[][]]> {
     this.fetchService.setBaseUrl(serverUrl);
     return forkJoin(
       this.fetchService.fetchProject(projectName),
       this.fetchService.fetchIssues(projectName, projectID, 100, 0).pipe(
         flatMap((issuePage: RedmineIssueArray) => {
-          const pages: Observable<RedmineIssueArray> = of(issuePage);
+          let pages: Observable<RedmineIssueArray> = of(issuePage);
 
           for (let i = 1; i < Math.round(issuePage.total_count.valueOf() / 100.0); i++) {
-            pages.pipe(merge(this.fetchService.fetchIssues(projectName, projectID, 100, 100 * i)));
+            pages = merge(pages, this.fetchService.fetchIssues(projectName, projectID, 100, 100 * i));
           }
 
           return forkJoin(
-            pages.pipe(flatMap((page: RedmineIssueArray) => {
-              return forkJoin(
-                page.issues.map((issue: RedmineIssue) => {
-                  return this.fetchService.fetchIssue(projectID, issue.id);
-                })
-              );
-            }))
-          );
-        })
-      )
-    ).pipe(map((data: [RedmineProject, RedmineIssue[][]]) => {
-      const project = ConvertRedmineService.convertProjectToTrackForever(data[0]);
-      data[1].reduce((a, b) => a.concat(b), [])
-        .map((issue: RedmineIssue) => ConvertRedmineService.convertIssueToTrackForever(issue))
-        .forEach(issue => project.issues.set(issue.id, issue));
+            pages.pipe(
+              flatMap((page: RedmineIssueArray) => {
+                return forkJoin(
+                  page.issues.map((issue: RedmineIssue) => {
+                    return this.fetchService.fetchIssue(projectID, issue.id);
+                  })
+                );
+              }),
 
-      return project;
-    }));
+              // As pages of issues are emitted, reduce them into one array
+              reduce((acc: RedmineIssue[], val: RedmineIssue[]) => {
+                return acc.concat(val);
+              })
+            )
+          );
+        }),
+      )
+    );
+  }
+
+  /**
+   * Import a Redmine project into Track Forever format
+   *
+   * @param {ImportRedmineArgs} args
+   * @returns {Observable<TrackForeverProject>}
+   */
+  importProject(args: ImportRedmineArgs): Observable<TrackForeverProject> {
+    const projectName = args.projectName;
+    const projectID = args.projectID;
+    const serverUrl = args.serverUrl;
+    return this.fetchProject(projectName, projectID, serverUrl).pipe(
+      map((data: [RedmineProject, RedmineIssue[][]]) => {
+        const project = ConvertRedmineService.convertProjectToTrackForever(data[0]);
+        data[1].reduce((a, b) => a.concat(b), [])
+          .map((issue: RedmineIssue) => ConvertRedmineService.convertIssueToTrackForever(issue))
+          .forEach(issue => project.issues.set(issue.id, issue));
+
+        return project;
+      })
+    );
   }
 
 }

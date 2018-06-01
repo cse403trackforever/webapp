@@ -9,6 +9,9 @@ enum ImportOptions {
   JSON = 'JSON',
 }
 
+/**
+ * A component to handle importing projects from various sources
+ */
 @Component({
   selector: 'app-import-page',
   templateUrl: './import-page.component.html',

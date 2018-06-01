@@ -4,6 +4,9 @@ import { ConvertService } from '../convert.service';
 import { TrackForeverIssue } from '../models/trackforever/trackforever-issue';
 import { Observable, of } from 'rxjs';
 
+/**
+ * A service for importing Track Forever projects from a JSON file
+ */
 @Injectable()
 export class ConvertTrackforeverService implements ConvertService {
 
@@ -88,6 +91,12 @@ export class ConvertTrackforeverService implements ConvertService {
     return !Array.from(object.issues).some(issue => !this.instanceOfIssue(issue[1]));
   }
 
+  /**
+   * Import a project from a JSON string representation
+   *
+   * @param {string} json the string representation of a project
+   * @returns {Observable<TrackForeverProject>} an observable that emits the imported project once then completes
+   */
   importProject(json: string): Observable<TrackForeverProject> {
     let project: TrackForeverProject;
     try {

@@ -24,6 +24,10 @@ export class DefaultIssueService implements IssueService {
 
   getProjects(): Observable<TrackForeverProject[]> {
     if (this.isOnline()) {
+      /*
+       * Sync, then return the projects stored locally which should have been updated. If the sync fails, return the local projects even if
+       * they may be out-dated.
+       */
       return this.syncService.sync().pipe(
         catchError(err => of(err)), // ignore errors
         mergeMap(() => this.offline.getProjects())
