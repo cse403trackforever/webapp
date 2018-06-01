@@ -1,3 +1,4 @@
+import { Observable, of } from 'rxjs';
 import { TestBed, async } from '@angular/core/testing';
 
 import { FetchGithubService } from './fetch-github.service';
@@ -19,8 +20,8 @@ describe('FetchGithubService', () => {
   beforeEach(() => {
     // stub auth service
     authServiceStub = {
-      getToken(): string {
-        return 'mock_token';
+      getToken(): Observable<string> {
+        return of('mock_token');
       }
     };
 

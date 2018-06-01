@@ -16,8 +16,9 @@ export class FetchGithubService {
   private query: string;
 
   constructor(private http: HttpClient, private authService: AuthenticationService) {
-    const token = this.authService.getToken();
-    this.query = '?access_token=' + token;
+    this.authService.getToken().subscribe(t => {
+      this.query = '?access_token=' + t;
+    });
   }
 
   fetchProject(ownerName: string, projectName: string): Observable<GitHubProject> {
