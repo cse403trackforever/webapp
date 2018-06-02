@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 @NgModule({
   declarations: [ ImportTrackforeverFormComponent ],
   exports: [ ImportTrackforeverFormComponent ],
+  entryComponents: [ ImportTrackforeverFormComponent ],
   imports: [
     CommonModule,
     FormsModule,

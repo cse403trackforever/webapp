@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 @NgModule({
   declarations: [ ImportGooglecodeFormComponent ],
   exports: [ ImportGooglecodeFormComponent ],
+  entryComponents: [ ImportGooglecodeFormComponent ],
   imports: [
     CommonModule,
     FormsModule,

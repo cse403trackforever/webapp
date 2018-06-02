@@ -6,6 +6,7 @@ import { ImportRedmineModule } from './import-redmine/import-redmine.module';
 import { ImportTrackforeverModule } from './import-trackforever/import-trackforever.module';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ImportWrapperComponent } from './import-wrapper.component';
 
 /**
  * The ImportModule is a domain module that declares the import page.
@@ -21,7 +22,8 @@ import { FormsModule } from '@angular/forms';
     ImportTrackforeverModule,
   ],
   declarations: [
-    ImportPageComponent
+    ImportPageComponent,
+    ImportWrapperComponent,
   ],
   exports: [
     ImportPageComponent

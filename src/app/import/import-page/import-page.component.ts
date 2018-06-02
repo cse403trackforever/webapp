@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ImportGithubFormComponent } from '../import-github/import-github-form/import-github-form.component';
+import { ImportGooglecodeFormComponent } from '../import-googlecode/import-googlecode-form/import-googlecode-form.component';
+import { ImportRedmineFormComponent } from '../import-redmine/import-redmine-form/import-redmine-form.component';
+import { ImportTrackforeverFormComponent } from '../import-trackforever/import-trackforever-form/import-trackforever-form.component';
+import { ImportComponent } from '../import.component';
 
-// Available importers and name to display
-enum ImportOptions {
-  GitHub = 'GitHub',
-  GoogleCode = 'Google Code',
-  Redmine = 'Redmine',
-  JSON = 'JSON',
+interface ImportOption {
+  name: string;
+  comp: typeof ImportComponent;
 }
 
 /**
@@ -22,20 +24,24 @@ export class ImportPageComponent implements OnInit {
   // Error message to be displayed. Message will display when this value is Truthy.
   errorMessage = '';
   working = false;
-  options = ImportOptions;
-  textOptions = Object.keys(this.options).map(e => this.options[e]);
 
-  selectedItem = ImportOptions.GitHub;
+  selectedItem: ImportOption;
+  compOptions: ImportOption[] = [
+    { name: 'GitHub', comp: ImportGithubFormComponent },
+    { name: 'Google Code', comp: ImportGooglecodeFormComponent },
+    { name: 'Redmine', comp: ImportRedmineFormComponent },
+    { name: 'JSON', comp: ImportTrackforeverFormComponent },
+  ];
 
   constructor(private router: Router) { }
 
   ngOnInit() {
+    this.selectedItem = this.compOptions[0];
   }
 
-  onSelect(selection) {
+  onSelect() {
     // Hide error message
     this.errorMessage = '';
-    this.selectedItem = selection;
   }
 
   /**

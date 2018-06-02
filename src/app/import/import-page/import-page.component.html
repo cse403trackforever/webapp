@@ -7,8 +7,9 @@
       </div>
       <div class="form-group">
         <label for="sourceSelect">Source</label>
-        <select class="form-control custom-select" id="sourceSelect" name="sourceSelect" [(ngModel)]="selectedItem" (ngModelChange)="onSelect($event)">
-          <option *ngFor="let option of textOptions" [value]="option">{{option}}</option>
+        <select class="form-control custom-select" id="sourceSelect" name="sourceSelect" [(ngModel)]="selectedItem"
+                (ngModelChange)="onSelect()">
+          <option *ngFor="let option of compOptions" [ngValue]="option">{{option.name}}</option>
         </select>
       </div>
     </form>
@@ -16,12 +17,14 @@
     <div style="height: 4rem;" *ngIf="working"></div>
     <div class="loader mx-auto" *ngIf="working"></div>
 
-    <!-- Add import components to this switch as they are implemented -->
     <div [ngSwitch]="selectedItem" [hidden]="working" #switch>
-      <app-import-github *ngSwitchCase="options.GitHub" (working)="onWorking($event)" (complete)="onComplete($event)" (error)="onError($event)"></app-import-github>
-      <app-import-googlecode *ngSwitchCase="options.GoogleCode" (working)="onWorking($event)" (complete)="onComplete($event)" (error)="onError($event)"></app-import-googlecode>
-      <app-import-redmine *ngSwitchCase="options.Redmine" (working)="onWorking($event)" (complete)="onComplete($event)" (error)="onError($event)"></app-import-redmine>
-      <app-import-trackforever *ngSwitchCase="options.JSON" (working)="onWorking($event)" (complete)="onComplete($event)" (error)="onError($event)"></app-import-trackforever>
+      <div *ngFor="let option of compOptions">
+        <app-dynamic-wrapper [type]="option.comp"
+                             *ngSwitchCase="option"
+                             (working)="onWorking($event)"
+                             (complete)="onComplete($event)"
+                             (error)="onError($event)"></app-dynamic-wrapper>
+      </div>
       <p *ngSwitchDefault>Select a source</p>
     </div>
   </div>

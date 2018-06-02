@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 @NgModule({
   declarations: [ ImportRedmineFormComponent ],
   exports: [ ImportRedmineFormComponent ],
+  entryComponents: [ ImportRedmineFormComponent ],
   imports: [
     CommonModule,
     FormsModule,
