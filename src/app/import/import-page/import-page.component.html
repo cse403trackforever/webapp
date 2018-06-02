@@ -19,11 +19,11 @@
 
     <div [ngSwitch]="selectedItem" [hidden]="working" #switch>
       <div *ngFor="let option of compOptions">
-        <app-dynamic-wrapper [type]="option.comp"
+        <app-import-wrapper [type]="option.comp"
                              *ngSwitchCase="option"
                              (working)="onWorking($event)"
                              (complete)="onComplete($event)"
-                             (error)="onError($event)"></app-dynamic-wrapper>
+                             (error)="onError($event)"></app-import-wrapper>
       </div>
       <p *ngSwitchDefault>Select a source</p>
     </div>
