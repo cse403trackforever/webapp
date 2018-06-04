@@ -49,13 +49,15 @@ describe('OnlineIssueService', () => {
     const issues = Array.from(mockTrackforeverProject.issues).map(e => e[1]);
     const map = new Map([[mockTrackforeverProject.id, issues]]);
 
+    const projectIssueMap = new Map<string, Map<string, string>>([[mockTrackforeverProject.id, new Map()]]);
+
     service.setIssues(map).subscribe();
 
     const req = httpTestingController.expectOne(`${environment.apiUrl}/issues`);
     expect(req.request.method).toEqual('PUT');
     expect(req.request.body).toEqual(OnlineIssueService.mapToObject(map));
 
-    req.flush(null);
+    req.flush(projectIssueMap);
   }));
 
   it('should get some issues', async(() => {
@@ -87,11 +89,13 @@ describe('OnlineIssueService', () => {
   it('should set data for projects', async(() => {
     service.setProjects([mockTrackforeverProject]).subscribe();
 
+    const hash = new Map<string, string>();
+
     const req = httpTestingController.expectOne(`${environment.apiUrl}/projects`);
     expect(req.request.method).toEqual('PUT');
     expect(req.request.body).toEqual(ConvertTrackforeverService.toJson([mockTrackforeverProject]));
 
-    req.flush(null);
+    req.flush(hash);
   }));
 
   it('should get project summaries', async(() => {
