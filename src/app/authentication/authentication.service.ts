@@ -9,7 +9,6 @@ import { AngularFireDatabase } from 'angularfire2/database';
 @Injectable()
 export class AuthenticationService {
   private user: Observable<AuthUser>;
-  private authToken: Observable<any>;
 
   redirectUrl: string;
 
@@ -58,10 +57,12 @@ export class AuthenticationService {
   private signIn(p: Promise<any>): Promise<any> {
     return p
       .then(res => {
-        console.log(JSON.parse(JSON.stringify(res)));
-        this.authToken = res.credential.accessToken;
-        console.log('GH auth token: ' + this.authToken);
-        this.writeUserData(res.user.uid, res.credential.accessToken);
+        console.log('successful signin: ');
+        console.log(res);
+        if (res.additionalUserInfo.providerId === 'github.com') {
+          console.log('github signin');
+          this.writeUserData(res.user.uid, res.credential.accessToken);
+        }
         return res;
       })
       .catch(err => console.log(err));
@@ -73,12 +74,6 @@ export class AuthenticationService {
 
   githubSignIn(): Promise<any> {
     return this.signIn(this.afAuth.auth.signInWithPopup(new firebase.auth.GithubAuthProvider()));
-    // return this.afAuth.auth.signInWithPopup(new firebase.auth.GithubAuthProvider()).then(result => {
-    //   if (result.credential) {
-    //     // This gives you a GitHub Access Token.
-    //     alert(result.credential.accessToken);
-    //   }
-    //  });
   }
 
   emailSignIn(value) {
@@ -94,7 +89,10 @@ export class AuthenticationService {
   }
 
   signOut() {
-    this.afAuth.auth.signOut();
+    this.user.subscribe(user => {
+      this.db.database.ref('Users/' + user.uid).remove();
+      this.afAuth.auth.signOut();
+    });
   }
 }
 
