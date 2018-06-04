@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthUser } from './shared/models/auth-user';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 import { AuthenticationService } from './authentication/authentication.service';
+import { CorsProxyService } from './cors-proxy.service';
 
 @Component({
   selector: 'app-root',
@@ -15,13 +16,16 @@ export class AppComponent implements OnInit {
   collapsed = true;
   faClock = faClock;
 
-  constructor(public authService: AuthenticationService, private router: Router) { }
+  constructor(public authService: AuthenticationService,
+              private corsProxy: CorsProxyService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.authService.getUser()
       .subscribe(user => {
         this.user = user;
       });
+    this.corsProxy.init();
   }
 
   toggleCollapsed(): void {
