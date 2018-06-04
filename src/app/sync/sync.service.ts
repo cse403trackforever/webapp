@@ -6,7 +6,7 @@ import { OfflineIssueService } from '../issue/offline-issue.service';
 import { OnlineIssueService } from '../issue/online-issue.service';
 import { HashResponse } from './hash-response';
 import { Observable, forkJoin, throwError, from, concat } from 'rxjs';
-import { mergeMap, mergeAll, map, catchError, last, concatAll } from 'rxjs/operators';
+import { mergeMap, mergeAll, map, catchError, last, concatAll, tap } from 'rxjs/operators';
 
 /**
  * The IssueService fetches issues and project information for viewing.
@@ -180,9 +180,53 @@ export class SyncService {
       );
 
     console.log('Sending proj');
-    // Send new projects and issues
-    const sendProjects: Observable<any> = this.onlineIssueService.setProjects(task.projToSend);
-    const sendIssues: Observable<any> = this.onlineIssueService.setIssues(task.issuesToSend);
+    // Send new or updated projects
+    const sendProjects: Observable<any> = this.onlineIssueService.setProjects(task.projToSend).pipe(
+      // Update the hash for all projects successfully updated on the server
+      map((projectMap: Map<string, string>) => {
+        const saveArray: Observable<string>[] = [];
+        projectMap.forEach((newHash, projectId) => {
+          this.offlineIssueService.getProject(projectId).pipe(map(project => {
+            // Update the hash and save
+            project.prevHash = project.hash;
+            project.hash = newHash;
+            saveArray.push(this.offlineIssueService.setProject(project));
+          }));
+        });
+        // Merge into a single Observable<string>.
+        return from(saveArray);
+      }),
+      // Concatinate the Observable<string> into a Observable<string[]> so it only emits once.
+      concatAll<Observable<string[]>>(),
+      tap(e => console.log('result of project update', e))
+    );
+
+    // Send new or updated issues
+    const sendIssues: Observable<any> = this.onlineIssueService.setIssues(task.issuesToSend).pipe(
+      map((projectIssueMap: Map<string, Map<string, string>>) => {
+        const saveArray: Observable<string>[] = [];
+        projectIssueMap.forEach((issueMap, projectId) => {
+          // Get the current project so we can get its issues
+          this.offlineIssueService.getProject(projectId).pipe(map(project => {
+            const issueArray: TrackForeverIssue[] = [];
+            // Update each issue and add to array of issues to save for this project
+            issueMap.forEach((newHash, issueId) => {
+              const issue = project.issues.get(issueId);
+              issue.prevHash = issue.hash;
+              issue.hash = newHash;
+              issueArray.push(issue);
+            });
+            // Save updated issues for this array
+            saveArray.push(this.offlineIssueService.setIssues(projectId, issueArray));
+          }));
+        });
+        // Merge into a single Observable<string>.
+        return from(saveArray);
+      }),
+      // Concatinate the Observable<string> into a Observable<string[]> so it only emits once.
+      concatAll(),
+      tap(e => console.log('result of issue update', e))
+    );
 
     // On request return check for merge conflicts.
     // If there are do merge and send back to server

@@ -81,6 +81,7 @@ describe('SyncService', () => {
 
   it('doesn\'t crash', (done) => {
     const map = new Map<string, string>();
+    const issueHashMap = new Map<string, Map<string, string>>([[mockProject.id, new Map()]]);
     Array.from(mockProject.issues).forEach(e => {
       map.set(e[1].id, e[1].hash);
     });
@@ -94,9 +95,8 @@ describe('SyncService', () => {
     onlineSpy.getHashes.and.returnValue(of(projectMap));
     onlineSpy.getRequestedProjects.and.returnValue(of([]));
     onlineSpy.getRequestedIssues.and.returnValue(of([]));
-    onlineSpy.setProjects.and.returnValue(of(null));
-    onlineSpy.setIssues.and.returnValue(of(null));
-    onlineSpy.setIssues.and.returnValue(of(null));
+    onlineSpy.setProjects.and.returnValue(of(new Map([[mockProject.id, mockProject.hash]])));
+    onlineSpy.setIssues.and.returnValue(of(issueHashMap));
     onlineSpy.getIssue.and.callFake((k, i) => of(mockProject.issues.get(i)));
     onlineSpy.getProject.and.returnValue(of(mockProject));
     onlineSpy.getProjects.and.returnValue(of([mockProject]));

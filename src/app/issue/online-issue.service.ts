@@ -37,13 +37,25 @@ export class OnlineIssueService implements IssueService {
     return this.http.get<TrackForeverIssue>(`${environment.apiUrl}/issues/${projectKey}/${issueId}`);
   }
 
-  setIssue(issue: TrackForeverIssue) {
-    return this.http.put(`${environment.apiUrl}/issue`, issue);
+  setIssue(issue: TrackForeverIssue): Observable<Map<string, Map<string, string>>> {
+    return this.http.put(`${environment.apiUrl}/issue`, issue).pipe(
+      map(r => {
+        const issueMap = new Map();
+        Object.entries(r).forEach(v => issueMap.set(v[0], OnlineIssueService.objectToMap(v[1])));
+        return issueMap;
+      })
+    );
   }
 
-  setIssues(issues: Map<string, Array<TrackForeverIssue>>) {
+  setIssues(issues: Map<string, Array<TrackForeverIssue>>): Observable<Map<string, Map<string, string>>> {
     const issueObj = OnlineIssueService.mapToObject(issues);
-    return this.http.put(`${environment.apiUrl}/issues`, issueObj);
+    return this.http.put(`${environment.apiUrl}/issues`, issueObj).pipe(
+      map(r => {
+        const issueMap = new Map();
+        Object.entries(r).forEach(v => issueMap.set(v[0], OnlineIssueService.objectToMap(v[1])));
+        return issueMap;
+      })
+    );
   }
 
   getRequestedIssues(issueIds: Map<string, Array<string>>): Observable<Map<string, Array<TrackForeverIssue>>> {
@@ -62,16 +74,20 @@ export class OnlineIssueService implements IssueService {
       .pipe(map(e => ConvertTrackforeverService.fromJsonArray(e)));
   }
 
-  setProjects(projects: Array<TrackForeverProject>): Observable<object> {
+  setProjects(projects: Array<TrackForeverProject>): Observable<Map<string, string>> {
     console.log('update projects');
     console.log(projects);
     return this.http.put(`${environment.apiUrl}/projects`, ConvertTrackforeverService.toJson(projects),
-    {headers: {'Content-Type': 'application/json; charset=utf-8'}});
+    {headers: {'Content-Type': 'application/json; charset=utf-8'}}).pipe(
+      map(r => OnlineIssueService.objectToMap(r))
+    );
   }
 
-  setProject(project: TrackForeverProject): Observable<object> {
+  setProject(project: TrackForeverProject): Observable<Map<string, string>> {
     return this.http.put(`${environment.apiUrl}/project`, ConvertTrackforeverService.toJson(project),
-    {headers: {'Content-Type': 'application/json; charset=utf-8'}});
+    {headers: {'Content-Type': 'application/json; charset=utf-8'}}).pipe(
+      map(r => OnlineIssueService.objectToMap(r))
+    );
   }
 
   getRequestedProjects(projectIds: Array<string>): Observable<Array<TrackForeverProject>> {
