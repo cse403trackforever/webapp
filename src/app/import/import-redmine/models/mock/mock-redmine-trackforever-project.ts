@@ -22,11 +22,16 @@ export const mockRedmineTrackForeverProject: TrackForeverProject = {
         hash: '',
         prevHash: '',
         id: '5',
-        projectId: 'Redmine:my-project',
+        projectId: 'Redmine:1',
         status: 'closed',
         summary: 'Replace the project description with real content.',
         labels: [],
-        comments: [],
+        comments: [
+          {
+            commenterName: 'Christopher Addison',
+            content: 'this is a comment'
+          }
+        ],
         submitterName: 'David Dupre',
         assignees: [],
         timeCreated: 1525542698,
@@ -40,7 +45,7 @@ export const mockRedmineTrackForeverProject: TrackForeverProject = {
         hash: '',
         prevHash: '',
         id: '123',
-        projectId: 'Redmine:my-project',
+        projectId: 'Redmine:1',
         status: 'open',
         summary: 'Fix the thing',
         labels: [],

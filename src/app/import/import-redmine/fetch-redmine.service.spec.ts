@@ -55,7 +55,13 @@ describe('FetchRedmineService', () => {
       .subscribe(issueArray => expect(issueArray).toEqual(arr));
 
     const req = httpTestingController
-      .expectOne(r => r.url.endsWith(`/issues.json?projectID=${projectID}&limit=${limit}&offset=${offset}`));
+      .expectOne(r => {
+        return r.url.endsWith(`/issues.json`)
+          && r.params.get('project_id') === '123'
+          && r.params.get('limit') === '10'
+          && r.params.get('offset') === '2'
+          && r.params.get('status_id') === '*';
+      });
     expect(req.request.method).toEqual('GET');
 
     req.flush(arr);
@@ -70,7 +76,13 @@ describe('FetchRedmineService', () => {
     service.fetchIssue(baseUrl, projectID, issueID)
       .subscribe(issue => expect(issue).toEqual(i));
 
-    const req = httpTestingController.expectOne(r => r.url.endsWith(`/issues/${issueID}.json?project_id=${projectID}`));
+    const req = httpTestingController
+      .expectOne(r => {
+        return r.url.endsWith(`/issues/456.json`)
+          && r.params.get('project_id') === '123'
+          && r.params.get('include') === 'journals'
+          && r.params.get('status_id') === '*';
+      });
     expect(req.request.method).toEqual('GET');
 
     req.flush({issue: i});

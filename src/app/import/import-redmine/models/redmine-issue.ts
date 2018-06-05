@@ -1,4 +1,5 @@
 import { RedmineIssueSubstructure } from './redmine-issue-substructure';
+import { RedmineJournal } from './redmine-journal';
 
 
 export interface RedmineIssue {
@@ -17,4 +18,5 @@ export interface RedmineIssue {
   created_on: string;
   updated_on: string;
   closed_on?: string;
+  journals?: RedmineJournal[];
 }

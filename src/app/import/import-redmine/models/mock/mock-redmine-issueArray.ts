@@ -4,7 +4,7 @@ export const mockRedmineIssueArray: RedmineIssueArray = {
   issues: [
     {
       id: 5,
-      project: {id: 5, name: 'my-project'},
+      project: {id: 1, name: 'my-project'},
       tracker: {id: 5, name: ''},
       status: {id: 5, name: 'closed'},
       priority: {id: 5, name: ''},
@@ -17,11 +17,33 @@ export const mockRedmineIssueArray: RedmineIssueArray = {
       estimated_hours: null,
       created_on: 'Sat May 05 2018 10:51:38 GMT-0700 (Pacific Summer Time)',
       updated_on: 'Sat May 05 2018 10:52:29 GMT-0700 (Pacific Summer Time)',
-      closed_on: 'Sat May 05 2018 10:52:29 GMT-0700 (Pacific Summer Time)'
+      closed_on: 'Sat May 05 2018 10:52:29 GMT-0700 (Pacific Summer Time)',
+      journals: [
+        {
+          id: 720,
+          user: {id: 6, name: 'Christopher Addison'},
+          notes: 'this is a comment',
+          created_on: 'Sat May 05 2018 10:51:38 GMT-0700 (Pacific Summer Time)',
+          details: []
+        },
+        {
+          id: 721,
+          user: {id: 7, name: 'John Smith'},
+          notes: '',
+          created_on: 'Sat May 05 2018 10:51:38 GMT-0700 (Pacific Summer Time)',
+          details: [
+            {
+              property: 'attachment',
+              name: 123456,
+              new_value: 'hello.png'
+            }
+          ]
+        }
+      ]
     },
     {
       id: 123,
-      project: {id: 123, name: 'my-project'},
+      project: {id: 1, name: 'my-project'},
       tracker: {id: 123, name: ''},
       status: {id: 123, name: 'open'},
       priority: {id: 123, name: ''},
@@ -34,7 +56,8 @@ export const mockRedmineIssueArray: RedmineIssueArray = {
       estimated_hours: null,
       created_on: 'Sat May 05 2018 10:56:37 GMT-0700 (Pacific Summer Time)',
       updated_on: 'Sat May 05 2018 10:56:37 GMT-0700 (Pacific Summer Time)',
-      closed_on: null
+      closed_on: null,
+      journals: []
     }
   ],
   total_count: 2,

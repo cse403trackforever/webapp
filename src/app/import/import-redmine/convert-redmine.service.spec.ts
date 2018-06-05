@@ -13,7 +13,7 @@ describe('ConvertRedmineService', () => {
   let fetchServiceSpy: jasmine.SpyObj<FetchRedmineService>;
 
   beforeEach(() => {
-    const fetchSpy = jasmine.createSpyObj('FetchRedmineService', ['fetchProject', 'fetchIssues']);
+    const fetchSpy = jasmine.createSpyObj('FetchRedmineService', ['fetchProject', 'fetchIssues', 'fetchIssue']);
 
     TestBed.configureTestingModule({
       providers: [
@@ -27,6 +27,10 @@ describe('ConvertRedmineService', () => {
 
     service = TestBed.get(ConvertRedmineService);
     fetchServiceSpy = TestBed.get(FetchRedmineService);
+
+    fetchServiceSpy.fetchProject.and.returnValue(of(mockRedmineProject));
+    fetchServiceSpy.fetchIssues.and.returnValue(of(mockRedmineIssueArray));
+    fetchServiceSpy.fetchIssue.and.returnValues(of(mockRedmineIssueArray.issues[0]), of(mockRedmineIssueArray.issues[1]));
   });
 
   it('should be created', async(() => {
@@ -34,14 +38,10 @@ describe('ConvertRedmineService', () => {
   }));
 
   it('should not crash', async(() => {
-    fetchServiceSpy.fetchProject.and.returnValue(of(mockRedmineProject));
-    fetchServiceSpy.fetchIssues.and.returnValue(of(mockRedmineIssueArray));
     service.importProject({ projectName: '', serverUrl: '' });
   }));
 
   it('should be correct', async(() => {
-    fetchServiceSpy.fetchProject.and.returnValue(of(mockRedmineProject));
-    fetchServiceSpy.fetchIssues.and.returnValue(of(mockRedmineIssueArray));
     service.importProject({ projectName: '', serverUrl: '' })
       .subscribe(r => {
         expect(r).toEqual(mockRedmineTrackForeverProject);
@@ -49,8 +49,6 @@ describe('ConvertRedmineService', () => {
   }));
 
   it('should handle multiple pages', async(() => {
-    fetchServiceSpy.fetchProject.and.returnValue(of(mockRedmineProject));
-
     const page1: RedmineIssueArray = {
       issues: mockRedmineIssueArray.issues,
       total_count: 102,
@@ -80,6 +78,7 @@ describe('ConvertRedmineService', () => {
     let i = 0;
     const pages = [page1, page2];
     fetchServiceSpy.fetchIssues.and.callFake(() => of(pages[i++]));
+    fetchServiceSpy.fetchIssue.and.returnValues(of(page1.issues[0]), of(page1.issues[1]), of(page2.issues[0]), of(page2.issues[1]));
 
     service.importProject({ projectName: '', serverUrl: '' })
       .subscribe(r => {

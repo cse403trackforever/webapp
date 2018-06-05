@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { RedmineProject } from './models/redmine-project';
 import { RedmineIssue } from './models/redmine-issue';
 import { RedmineIssueArray } from './models/redmine-issueArray';
@@ -21,12 +21,21 @@ export class FetchRedmineService {
   }
 
   fetchIssues(baseUrl: string, projectName: string, projectID: number, limit: number, offset: number): Observable<RedmineIssueArray> {
-    const url = `${this.corsUrl}${baseUrl}/issues.json?projectID=${projectID}&limit=${limit}&offset=${offset}`;
-    return this.http.get<RedmineIssueArray>(url);
+    return this.http.get<RedmineIssueArray>(`${this.corsUrl}${baseUrl}/issues.json`, {
+      params: new HttpParams()
+        .set('project_id', projectID.toString())
+        .set('limit', limit.toString())
+        .set('offset', offset.toString())
+        .set('status_id', '*')
+    });
   }
 
   fetchIssue(baseUrl: string, projectID: number, issueID: number): Observable<RedmineIssue> {
-    return this.http.get<{issue: RedmineIssue}>(`${this.corsUrl}${baseUrl}/issues/${issueID}.json?project_id=${projectID}`)
-      .pipe(map(obj => obj.issue));
+    return this.http.get<{issue: RedmineIssue}>(`${this.corsUrl}${baseUrl}/issues/${issueID}.json`, {
+      params: new HttpParams()
+        .set('project_id', projectID.toString())
+        .set('include', 'journals')
+        .set('status_id', '*')
+    }).pipe(map(obj => obj.issue));
   }
 }

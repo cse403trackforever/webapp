@@ -5,8 +5,10 @@ import { FetchRedmineService } from './fetch-redmine.service';
 import { RedmineIssue } from './models/redmine-issue';
 import { RedmineProject } from './models/redmine-project';
 import { RedmineIssueArray } from './models/redmine-issueArray';
-import { Observable, of, merge } from 'rxjs';
+import { Observable, of, merge, forkJoin } from 'rxjs';
 import { flatMap, map, reduce } from 'rxjs/operators';
+import { RedmineJournal } from './models/redmine-journal';
+import { TrackForeverComment } from '../models/trackforever/trackforever-comment';
 
 /**
  * The type of argument passed into importProject
@@ -29,16 +31,23 @@ export class ConvertRedmineService {
   constructor(private fetchService: FetchRedmineService) {
   }
 
+  private static convertCommentToTrackForever(comment: RedmineJournal): TrackForeverComment {
+    return {
+      commenterName: comment.user.name,
+      content: comment.notes
+    };
+  }
+
   private static convertIssueToTrackForever(issue: RedmineIssue): TrackForeverIssue {
     return {
       hash: '',
       prevHash: '',
       id: issue.id.toString(),
-      projectId: `Redmine:${issue.project.name}`,
+      projectId: `Redmine:${issue.project.id}`,
       status: issue.status.name,
       summary: issue.description,
       labels: [],
-      comments: [],
+      comments: issue.journals.filter(j => j.notes !== '').map(ConvertRedmineService.convertCommentToTrackForever),
       submitterName: issue.author.name,
       assignees: (issue.assigned_to) ? [issue.assigned_to.name] : [],
       timeCreated: Math.floor(Date.parse(issue.created_on) / 1000),
@@ -79,8 +88,13 @@ export class ConvertRedmineService {
         return pages;
       }),
 
-      // get just the issues out of each page
-      map((page: RedmineIssueArray) => page.issues),
+      // get the issues out of each page
+      // even though the issues were already fetched 100 at a time, they need to be fetched individually to get the "journals", or comments
+      flatMap((page: RedmineIssueArray) =>
+        forkJoin(
+          page.issues.map(issue => this.fetchService.fetchIssue(serverUrl, projectID, issue.id))
+        )
+      ),
 
       // As pages of issues are emitted, reduce them into one array
       reduce((acc: RedmineIssue[], val: RedmineIssue[]) => acc.concat(val))
