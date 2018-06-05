@@ -1,65 +1,67 @@
-<div class="mt-2" *ngIf="!isBusy; else loading">
-  <h2 class="mt-2">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb p-0 bg-transparent">
-        <li class="breadcrumb-item">
-          <a class="text-dark" [routerLink]="['/project', issue.projectId]">{{project.name}}</a>
-        </li>
-        <li class="breadcrumb-item active" aria-current="page">Issue #{{issue.id}}</li>
-      </ol>
-    </nav>
-  </h2>
+<div class="container">
+  <div class="mt-2" *ngIf="!isBusy; else loading">
+    <h2 class="mt-2">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-0 bg-transparent">
+          <li class="breadcrumb-item">
+            <a class="text-dark" [routerLink]="['/project', issue.projectId]">{{project.name}}</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">Issue #{{issue.id}}</li>
+        </ol>
+      </nav>
+    </h2>
 
-  <form #issueForm="ngForm">
-    <div class="form-row">
-      <div class="form-group col-lg-2 col-xl-1">
-        <!-- TODO add validator to prevent duplicate issue IDs -->
-        <label for="id">Issue ID</label>
-        <input type="text" class="form-control" id="id"
-               required
-               [(ngModel)]="issue.id" name="id">
-      </div>
-      <div class="form-group col-lg-2 col-xl-1">
-        <!-- TODO choose from existing statuses -->
-        <label for="status">Initial status</label>
-        <input type="text" class="form-control" id="status"
-               required
-               [(ngModel)]="issue.status" name="status">
-      </div>
-      <div class="form-group col">
-        <label for="summary">Summary</label>
-        <input type="text" class="form-control" id="summary"
-               required
-               [(ngModel)]="issue.summary" name="summary">
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col">
-        <div class="card">
-          <div class="card-body">
-          <textarea type="text" class="form-control" placeholder="Leave a comment"
-                    [(ngModel)]="commentContent" name="commentContent"></textarea>
-          </div>
-          <div class="d-flex flex-row justify-content-end card-footer">
-            <button type="submit" class="btn btn-success"
-                    (click)="onSubmit()"
-                    [disabled]="!issueForm.form.valid"
-                    ngbTooltip="Summary is required" placement="bottom"
-                    [disableTooltip]="issueForm.form.valid">Submit</button>
-          </div>
+    <form #issueForm="ngForm">
+      <div class="form-row">
+        <div class="form-group col-lg-2 col-xl-1">
+          <!-- TODO add validator to prevent duplicate issue IDs -->
+          <label for="id">Issue ID</label>
+          <input type="text" class="form-control" id="id"
+                required
+                [(ngModel)]="issue.id" name="id">
+        </div>
+        <div class="form-group col-lg-2 col-xl-1">
+          <!-- TODO choose from existing statuses -->
+          <label for="status">Initial status</label>
+          <input type="text" class="form-control" id="status"
+                required
+                [(ngModel)]="issue.status" name="status">
+        </div>
+        <div class="form-group col">
+          <label for="summary">Summary</label>
+          <input type="text" class="form-control" id="summary"
+                required
+                [(ngModel)]="issue.summary" name="summary">
         </div>
       </div>
 
-      <div class="col-12 col-lg-3 mt-4 mt-lg-0">
-        <app-issue-details [issue]="issue"
-                           (assigned)="assign($event)"
-                           (labeled)="applyLabel($event)"></app-issue-details>
-      </div>
-    </div>
-  </form>
-</div>
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+            <textarea type="text" class="form-control" placeholder="Leave a comment"
+                      [(ngModel)]="commentContent" name="commentContent"></textarea>
+            </div>
+            <div class="d-flex flex-row justify-content-end card-footer">
+              <button type="submit" class="btn btn-success"
+                      (click)="onSubmit()"
+                      [disabled]="!issueForm.form.valid"
+                      ngbTooltip="Summary is required" placement="bottom"
+                      [disableTooltip]="issueForm.form.valid">Submit</button>
+            </div>
+          </div>
+        </div>
 
-<ng-template #loading>
-  <div class="loader mx-auto m-5"></div>
-</ng-template>
+        <div class="col-12 col-lg-3 mt-4 mt-lg-0">
+          <app-issue-details [issue]="issue"
+                            (assigned)="assign($event)"
+                            (labeled)="applyLabel($event)"></app-issue-details>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <ng-template #loading>
+    <div class="loader mx-auto m-5"></div>
+  </ng-template>
+</div>
