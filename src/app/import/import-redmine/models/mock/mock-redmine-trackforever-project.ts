@@ -24,9 +24,13 @@ export const mockRedmineTrackForeverProject: TrackForeverProject = {
         id: '5',
         projectId: 'Redmine:1',
         status: 'closed',
-        summary: 'Replace the project description with real content.',
+        summary: 'Issues have subjects!',
         labels: [],
         comments: [
+          {
+            commenterName: 'David Dupre',
+            content: 'Replace the project description with real content.'
+          },
           {
             commenterName: 'Christopher Addison',
             content: 'this is a comment'
@@ -47,9 +51,14 @@ export const mockRedmineTrackForeverProject: TrackForeverProject = {
         id: '123',
         projectId: 'Redmine:1',
         status: 'open',
-        summary: 'Fix the thing',
+        summary: 'Fix it',
         labels: [],
-        comments: [],
+        comments: [
+          {
+            commenterName: 'denvercoder9',
+            content: 'Fix the thing'
+          }
+        ],
         submitterName: 'denvercoder9',
         assignees: ['denvercoder9'],
         timeCreated: 1525542997,

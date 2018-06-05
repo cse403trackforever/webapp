@@ -39,15 +39,30 @@ export class ConvertRedmineService {
   }
 
   private static convertIssueToTrackForever(issue: RedmineIssue): TrackForeverIssue {
+    // set the first comment to be the issue description
+    let comments: TrackForeverComment[] = [];
+    if (issue.description !== '') {
+      comments.push({
+        commenterName: issue.author.name,
+        content: issue.description
+      });
+    }
+
+    // add the other comments from the issue's journals
+    const journalComments = issue.journals
+      .filter(j => j.notes !== '')
+      .map(ConvertRedmineService.convertCommentToTrackForever);
+    comments = comments.concat(journalComments);
+
     return {
       hash: '',
       prevHash: '',
       id: issue.id.toString(),
       projectId: `Redmine:${issue.project.id}`,
       status: issue.status.name,
-      summary: issue.description,
+      summary: issue.subject,
       labels: [],
-      comments: issue.journals.filter(j => j.notes !== '').map(ConvertRedmineService.convertCommentToTrackForever),
+      comments,
       submitterName: issue.author.name,
       assignees: (issue.assigned_to) ? [issue.assigned_to.name] : [],
       timeCreated: Math.floor(Date.parse(issue.created_on) / 1000),
