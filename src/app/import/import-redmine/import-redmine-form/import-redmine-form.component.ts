@@ -20,7 +20,6 @@ import { ConvertRedmineService } from '../convert-redmine.service';
 })
 export class ImportRedmineFormComponent extends ImportComponent {
   projectName: string;
-  projectID: number;
   serverUrl: string;
 
   constructor(importService: ImportService) {
@@ -28,6 +27,6 @@ export class ImportRedmineFormComponent extends ImportComponent {
   }
 
   onSubmit(): void {
-    this.importProject({ projectName: this.projectName, projectID: this.projectID, serverUrl: this.serverUrl });
+    this.importProject({ projectName: this.projectName, serverUrl: this.serverUrl });
   }
 }
