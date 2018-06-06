@@ -28,6 +28,10 @@
     <hr>
   </ng-template>
 
+  <div *ngIf="modified" class="alert alert-info mt-3" role="alert">
+    <strong>Heads Up!</strong> Project {{project.name}} has local changes not synced with the server.
+  </div>
+
   <div class="row">
     <!-- filter section -->
     <form class="col-12 col-lg">

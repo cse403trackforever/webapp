@@ -56,6 +56,10 @@
     </ng-template>
   </div>
 
+  <div *ngIf="modified" class="alert alert-info mt-3" role="alert">
+    <strong>Heads Up!</strong> Issue #{{issue.id}} has local changes not synced with the server.
+  </div>
+
   <hr>
 
   <div class="row">

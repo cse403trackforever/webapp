@@ -7,6 +7,7 @@ import { ExportService } from '../export/export.service';
 import { TrackForeverIssue } from '../import/models/trackforever/trackforever-issue';
 import { ConvertTrackforeverService } from '../import/import-trackforever/convert-trackforever.service';
 import { Subscription } from 'rxjs';
+import { SyncService } from '../sync/sync.service';
 
 @Component({
   selector: 'app-project-page',
@@ -39,6 +40,8 @@ export class ProjectPageComponent implements OnInit {
 
   statuses = new Set();
   statusFilters = new Set();
+
+  modified = false;
 
   isEditingProject = false;
 
@@ -94,6 +97,7 @@ export class ProjectPageComponent implements OnInit {
           this.statusFilters.add(issue.status);
         });
         this.project = project;
+        this.modified = SyncService.hasChanged(project);
         this.updateIssues();
       });
   }

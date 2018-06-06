@@ -10,6 +10,7 @@ import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { faEllipsisH, faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { AuthUser } from '../shared/models/auth-user';
+import { SyncService } from '../sync/sync.service';
 
 @Component({
   selector: 'app-issue-page',
@@ -32,6 +33,8 @@ export class IssuePageComponent implements OnInit {
   faEllipsis = faEllipsisH;
   faEdit = faEdit;
   faCheck = faCheck;
+
+  modified = false;
 
   constructor(
     private issueService: IssueService,
@@ -56,6 +59,7 @@ export class IssuePageComponent implements OnInit {
       project.issues.forEach((issue, id) => {
         this.statuses.add(issue.status);
       });
+      this.modified = SyncService.hasChanged(this.issue);
     });
   }
 
