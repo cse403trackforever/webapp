@@ -88,28 +88,25 @@ export class SyncService {
 
     // Check each project
     projects.forEach(project => {
-      console.log(project);
-      const hash = remoteHashes.get(project.id);
+      let hash = remoteHashes.get(project.id);
       // Catch case where remote doesn't have this project yet
       if (!hash) {
         // Mark to be sent
         task.projToSend.push(project);
         console.log('send proj');
-        remoteHashes.delete(project.id);
-        return;
+        hash = {project: project.id, issues: new Map()};
       } else if (project.hash !== remoteHashes.get(project.id).project) {
         // Mark to be fetched
         task.projToUpdate.push(project);
-        console.log('update proj');
+        console.log('fetch proj', project);
       } else if (SyncService.hasChanged(project)) {
         // Mark to update
         task.projToSend.push(project);
-        console.log('update proj');
+        console.log('update proj -- has changed!');
       }
 
       // Check each issue
       project.issues.forEach(issue => {
-        console.log(issue);
         const issueHash = hash.issues.get(issue.id);
 
         // Catch case where remote doesn't have this issue yet
@@ -136,7 +133,7 @@ export class SyncService {
           } else {
             task.issuesToSend.set(project.id, [issue]);
           }
-          console.log('update issue');
+          console.log('update issue -- has changed!');
         }
 
         // We're done with this issue, so remove
@@ -188,8 +185,10 @@ export class SyncService {
         projectMap.forEach((newHash, projectId) => {
           this.offlineIssueService.getProject(projectId).pipe(map(project => {
             // Update the hash and save
-            project.prevHash = project.hash;
-            project.hash = newHash;
+            if (project.hash !== newHash) {
+              project.prevHash = project.hash;
+              project.hash = newHash;
+            }
             saveArray.push(this.offlineIssueService.setProject(project));
           }));
         });
@@ -212,8 +211,10 @@ export class SyncService {
             // Update each issue and add to array of issues to save for this project
             issueMap.forEach((newHash, issueId) => {
               const issue = project.issues.get(issueId);
-              issue.prevHash = issue.hash;
-              issue.hash = newHash;
+              if (issue.hash !== newHash) {
+                issue.prevHash = issue.hash;
+                issue.hash = newHash;
+              }
               issueArray.push(issue);
             });
             // Save updated issues for this array

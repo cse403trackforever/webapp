@@ -14,10 +14,14 @@ export class ConvertTrackforeverService implements ConvertService {
    * Takes a given TrackForever object and encodes to json
    * @param obj TrackForever object to encode
    */
-  static toJson(obj: TrackForeverProject | TrackForeverProject[] | TrackForeverIssue): string {
+  static toJson(obj: TrackForeverProject | TrackForeverProject[] | TrackForeverIssue, includeIssues: boolean = true): string {
     return JSON.stringify(obj, (key, val) => {
       if (key === 'issues') {
-        return Object.assign({}, ...Array.from(val).map(([k, v]) => ({[k]: v})));
+        if (includeIssues) {
+          return Object.assign({}, ...Array.from(val).map(([k, v]) => ({[k]: v})));
+        } else {
+          return undefined;
+        }
       } else {
         return val;
       }

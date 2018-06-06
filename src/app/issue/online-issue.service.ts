@@ -77,14 +77,14 @@ export class OnlineIssueService implements IssueService {
   setProjects(projects: Array<TrackForeverProject>): Observable<Map<string, string>> {
     console.log('update projects');
     console.log(projects);
-    return this.http.put(`${environment.apiUrl}/projects`, ConvertTrackforeverService.toJson(projects),
+    return this.http.put(`${environment.apiUrl}/projects`, ConvertTrackforeverService.toJson(projects, false),
     {headers: {'Content-Type': 'application/json; charset=utf-8'}}).pipe(
       map(r => OnlineIssueService.objectToMap(r))
     );
   }
 
   setProject(project: TrackForeverProject): Observable<Map<string, string>> {
-    return this.http.put(`${environment.apiUrl}/project`, ConvertTrackforeverService.toJson(project),
+    return this.http.put(`${environment.apiUrl}/project`, ConvertTrackforeverService.toJson(project, false),
     {headers: {'Content-Type': 'application/json; charset=utf-8'}}).pipe(
       map(r => OnlineIssueService.objectToMap(r))
     );

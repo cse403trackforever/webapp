@@ -93,7 +93,7 @@ describe('OnlineIssueService', () => {
 
     const req = httpTestingController.expectOne(`${environment.apiUrl}/projects`);
     expect(req.request.method).toEqual('PUT');
-    expect(req.request.body).toEqual(ConvertTrackforeverService.toJson([mockTrackforeverProject]));
+    expect(req.request.body).toEqual(ConvertTrackforeverService.toJson([mockTrackforeverProject], false));
 
     req.flush(hash);
   }));
